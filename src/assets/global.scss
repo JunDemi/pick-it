@@ -1,5 +1,5 @@
 @use "./fonts.scss" as *;
-
+@use "./main.scss" as *;
 /*reset*/
 html,
 body,
@@ -83,6 +83,7 @@ time,
 mark,
 audio,
 video {
+	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
 	font-size: 100%;
@@ -106,7 +107,6 @@ section {
 }
 
 body {
-	overflow-x: hidden;
 	font-family: "p_normal";
 }
 a{

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 function Home() {
   return (
    <div>
-    <Link to='/addgame'>게임생성</Link>
+    <Link to='/create-game'>게임생성</Link>
    </div>
   );
 }

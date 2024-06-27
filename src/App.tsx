@@ -11,7 +11,7 @@ function App() {
       <Header/>
       <Routes>
         <Route path='/' element={<Home/>}/>
-        <Route path='/addgame' element={<CreateGame/>}/>
+        <Route path='/create-game' element={<CreateGame/>}/>
       </Routes>
     </BrowserRouter>
   );

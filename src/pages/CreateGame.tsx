@@ -4,11 +4,6 @@ import "../assets/CreateGame/style.scss";
 function CreateGame() {
   const [imageList, setImageList] = useState<File[]>([]);
 
-  //드래그 오버
-  const handleDragOver = (event: React.DragEvent) => {
-    event.preventDefault(); //브라우저에 이미지 새 창이 뜨는 동작 제한
-    console.log("Drag Over");
-  };
   //드롭
   const handleDrop = (event: React.DragEvent) => {
     const middleList = []; //함수 안에 임시적으로 저장되는 파일 리스트
@@ -37,12 +32,7 @@ function CreateGame() {
           middleList.push(fileList[i]);
         }
       }
-      if (imageList.length > 0) {
-        setImageList([]); //배열에 값이 존재할 경우 리셋
-        setImageList(middleList); //중간자 배열을 state로 전송
-      } else {
-        setImageList(middleList);
-      }
+     setImageList(middleList);
     }
   };
 
@@ -50,9 +40,6 @@ function CreateGame() {
   return (
     <>
       <label
-        onDragEnter={() => console.log("Drag Enter")}
-        onDragOver={handleDragOver}
-        onDragLeave={() => console.log("Drag Leave")}
         onDrop={handleDrop}
       >
         <input

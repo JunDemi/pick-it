@@ -1,8 +1,6 @@
 .banner-container {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 2rem;
+    gap: 5rem;
     padding-top: 2rem;
 
     .banner-pop {
@@ -55,8 +53,19 @@
     }
 
     .banner-dashboard {
-        background-color: red;
-        height: 30rem;
+        position: relative;
+        background-color: whitesmoke;
         flex-grow: 1;
+
+        .banner-dashboard-title {
+            font-size: 20px;
+            font-family: 'p_bold';
+            margin-bottom: 3rem;
+        }
+        .banner-dashboard-charts{
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+        }
     }
 }

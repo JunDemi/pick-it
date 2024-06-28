@@ -5,12 +5,13 @@ import {Divide as Hamburger} from "hamburger-react";
 function Header() {
   const [toggle, setToggle] = useState(false);
   return (
-    <header className="header">
-      <Link to="/" className="logo">
+    <>
+    <header className="header-container">
+      <Link to="/" className="header-logo">
         PICKIT
       </Link>
       <nav>
-        <Link to="/login" className="login-link">
+        <Link to="/login" className="header-login">
           <svg
             width="18"
             height="18"
@@ -26,15 +27,18 @@ function Header() {
           <p>LOGIN</p>
         </Link>
         <Hamburger
-          size={32}
+          size={30}
           color="#000"
           toggled={toggle}
           rounded
           toggle={setToggle}
-          duration={0.4}
+          duration={0.5}
         />
       </nav>
     </header>
+
+    <div style={{height: "5rem"}}/>
+    </>
   );
 }
 

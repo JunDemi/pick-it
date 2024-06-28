@@ -1,15 +1,60 @@
-.banner-container{
+.banner-container {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 3rem;
-    padding-top: 3rem;
-    .banner-pop{
-        background-color: red;
-        width: 15rem;
-        height: 30rem;
+    gap: 2rem;
+    padding-top: 2rem;
+
+    .banner-pop {
+        width: 18rem;
+
+        .banner-pop-title {
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2.5rem;
+
+            span {
+                font-family: 'p_bold';
+                padding-bottom: 3px;
+
+                &:last-child {
+                    width: 80px;
+                    text-align: center;
+                    border-bottom: 2px solid;
+                    cursor: pointer;
+                }
+            }
+        }
+
+        .banner-pop-rank {
+            font-size: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 1.4rem;
+
+            div {
+                display: flex;
+                align-items: center;
+                gap: 1.5rem;
+
+                span {
+                    width: 1.7rem;
+                    height: 1.7rem;
+                    display: grid;
+                    place-items: center;
+                    color: white;
+                    background-color: black;
+                }
+
+                p {
+                    font-family: 'p_bold';
+                }
+            }
+        }
     }
-    .banner-dashboard{
+
+    .banner-dashboard {
         background-color: red;
         height: 30rem;
         flex-grow: 1;

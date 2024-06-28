@@ -54,7 +54,6 @@
 
     .banner-dashboard {
         position: relative;
-        background-color: whitesmoke;
         flex-grow: 1;
 
         .banner-dashboard-title {
@@ -66,6 +65,35 @@
             display: flex;
             justify-content: center;
             gap: 3rem;
+        }
+        .banner-dashboard-notice{
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            font-size: 14px;
+            padding: 1rem 0;
+            display: grid;
+            grid-template-columns: 1fr 7fr 1.5fr 1fr;
+            place-items: center;
+            div{
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                font-family: "p_bold";
+                svg{
+                    width: 1.7rem;
+                    height: 1.7rem;
+                }
+            }
+            h3{
+                width: 100%;
+                padding-left: 2rem;
+                color: #727272;
+            }
+            a{
+                font-size: 12px;
+                color: #545454;
+            }
         }
     }
 }

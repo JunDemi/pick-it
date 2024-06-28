@@ -29,7 +29,7 @@
             font-size: 12px;
             display: flex;
             flex-direction: column;
-            gap: 1.4rem;
+            gap: 1rem;
 
             div {
                 display: flex;
@@ -71,7 +71,6 @@
             bottom: 0;
             width: 100%;
             font-size: 14px;
-            padding: 1rem 0;
             display: grid;
             grid-template-columns: 1fr 7fr 1.5fr 1fr;
             place-items: center;

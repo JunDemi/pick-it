@@ -60,6 +60,12 @@
         .banner-dashboard-title {
             font-size: 20px;
             font-family: 'p_bold';
+            margin-bottom: 3rem;
+        }
+        .banner-dashboard-charts{
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
         }
     }
 }

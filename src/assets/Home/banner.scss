@@ -1,0 +1,17 @@
+.banner-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 3rem;
+    padding-top: 3rem;
+    .banner-pop{
+        background-color: red;
+        width: 15rem;
+        height: 30rem;
+    }
+    .banner-dashboard{
+        background-color: red;
+        height: 30rem;
+        flex-grow: 1;
+    }
+}

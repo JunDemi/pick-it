@@ -1,11 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Banner from '../components/Home/Banner/Banner';
 
 function Home() {
   return (
-   <div>
-    <Link to='/create-game'>게임생성</Link>
-   </div>
+   <section style={{padding: "0 7rem"}}>
+    <Banner/>
+   </section>
   );
 }
 

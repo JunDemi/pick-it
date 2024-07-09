@@ -75,27 +75,29 @@
     }
 
     .login-form-bottom {
-        margin: 1.5rem 0;
+        margin: 1.5rem 0 6rem 0;
         display: flex;
-        flex-direction: column;
+        justify-content: center;
         align-items: center;
+        gap: 0.5rem;
 
         p {
-            color: #ababab;
             font-family: 'p_bold';
             font-size: 12px;
-            margin-bottom: 1.5rem;
+            color: #ababab;
         }
 
         a {
+            color: #9a9a9a;
             font-size: 13px;
             text-align: center;
-            width: 100%;
-            background-color: #000;
-            color: #fff;
             border: none;
             font-family: 'p_bold';
-            padding: 0.5rem 0;
+
+            &:hover {
+
+                color: #7d7d7d;
+            }
         }
     }
 }
@@ -166,27 +168,28 @@
     }
 
     .register-form-bottom {
-        margin: 1.5rem 0;
+        margin: 1.5rem 0 6rem 0;
         display: flex;
-        flex-direction: column;
+        justify-content: center;
         align-items: center;
-
+        gap: 0.5rem;
         p {
             color: #ababab;
             font-family: 'p_bold';
             font-size: 12px;
-            margin-bottom: 1.5rem;
         }
 
         a {
+            color: #9a9a9a;
             font-size: 13px;
             text-align: center;
-            width: 100%;
-            background-color: #000;
-            color: #fff;
             border: none;
             font-family: 'p_bold';
-            padding: 0.5rem 0;
+
+            &:hover {
+
+                color: #7d7d7d;
+            }
         }
 
     }

@@ -40,6 +40,7 @@ function Login() {
             placeholder="아이디"
             register={register}
             error={errors.loginId}
+            
           />
           <InputField
             name="loginPw"

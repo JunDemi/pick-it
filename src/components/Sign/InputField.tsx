@@ -7,7 +7,7 @@ function InputField({name, placeholder, register, error}: InputType) {
     <input type='text' {...register(name, {
       required: true,
       // validate: {
-      //   must: (value) => value.includes("@") || "Email must have '@'",
+      //   must: (value: string) => value.length > 6 || ""
       // },
     })}
     placeholder={placeholder}

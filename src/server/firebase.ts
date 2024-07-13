@@ -20,6 +20,6 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-export const db = getFirestore(app); //데이터베이스 스토리지
-export const storage = getStorage(app, "gs://the-market-bd844.appspot.com");
+export const db = getFirestore(app); //데이터베이스
+export const storage = getStorage(app, "gs://pick-it-23e12.appspot.com");//파일 스토리지
 export const auth = getAuth(app); //사용자 인증

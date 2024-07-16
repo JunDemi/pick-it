@@ -20,6 +20,10 @@
         align-items: center;
         gap: 4rem;
         .header-login{
+            width: 90px;
+            cursor: pointer;
+            background: none;
+            border: none;
             display: flex;
             flex-direction: column;
             align-items: center;

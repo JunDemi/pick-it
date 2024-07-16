@@ -43,7 +43,7 @@ function Register() {
     //파이어베이스 프로필 이미지 업로드 메소드
     const profileImg = await uploadProfile(
       data.registerId,
-      data.registerImg.length <= 0 ? "default" : data.registerImg[0]
+      data.registerImg.length <= 0 ? undefined : data.registerImg[0] //fileList에 값이 없으면 undefined를 인자로 전송
     );
     //파이어베이스 사용자 등록 메소드
     await createUserWithEmailAndPassword(

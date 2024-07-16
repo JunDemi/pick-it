@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import "../assets/Sign/sign.scss";
 import { useForm } from "react-hook-form";
 import InputField from "../components/Sign/InputField";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { LoginType } from "../types/Sign";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../server/firebase";
 
 function Login() {
+  //네비게이터
+  const navigate = useNavigate();
   //로그인 실패 상태
   const [loginFailed, setLoginFailed] = useState<boolean>(false);
   //폼 이벤트 시 로딩 동작
@@ -25,7 +27,7 @@ function Login() {
     setLoading(true);
 
     await signInWithEmailAndPassword(auth, data.loginId + "@pick.it", data.loginPw)
-    .then(response => console.log(response)).catch(error => setLoginFailed(true));
+    .then(response => navigate("/")).catch(error => setLoginFailed(true));
 
     reset();
     setLoading(false);

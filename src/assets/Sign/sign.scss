@@ -62,9 +62,13 @@
                 background-color: #f7f6fd;
             }
         }
-
+        .login-fail-message{
+            font-size: 12px;
+            height: 1rem;
+            margin: 0.5rem 0;
+            color: #777777;
+        }
         button {
-            margin-top: 1.5rem;
             cursor: pointer;
             background-color: #000;
             color: #fff;
@@ -120,6 +124,9 @@
             td {
                 padding: 0.8rem 0;
                 vertical-align: middle;
+                &:last-child{
+                    min-width: 13rem;
+                }
             }
 
             h1 {

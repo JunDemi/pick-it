@@ -120,6 +120,9 @@
             td {
                 padding: 0.8rem 0;
                 vertical-align: middle;
+                &:last-child{
+                    min-width: 13rem;
+                }
             }
 
             h1 {

@@ -37,6 +37,7 @@ function Login() {
         >
           <InputField
             name="loginId"
+            type="text"
             placeholder="아이디"
             register={register}
             error={errors.loginId}
@@ -44,6 +45,7 @@ function Login() {
           />
           <InputField
             name="loginPw"
+            type="password"
             placeholder="비밀번호"
             register={register}
             error={errors.loginPw}

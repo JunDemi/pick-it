@@ -3,6 +3,7 @@ import { ErrorOption } from "react-hook-form";
 export interface InputType {
     //InputField.tsx
     name: string;
+    type: string;
     placeholder?: string;
     register: any;
     error: undefined | ErrorOption;

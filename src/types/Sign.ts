@@ -11,7 +11,7 @@ export interface RegisterType {
     registerNickName: string;
     registerId: string;
     registerPw: string;
-    registerImg?: File;
+    registerImg: FileList;
 }
 export interface LoginType {
     loginId: string;

@@ -44,7 +44,7 @@
         flex-direction: column;
         font-size: 13px;
 
-        input[type=text] {
+        input[type=text], input[type=password] {
             font-family: 'p_thin';
             padding: 1rem 2rem;
             width: 18rem;
@@ -128,7 +128,7 @@
                 margin-right: 2.3rem;
             }
 
-            input[type=text] {
+            input[type=text], input[type=password] {
                 font-family: 'p_bold';
                 font-size: 13px;
                 padding: 0.5rem;

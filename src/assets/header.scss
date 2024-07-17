@@ -9,29 +9,122 @@
     justify-content: space-between;
     align-items: center;
     padding: 0 7rem;
+
     .header-logo{
+        display: inline-block;
+        width: 20vw;
         font-family: "p_bold";
-        font-size: 28px;
-        color: black;
+
+        .logo {
+            width: max-content;
+            font-size: 28px;
+            color: #000;
+        }
     }
+
     nav{
-        display: flex;
-        justify-content: center;
+        width: 80vw;
+        height: 3rem;
+        display: inline-flex;
+        justify-content: space-between;
         align-items: center;
-        gap: 4rem;
-        .header-login{
-            width: 90px;
-            cursor: pointer;
-            background: none;
-            border: none;
+
+        .main-menu {
+            width: max-content;
+            height: 3rem;
+            
+            .menu {
+                display: inline-block;
+                width: 6.25rem;
+                height: 3rem;
+                margin: 0 2rem;
+                text-align: center;
+                border-bottom: 2px solid transparent;
+
+                &.active {
+                    border-bottom: 2px solid #000;
+
+                    a {
+                        color: #000;
+                    }
+                }
+
+                a {
+                    width: 100%;
+                    line-height: 3rem;
+                    cursor: pointer;
+                    font-family: "p_bold";
+                    color: #777777;
+                    font-size: 14px;
+                    transition: all 0.3s ease-in-out;
+
+                    &:hover {
+                        color: #000;
+                    }
+                }
+            }
+        }
+
+        .user-menu {
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
-            gap: 0.2rem;
-            p{
-                font-family: 'p_bold';
-                font-size: 14px;
-                color: black;
+            width: 14rem;
+            height: 5rem;
+
+            .login-menu{
+                width: 6.25rem;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                border: none;
+                background: none;
+
+                svg {
+                    width: 1.2rem;
+                }
+                
+                p{
+                    margin-top: 10px;
+                    font-family: 'p_bold';
+                    font-size: 12px;
+                    color: black;
+                }
+            }
+
+            .user-profile {
+                width: 6.25rem;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                .non-member {
+                    width: 6.25rem;
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    cursor: pointer;
+                    border: none;
+                    background: none;
+
+                    svg {
+                        color: #000;
+                        font-size: 18px;
+                    }
+
+                    p {
+                        margin-top: 10px;
+                        font-family: 'p_bold';
+                        font-size: 12px;
+                        color: black;
+                    }
+                }
             }
         }
     }

@@ -4,8 +4,7 @@ import { useForm } from "react-hook-form";
 import InputField from "../components/Sign/InputField";
 import { Link, useNavigate } from "react-router-dom";
 import { LoginType } from "../types/Sign";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../server/firebase";
+import { signInPickit } from "../server/firebaseAuth";
 
 function Login() {
   //네비게이터
@@ -25,9 +24,10 @@ function Login() {
   const onLoginValid = async (data: LoginType) => {
     setLoginFailed(false);
     setLoading(true);
-
-    await signInWithEmailAndPassword(auth, data.loginId + "@pick.it", data.loginPw)
-    .then(response => navigate("/")).catch(error => setLoginFailed(true));
+    
+    await signInPickit(data.loginId + "@pick.it", data.loginPw)
+      .then((response) => navigate("/"))
+      .catch((error) => setLoginFailed(true));
 
     reset();
     setLoading(false);
@@ -65,9 +65,9 @@ function Login() {
             register={register}
             error={errors.loginPw}
           />
-        <p className="login-fail-message">
-          {loginFailed && "아이디 및 비밀번호가 일치하지 않습니다."}
-        </p>
+          <p className="login-fail-message">
+            {loginFailed && "아이디 및 비밀번호가 일치하지 않습니다."}
+          </p>
           <button type="submit" disabled={loading}>
             {loading ? "로딩 중..." : "로그인"}
           </button>

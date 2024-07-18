@@ -14,7 +14,6 @@
     "apexcharts": "^3.49.2",
     "firebase": "^10.12.2",
     "framer-motion": "^11.2.11",
-    "hamburger-react": "^2.5.1",
     "react": "^18.3.1",
     "react-apexcharts": "^1.4.1",
     "react-dom": "^18.3.1",

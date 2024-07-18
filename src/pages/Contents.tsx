@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import "../../../assets/Home/contents.scss";
+import "../assets/Home/contents.scss";
 function Contents() {
     //인기순, 최신순 필터 state
     const [filter, setFilter] = useState<"pop" | "new">("pop");

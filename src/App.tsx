@@ -7,6 +7,7 @@ import CreateGame from "./pages/CreateGame";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import { AuthContext } from "./AuthContext";
+import Contents from "./pages/Contents";
 
 function App() {
   //로그인 여부 확인
@@ -28,6 +29,7 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/contents" element={<Contents />} />
         <Route path="/create-game" element={<CreateGame />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

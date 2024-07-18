@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../AuthContext";
 import { signOut } from "firebase/auth";
 import { auth } from "../server/firebase";
 import { useLocation } from "react-router-dom";
@@ -38,15 +37,15 @@ function Header() {
         <nav>
           <ul className="main-menu">
             <li className={location.pathname === "/" ? "menu active" : "menu"}>
-              <a href="/">대시보드</a>
+              <Link to="/">대시보드</Link>
             </li>
 
             <li
               className={
-                location.pathname === "/worldCup" ? "menu active" : "menu"
+                location.pathname === "/contents" ? "menu active" : "menu"
               }
             >
-              <a href="/">월드컵 참여</a>
+              <Link to="/contents">월드컵 참여</Link>
             </li>
 
             <li
@@ -54,7 +53,7 @@ function Header() {
                 location.pathname === "/create-game" ? "menu active" : "menu"
               }
             >
-              <a href="/create-game">월드컵 생성</a>
+              <Link to="/create-game">월드컵 생성</Link>
             </li>
           </ul>
 

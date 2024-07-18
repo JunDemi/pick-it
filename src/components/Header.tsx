@@ -9,23 +9,17 @@ function Header() {
   //네비게이터
   const navigate = useNavigate();
   //로그인 상태 확인
-  const user: string | null = localStorage.getItem("pickit-user");
+  const isLogin: string | null = localStorage.getItem("pickit-user");
+  
   //로그아웃 메소드
   const logOut = () => {
     //로그아웃 메소드
     signOut(auth);
     //로컬스토리지 로그인 정보 삭제
-    localStorage.setItem(
-      "pickit-user",
-      "" //비어있는 값
-    );
+    localStorage.removeItem("pickit-user");
     navigate("/");
   };
   const location = useLocation();
-
-  //햄버거 메뉴 토글
-  const [userPopupToggle, setUserPopupToggle] = useState<boolean>(false);
-
   return (
     <>
       <header className="header-container">
@@ -58,7 +52,7 @@ function Header() {
           </ul>
 
           <div className="user-menu">
-            {user ? (
+            {isLogin ? (
               <button className="login-menu" onClick={logOut}>
                 <svg
                   width="18"
@@ -91,7 +85,7 @@ function Header() {
             )}
 
             <div className="user-profile">
-              {user ? (
+              {isLogin ? (
                 <>
                   <div className="user-imgBox"></div>
                 </>
@@ -100,7 +94,6 @@ function Header() {
                   <button
                     type="button"
                     className="non-member"
-                    onClick={() => setUserPopupToggle(!userPopupToggle)}
                   >
                     <FaUser />
                     <p>프로필</p>

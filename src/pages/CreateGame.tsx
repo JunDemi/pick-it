@@ -1,9 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../assets/CreateGame/style.scss";
+import { useNavigate } from "react-router-dom";
 
 function CreateGame() {
-  const [imageList, setImageList] = useState<File[]>([]);
+  //네비게이션
+  const navigate = useNavigate();
+  //로그인 상태 확인
+  const isLogin: string | null = localStorage.getItem("pickit-user");
 
+  useEffect(() => {
+    if(!isLogin) {
+      alert("로그인 후 이용 가능합니다.");
+      navigate("/login");
+    };
+  },[navigate]);
+
+  //파일 배열 저장
+  const [imageList, setImageList] = useState<File[]>([]);
   //드롭
   const handleDrop = (event: React.DragEvent) => {
     const middleList = []; //함수 안에 임시적으로 저장되는 파일 리스트

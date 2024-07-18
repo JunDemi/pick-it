@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import "../assets/Sign/sign.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RegisterType } from "../types/Sign";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../server/firebase";
@@ -9,6 +9,16 @@ import { uploadProfile } from "../server/uploadStorage";
 import { getAuthenticInfo } from "../server/firebaseAuth";
 
 function Register() {
+  //네비게이터
+  const navigate = useNavigate();
+  //로그인 상태 확인
+  const isLogin: string | null = localStorage.getItem("pickit-user");
+
+  useEffect(() => {
+    if(isLogin) {
+      navigate("/");
+    };
+  },[navigate]);
   //폼 이벤트 시 로딩 동작
   const [loading, setLoading] = useState<boolean>(false);
   //프로필 이미지 프리뷰 상태 및 관리

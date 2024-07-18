@@ -24,15 +24,16 @@ function App() {
       })
     );
   }
+
   return (
     <BrowserRouter>
-      <Header />
+      <Header/>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/contents" element={<Contents />} />
-        <Route path="/create-game" element={<CreateGame />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/contents" element={<Contents/>} />
+        <Route path="/create-game" element={<CreateGame/>} />
+        <Route path="/login" element={<Login/>} />
+        <Route path="/register" element={<Register/>} />
       </Routes>
     </BrowserRouter>
   );

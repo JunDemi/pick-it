@@ -12,7 +12,7 @@
 
     .header-logo{
         display: inline-block;
-        width: 20vw;
+        width: 15vw;
         font-family: "p_bold";
 
         .logo {
@@ -37,7 +37,7 @@
                 display: inline-block;
                 width: 6.25rem;
                 height: 3rem;
-                margin: 0 2rem;
+                margin: 0 1rem;
                 text-align: center;
                 border-bottom: 2px solid transparent;
 
@@ -56,7 +56,6 @@
                     font-family: "p_bold";
                     color: #777777;
                     font-size: 14px;
-                    transition: all 0.3s ease-in-out;
 
                     &:hover {
                         color: #000;

@@ -16,7 +16,7 @@ function Login() {
     if(isLogin) {
       navigate("/");
     };
-  },[navigate]);
+  },[navigate, isLogin]);
   //로그인 실패 상태
   const [loginFailed, setLoginFailed] = useState<boolean>(false);
   //폼 이벤트 시 로딩 동작

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import "../assets/Sign/sign.scss";
 import { Link, useNavigate } from "react-router-dom";
@@ -6,7 +6,7 @@ import { RegisterType } from "../types/Sign";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../server/firebase";
 import { uploadProfile } from "../server/uploadStorage";
-import { getAuthenticInfo } from "../server/firebaseAuth";
+import { getAuthenticInfo, nickNameCheck } from "../server/firebaseAuth";
 
 function Register() {
   //네비게이터
@@ -15,10 +15,34 @@ function Register() {
   const isLogin: string | null = localStorage.getItem("pickit-user");
 
   useEffect(() => {
-    if(isLogin) {
+    if (isLogin) {
       navigate("/");
-    };
-  },[navigate]);
+    }
+  }, [navigate, isLogin]);
+  //닉네임 중복확인용 상태
+  const [nickName, setNickName] = useState<string>("");
+  const [isUnique, setIsUnique] = useState<boolean>(false);
+
+  //닉네임 텍스트 온 체인지 핸들러
+  const nickNameValid = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNickName(event.target.value);
+  };
+  //중복확인 버튼 클릭 핸들러
+  const nickNameClicked = async () => {
+    if (
+      nickName.length >= 2
+        ? !nickName.match(specialLetters)
+          ? true
+          : false
+        : false
+    ) {
+      //중복확인 함수 promise값을 state에 저장
+      await nickNameCheck(nickName).then((response) => setIsUnique(response));
+    }else{
+      setIsUnique(false);
+    }
+    console.log(isUnique);
+  };
   //폼 이벤트 시 로딩 동작
   const [loading, setLoading] = useState<boolean>(false);
   //프로필 이미지 프리뷰 상태 및 관리
@@ -50,29 +74,33 @@ function Register() {
   //폼 이벤트
   const onRegisterValid = async (data: RegisterType) => {
     setLoading(true);
-    //파이어베이스 프로필 이미지 업로드 메소드
-    const profileImg = await uploadProfile(
-      data.registerId,
-      data.registerImg.length <= 0 ? undefined : data.registerImg[0] //fileList에 값이 없으면 undefined를 인자로 전송
-    );
-    //파이어베이스 사용자 등록 메소드
-    await createUserWithEmailAndPassword(
-      auth,
-      data.registerId + "@pick.it",
-      data.registerPw
-    )
-      //DB에 회원정보 추가 저장
-      .then((response) =>
-        getAuthenticInfo(
-          response.user.uid,
-          data.registerId,
-          data.registerNickName,
-          profileImg
-        )
+    //닉네임 중복 확인 통과
+    if (isUnique) {
+      //파이어베이스 프로필 이미지 업로드 메소드
+      const profileImg = await uploadProfile(
+        data.registerId,
+        data.registerImg.length <= 0 ? undefined : data.registerImg[0] //fileList에 값이 없으면 undefined를 인자로 전송
+      );
+      //파이어베이스 사용자 등록 메소드
+      await createUserWithEmailAndPassword(
+        auth,
+        data.registerId + "@pick.it",
+        data.registerPw
       )
-      .catch((error) => console.log(error.message));
-    reset();
-    setPreview(null);
+        //DB에 회원정보 추가 저장
+        .then((response) =>
+          getAuthenticInfo(
+            response.user.uid,
+            data.registerId,
+            data.registerNickName,
+            profileImg
+          )
+        )
+        .catch((error) => console.log(error.message));
+      reset();
+      setPreview(null);
+    }
+
     setLoading(false);
   };
   return (
@@ -106,14 +134,20 @@ function Register() {
                         max: (value: string) =>
                           value.length <= 16 || "*닉네임은 최대 16자입니다.",
                         letter: (value: string) =>
-                          !specialLetters.test(value) || //특수문자 정규표현식 검사
+                          !value.match(specialLetters) || //특수문자 정규표현식 검사
                           "*특수문자는 사용할 수 없습니다.",
                       },
                     })}
+                    onChange={nickNameValid}
                   />
                 </td>
                 <td>
-                  <button className="nickname-check">중복확인</button>
+                  <span
+                    className="nickname-check"
+                    onClick={() => nickNameClicked()}
+                  >
+                    중복확인
+                  </span>
                 </td>
                 <td>
                   <p>
@@ -140,13 +174,13 @@ function Register() {
                         max: (value: string) =>
                           value.length <= 16 || "*아이디는 최대 16자입니다.",
                         specialLetter: (value: string) =>
-                          !specialLetters.test(value) || //특수문자 정규표현식 검사
+                          !value.match(specialLetters) || //특수문자 정규표현식 검사
                           "*특수문자는 사용할 수 없습니다.",
                         englishLetter: (value: string) =>
-                          !englishLetters.test(value) || //영문자 정규표현식 검사
+                          !value.match(englishLetters) || //영문자 정규표현식 검사
                           "*영문, 숫자 이외에는 사용할 수 없습니다.",
                         capitalLetter: (value: string) =>
-                          !capitalLetters.test(value) || //영문대문자 정규표현식 검사
+                          !value.match(capitalLetters) || //영문대문자 정규표현식 검사
                           "*소문자만 사용할 수 있습니다.",
                       },
                     })}

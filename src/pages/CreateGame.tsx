@@ -13,7 +13,7 @@ function CreateGame() {
       alert("로그인 후 이용 가능합니다.");
       navigate("/login");
     };
-  },[navigate]);
+  },[navigate, isLogin]);
 
   //파일 배열 저장
   const [imageList, setImageList] = useState<File[]>([]);

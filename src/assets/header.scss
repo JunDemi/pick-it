@@ -37,7 +37,7 @@
                 display: inline-block;
                 width: 6.25rem;
                 height: 3rem;
-                margin: 0 1rem;
+                margin: 0 1.5rem;
                 text-align: center;
                 border-bottom: 2px solid transparent;
 
@@ -68,7 +68,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            width: 14rem;
+            width: 6.25rem;
             height: 5rem;
 
             .login-menu{
@@ -101,7 +101,7 @@
                 justify-content: center;
                 align-items: center;
 
-                .non-member {
+                .view-profile {
                     width: 6.25rem;
                     height: 100%;
                     display: flex;

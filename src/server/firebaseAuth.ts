@@ -37,17 +37,25 @@ export const signInPickit = async (userId: string, userPw: string) => {
       const errorMessage = error.message;
     });
 };
+
 // 회원가입 닉네임 중복확인
 export const nickNameCheck = async (nickName: string) => {
-  const resultArray: any = [];
-    const nickNameQuery = query(authRef);
-    const result = await getDocs(nickNameQuery); //문서화
-    result.docs.map((data) => {
-      resultArray.push(data.data().userNickName);
-    });
-    //배열안에 입력한 닉네임이 있으면 false
-    return resultArray.includes(nickName) ? false : true;
+    const nickNameQuery = query(authRef, where("userNickName", "==", nickName));
+    const result = await getDocs(nickNameQuery);
+    //중복되지 않으면 닉네임을 반환
+    return result.empty ?  nickName : "중복됨";
 };
+
+
+// 회원가입 아이디 중복확인
+export const userIdCheck = async (userId: string) => {
+    const userIdQuery = query(authRef, where("userId", "==", userId));
+    const result = await getDocs(userIdQuery);
+
+    //중복되지 않으면 ID를 반환
+    return result.empty ?  userId : "중복됨";
+};
+
 // 회원가입 데이터 DB저장. 테이블 이름 = users
 export const getAuthenticInfo = (
   keyId: string,

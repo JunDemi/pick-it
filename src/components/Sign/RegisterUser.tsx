@@ -54,6 +54,7 @@ function RegisterUser() {
 
         nickNameCheck(data.registerNickName).then(response => setCheckedNickName(response));
         userIdCheck(data.registerId).then(response => setCheckeUserId(response));
+
         setFinalData(data);
     }
 
@@ -92,6 +93,7 @@ function RegisterUser() {
                     getAuthenticInfo(
                         response.user.uid,
                         finalData.registerId,
+                        finalData.registerPw,
                         finalData.registerNickName,
                         profileImg
                     )

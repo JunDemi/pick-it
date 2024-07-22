@@ -18,7 +18,9 @@ export interface LoginType {
   loginId: string;
   loginPw: string;
 }
-
+export interface UserFind {
+  inputText: string;
+}
 export interface PopupUserData {
   nickName: string;
   imgUrl: string;

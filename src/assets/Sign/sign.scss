@@ -28,13 +28,9 @@
         }
 
         div {
-            display: flex;
-            gap: 1rem;
             font-size: 12px;
-            color: #777777;
-
-            span {
-                cursor: pointer;
+            a {
+                color: #777777;
             }
         }
     }

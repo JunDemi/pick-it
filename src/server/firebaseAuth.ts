@@ -21,7 +21,8 @@ import {
   setPersistence,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { ref } from "firebase/storage";
+
+
 //auth 세션불러오기
 const auth = getAuth();
 //파이어베이스 DB연동
@@ -45,12 +46,14 @@ export const signInPickit = async (userId: string, userPw: string) => {
 export const getAuthenticInfo = (
   keyId: string,
   userId: string,
+  userPw: string,
   userNickName: string,
   userImg: string
 ) => {
   addDoc(collection(db, "users"), {
     keyId: keyId,
     userId: userId,
+    userPw: userPw,
     userNickName: userNickName,
     userImg: userImg,
   });
@@ -92,3 +95,18 @@ export const userIdCheck = async (userId: string) => {
   return result.empty ? userId : "중복됨";
 };
 
+// 아이디 찾기
+export const findUserId = async (nickName: string) => {
+  const nickNameQuery = query(authRef, where("userNickName", "==", nickName));
+  const result = await getDocs(nickNameQuery);
+
+  return result.empty ? "empty" : String(result.docs[0].data()["userId"]);
+};
+
+// 비밀번호 찾기
+export const findPassword = async (userId: string) => {
+  const userIdQuery = query(authRef, where("userId", "==", userId));
+  const result = await getDocs(userIdQuery);
+  
+  return result.empty ? "empty" : String(result.docs[0].data()["userPw"]);
+};

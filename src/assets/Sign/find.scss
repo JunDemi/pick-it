@@ -1,0 +1,107 @@
+.find-container {
+    display: flex;
+    justify-content: center;
+    gap: 4rem;
+
+
+    .find-form {
+        border: 1px solid #949494;
+        padding: 2rem 3rem;
+
+        h1 {
+            font-family: 'p_bold';
+            font-size: 18px;
+            margin-bottom: 1.5rem;
+        }
+
+        .find-form-section {
+            display: flex;
+            flex-direction: column;
+
+            input[type=text],
+            input[type=password] {
+                font-family: 'p_thin';
+                padding: 1rem 2rem;
+                width: 16rem;
+                border: 0.5px solid #949494;
+
+                &::placeholder {
+                    color: #949494;
+                }
+
+                &:focus {
+                    background-color: #f7f6fd;
+                }
+            }
+
+            button {
+                margin-top: 1rem;
+                cursor: pointer;
+                background-color: #000;
+                color: #fff;
+                border: none;
+                font-family: 'p_bold';
+                padding: 0.5rem 0;
+            }
+        }
+
+        .find-result {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            height: 2rem;
+            font-size: 13px;
+            button{
+                position: absolute;
+                right: 1rem;
+                border: none;
+                background: none;
+                &:focus{
+                    outline: none;
+                }
+            }
+        }
+
+        .getcolor {
+            background-color: #f0f0f0;
+            color: #686868;
+            button {
+                cursor: pointer;
+                svg {
+                    width: 1.5rem;
+                    height: 1.5rem;
+                    stroke: #353535;
+                }
+            }
+        }
+    }
+}
+
+.find-form-bottom {
+    margin: 1.5rem 0 6rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+
+    p {
+        font-family: 'p_bold';
+        font-size: 12px;
+        color: #ababab;
+    }
+
+    a {
+        color: #9a9a9a;
+        font-size: 13px;
+        text-align: center;
+        border: none;
+        font-family: 'p_bold';
+
+        &:hover {
+
+            color: #7d7d7d;
+        }
+    }
+}

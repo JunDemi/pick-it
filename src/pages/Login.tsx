@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../assets/Sign/sign.scss";
 import { useForm } from "react-hook-form";
 import InputField from "../components/Sign/InputField";
@@ -9,6 +9,14 @@ import { signInPickit } from "../server/firebaseAuth";
 function Login() {
   //네비게이터
   const navigate = useNavigate();
+  //로그인 상태 확인
+  const isLogin: string | null = localStorage.getItem("pickit-user");
+
+  useEffect(() => {
+    if(isLogin) {
+      navigate("/");
+    };
+  },[navigate, isLogin]);
   //로그인 실패 상태
   const [loginFailed, setLoginFailed] = useState<boolean>(false);
   //폼 이벤트 시 로딩 동작
@@ -24,7 +32,7 @@ function Login() {
   const onLoginValid = async (data: LoginType) => {
     setLoginFailed(false);
     setLoading(true);
-    
+
     await signInPickit(data.loginId + "@pick.it", data.loginPw)
       .then((response) => navigate("/"))
       .catch((error) => setLoginFailed(true));

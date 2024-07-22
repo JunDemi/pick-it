@@ -68,6 +68,7 @@ function Header() {
                         ? setUserPopupToggle(!userPopupToggle)
                         : "none"
                     }
+
                   >
                     <FaUser />
                     <p>프로필</p>

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { FaUser } from "react-icons/fa";
@@ -9,7 +9,18 @@ function Header() {
   const { userPopupToggle, setUserPopupToggle } = PopupContext();
   //로그인 상태 확인
   const user: string | null = localStorage.getItem("pickit-user");
+
   const location = useLocation();
+
+  /* 로그인 유저 팝업창에서 사용자가 로그아웃하여 로그인 페이지 혹은 회원가입 페이지에
+  접속 시 location 경로 변경을 감지하여 로그인, 회원가입 페이지일시 로그인 유저 팝업창 종료 */
+  useEffect(() => {
+    if (location.pathname === "/login" || location.pathname === "/register") {
+      if (setUserPopupToggle) {
+        setUserPopupToggle(false);
+      }
+    }
+  }, [location.pathname]);
 
   return (
     <>
@@ -68,7 +79,6 @@ function Header() {
                         ? setUserPopupToggle(!userPopupToggle)
                         : "none"
                     }
-
                   >
                     <FaUser />
                     <p>프로필</p>

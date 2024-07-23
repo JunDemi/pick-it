@@ -6,6 +6,7 @@ import { auth } from "../../server/firebase";
 import { PopupUserData } from "../../types/Sign";
 import { PopupContext, ToggleContextType } from "../../context/PopupContext";
 import { motion } from "framer-motion";
+import { IoClose } from "react-icons/io5";
 
 interface PropsUserData {
   userData: PopupUserData;
@@ -37,9 +38,9 @@ const UserPopup = ({ userData }: PropsUserData) => {
       y: 0,
 
       transition: {
-        staggerChildren: 0.5,
-        delayChildren: 1,
-        duration: 1,
+        staggerChildren: 0.3,
+        delayChildren: 0.3,
+        duration: 0.5,
       },
     },
   };
@@ -62,6 +63,14 @@ const UserPopup = ({ userData }: PropsUserData) => {
       animate='animate'
     >
       <div className='userPopup-wrap'>
+        <div
+          className='close-popup'
+          onClick={() =>
+            setUserPopupToggle ? setUserPopupToggle(false) : "none"
+          }
+        >
+          <IoClose />
+        </div>
         <motion.div className='user-profile' variants={itemMotion}>
           <div className='profile-img'>
             {userData.imgUrl === "default" ? (
@@ -93,19 +102,6 @@ const UserPopup = ({ userData }: PropsUserData) => {
           <li>
             <button type='button' className='menu' value='마이페이지'>
               마이페이지
-            </button>
-          </li>
-
-          <li>
-            <button
-              type='button'
-              className='menu'
-              value='페이지로 돌아가기'
-              onClick={() =>
-                setUserPopupToggle ? setUserPopupToggle(false) : "none"
-              }
-            >
-              페이지로 돌아가기
             </button>
           </li>
         </motion.ul>

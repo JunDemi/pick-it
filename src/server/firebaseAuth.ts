@@ -33,13 +33,6 @@ export const signInPickit = async (userId: string, userPw: string) => {
   await setPersistence(auth, browserLocalPersistence) //로그인 정보들을 브라우저 로컬에 등록
     .then(() => {
       return signInWithEmailAndPassword(auth, userId, userPw);
-    })
-    .catch((error) => {
-      // Handle Errors here.
-      const errorCode = error.code;
-      const errorMessage = error.message;
-
-      console.log(errorCode, errorMessage);
     });
 };
 // 회원가입 데이터 DB저장. 테이블 이름 = users

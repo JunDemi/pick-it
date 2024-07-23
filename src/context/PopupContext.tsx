@@ -3,6 +3,7 @@ import React, {
   createContext,
   useContext,
   SetStateAction,
+  useEffect,
 } from "react";
 
 export interface ToggleContextType {
@@ -14,6 +15,7 @@ const ToggleContext = createContext<ToggleContextType>({});
 
 const PopupProvider = ({ children }: any) => {
   const [userPopupToggle, setUserPopupToggle] = useState<boolean>(false);
+
   return (
     <ToggleContext.Provider value={{ userPopupToggle, setUserPopupToggle }}>
       {children}

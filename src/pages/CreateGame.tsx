@@ -3,6 +3,7 @@ import "../assets/CreateGame/createGame.scss";
 import { useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import StepContainer from "../components/CreateGame/StepContainer";
+import { useAppSelector } from "../store/hooks/hooks";
 
 const boxVar = {
   entry: {
@@ -35,38 +36,33 @@ function CreateGame() {
     if (!isLogin) {
       alert("로그인 후 이용 가능합니다.");
       navigate("/login");
-    };
+    }
   }, [navigate, isLogin]);
 
-  //현재 단계
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  //redux에 저장된 step page number selector
+  const currentStepPage = useAppSelector(
+    (state) => state.createWorldcupReducer.pageStep
+  );
 
   return (
-    <div className="create-game-container">
-      <AnimatePresence mode="sync">
+    <div className='create-game-container'>
+      <AnimatePresence mode='sync'>
         {[1, 2, 3].map(
           (number) =>
-            number === currentPage && (
+            number === currentStepPage && (
               <motion.div
-                className="create-game-steps-container"
+                className='create-game-steps-container'
                 key={number}
                 variants={boxVar}
-                initial="entry"
-                animate="center"
-                exit="hide"
+                initial='entry'
+                animate='center'
+                exit='hide'
               >
                 <StepContainer pageProp={number} />
-
               </motion.div>
             )
         )}
       </AnimatePresence>
-
-      {currentPage < 3 &&
-        <button onClick={() => setCurrentPage(prev => prev + 1)}>
-          Clickme
-        </button>
-      }
     </div>
   );
 }

@@ -13,11 +13,9 @@ function Step1() {
     handleSubmit,
     register,
     formState: { errors },
-    reset,
   } = useForm<step1DataType>({
     mode: "onSubmit",
   });
-
   /* step1 입력 데이터 redux 저장 */
   const step1Valid = (data: step1DataType) => {
     /* step1 입력 데이터 유효성 통과 시 
@@ -28,7 +26,6 @@ function Step1() {
     다음 step2로 가기 위한 조건문 검사 후 step2 이동 */
     dispatch(scrollStep2(2));
   };
-
   return (
     <div className='create-game-step12'>
       <h3 className='steps-page-number'>1 / 3</h3>
@@ -52,6 +49,7 @@ function Step1() {
             },
           })}
         />
+        <p className="step-error-message">{errors.worldCupTitle && errors.worldCupTitle.message}</p>
         <textarea
           autoComplete='off'
           placeholder='월드컵을 설명하는 내용을 입력해주세요.'
@@ -64,7 +62,7 @@ function Step1() {
             },
           })}
         />
-        {/* 해당 버튼 클릭 시 전역 상태로 페이지 넘버 전환 되게 온클릭 함수 만들어야 함*/}
+        <p className="step-error-message">{errors.worldcupDescription && errors.worldcupDescription.message}</p>
         <button className='next-step-button' type='submit'>
           다음 단계로
         </button>

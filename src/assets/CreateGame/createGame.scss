@@ -78,7 +78,11 @@
                 display: flex;
                 flex-direction: column;
                 margin-top: 3rem;
-                gap: 1rem;
+                gap: 0.5rem;
+                .step-error-message{
+                    font-size: 13px;
+                    color: #f48181;
+                }
             }
             .next-step-button {
                 width: 22rem;
@@ -89,7 +93,7 @@
                 font-family: 'p_bold';
                 padding: 0.5rem 0;
         
-                margin-top: 3rem;
+                margin-top: 2rem;
             }
             .category-input{
                 display: flex;

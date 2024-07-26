@@ -29,7 +29,6 @@
         }
     
         .steps-page-desc {
-            font-family: 'p_bold';
             font-size: 16px;
         }
     
@@ -66,8 +65,16 @@
                     background-color: #f7f6fd;
                 }
             }
-    
-            .step1-form {
+            
+            select{
+                color: #949494;
+                font-size: 13px;
+                font-family: 'p_bold';
+                padding: 0.5rem 1rem;
+                border: 0.5px solid #949494;
+            }
+
+            .step12-form {
                 display: flex;
                 flex-direction: column;
                 margin-top: 3rem;
@@ -83,6 +90,19 @@
                 padding: 0.5rem 0;
         
                 margin-top: 3rem;
+            }
+            .category-input{
+                display: flex;
+                align-items: center;
+                font-size: 13px;
+                font-family: 'p_bold';
+                padding: 0.5rem 1rem;
+                width: 20rem;
+                border: 0.5px solid #949494;
+                svg{
+                    width: 1rem;
+                    height: 1rem;
+                }
             }
         }
     }

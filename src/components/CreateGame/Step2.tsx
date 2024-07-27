@@ -10,8 +10,7 @@ function Step2() {
   //select 토글 상태
   const [selectToggle, setSelectToggle] = useState<boolean>(false);
   //토너먼트 범위 select option value상태
-  const [optionValue, setOptionValue] =
-    useState<number>();
+  const [optionValue, setOptionValue] = useState<number>();
   //리액트 훅 폼
   const {
     handleSubmit,

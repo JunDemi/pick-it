@@ -3,13 +3,7 @@ export interface CreateWorldCup {
   worldcupDescription: string;
   tournamentRange: number;
   category: string[];
-  images: imageType[];
   pageStep: 1 | 2 | 3;
-}
-
-interface imageType {
-  image: File;
-  name: string;
 }
 
 export interface step1DataType {

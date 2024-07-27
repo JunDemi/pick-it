@@ -58,7 +58,7 @@ function CreateGame() {
                 animate='center'
                 exit='hide'
               >
-                <StepContainer pageProp={number} />
+                <StepContainer pageProp={currentStepPage} />
               </motion.div>
             )
         )}

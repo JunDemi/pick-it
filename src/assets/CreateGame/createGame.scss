@@ -66,12 +66,41 @@
                 }
             }
             
-            select{
+            .select-tournament{
                 color: #949494;
                 font-size: 13px;
                 font-family: 'p_bold';
                 padding: 0.5rem 1rem;
                 border: 0.5px solid #949494;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                position: relative;
+                svg{
+                    cursor: pointer;
+                    width: 1rem;
+                    height: 1rem;
+                }
+                .tournament-options{
+                    position: absolute;
+                    left: -0.5px;
+                    width: calc(100% + 1px);
+                    top: 1px;
+                    margin-top: 2rem;
+                    display: flex;
+                    border: 0.5px solid #949494;
+                    border-top: none;
+                    flex-direction: column;
+                    span{
+                        padding: 0.5rem 1rem;
+                        cursor: pointer;
+                        background-color: black;
+                        color: white;
+                        &:hover{
+                            background-color: #313131;
+                        }
+                    }
+                }
             }
 
             .step12-form {

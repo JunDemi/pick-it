@@ -29,7 +29,7 @@ function Step3() {
       if (middleList.length > createWorldcupData.tournamentRange) {
         alert("이미지 개수가 초과되었습니다.");
       } else {
-        setImageList(middleList);
+        setImageList(middleList.slice(0, createWorldcupData.tournamentRange));
       }
     };
   }
@@ -45,17 +45,19 @@ function Step3() {
           //파일 크기가 2MB 이상일 때 다음 루프로 스킵
           continue;
         } else {
+
           middleList.push(fileList[i]); //중간자 배열에 삽입. 반복문에 setState를 하면 렌더링이 반복되기 때문
         }
       }
       if (middleList.length > createWorldcupData.tournamentRange) {
         alert("이미지 개수가 초과되었습니다.");
       } else {
-        setImageList(middleList);
+        setImageList(middleList.slice(0, createWorldcupData.tournamentRange));
       }
     }
   };
   console.log(imageList);
+
   return (
     <>
       <div className="create-game-step3">

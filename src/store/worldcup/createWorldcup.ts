@@ -6,8 +6,7 @@ const initialState: CreateWorldCup = {
   worldcupDescription: "",
   tournamentRange: 0,
   category: [],
-  images: [],
-  pageStep: 1,
+  pageStep: 3,
 };
 
 const createWorldcupSlice = createSlice({
@@ -36,12 +35,9 @@ const createWorldcupSlice = createSlice({
         state.pageStep = action.payload;
       }
     },
-    insertImage: (state, action) => {
-      state.images.push(action.payload);
-    },
   },
 });
 
 export default createWorldcupSlice.reducer;
-export const { insertImage, updateStep1, scrollStep2, updateStep2, scrollStep3 } =
+export const { updateStep1, scrollStep2, updateStep2, scrollStep3 } =
   createWorldcupSlice.actions;

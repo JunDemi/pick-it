@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import "../assets/CreateGame/createGame.scss";
 import { useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
@@ -43,7 +43,6 @@ function CreateGame() {
   const currentStepPage = useAppSelector(
     (state) => state.createWorldcupReducer.pageStep
   );
-
   return (
     <div className='create-game-container'>
       <AnimatePresence mode='sync'>

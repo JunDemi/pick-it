@@ -1,7 +1,13 @@
+import { motion } from "framer-motion";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
 function Step2() {
+  //select 토글 상탸
+  const [selectToggle, setSelectToggle] = useState<boolean>(false);
+  //select option value상태
+  const [optionValue, setOptionValue] =
+    useState<string>("토너먼트를 선택해주세요.");
   //리액트 훅 폼
   const {
     handleSubmit,
@@ -15,8 +21,8 @@ function Step2() {
   const [categoryArray, setCategoryArray] = useState<string[]>([]);
 
   //카테고리 등록 핸들러
-  const handleCategory = (data: React.ChangeEvent<HTMLInputElement>) => {
-    setCategory(data.target.value);
+  const handleCategory = (data: any) => {
+    console.log(data);
   };
   return (
     <div className="create-game-step12">
@@ -26,14 +32,46 @@ function Step2() {
         월드컵 토너먼트 범위를 선택하고 카테고리를 3개 이하로 추가해주세요.
       </p>
 
-      <form className="step12-form">
-        <select defaultValue="">
-          <option value="" disabled>
-            토너먼트를 선택해주세요.
-          </option>
-          <option value="8">8강</option>
-          <option value="16">16강</option>
-        </select>
+      <form className="step12-form" onSubmit={handleSubmit(handleCategory)}>
+        <div className="select-tournament">
+          {optionValue}
+          <motion.svg
+            onClick={() => setSelectToggle((prev) => !prev)}
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+            animate={selectToggle ? { rotateZ: 180 } : {}}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="m19.5 8.25-7.5 7.5-7.5-7.5"
+            />
+          </motion.svg>
+          {selectToggle && (
+            <div className="tournament-options">
+              <span
+                onClick={() => {
+                  setOptionValue("8강");
+                  setSelectToggle(false);
+                }}
+              >
+                8강
+              </span>
+              <span
+                onClick={() => {
+                  setOptionValue("16강");
+                  setSelectToggle(false);
+                }}
+              >
+                16강
+              </span>
+            </div>
+          )}
+        </div>
+
         <div className="category-input">
           <input
             type="text"
@@ -56,7 +94,9 @@ function Step2() {
           </svg>
         </div>
         {/* 해당 버튼 클릭 시 전역 상태로 페이지 넘버 전환 되게 온클릭 함수 만들어야 함*/}
-        <button className="next-step-button">다음 단계로</button>
+        <button className="next-step-button" type="submit">
+          다음 단계로
+        </button>
       </form>
     </div>
   );

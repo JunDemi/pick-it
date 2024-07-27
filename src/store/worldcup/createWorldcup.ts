@@ -25,6 +25,17 @@ const createWorldcupSlice = createSlice({
         state.pageStep = action.payload;
       }
     },
+    // step2 클라이언트에서 사용자 입력값을 넘겨받은 후 토너먼트, 카테고리 배열 업데이트
+    updateStep2: (state, action) => {
+      state.tournamentRange = action.payload.tournamentRange;
+      state.category = action.payload.category;
+    },
+    // step2 입력값의 올바른 저장을 확인 후 다음 pageStep값을 3으로 증가시키는 함수
+    scrollStep3: (state, action) => {
+      if (state.tournamentRange > 0 && state.category.length > 0) {
+        state.pageStep = action.payload;
+      }
+    },
     insertImage: (state, action) => {
       state.images.push(action.payload);
     },
@@ -32,5 +43,5 @@ const createWorldcupSlice = createSlice({
 });
 
 export default createWorldcupSlice.reducer;
-export const { insertImage, updateStep1, scrollStep2 } =
+export const { insertImage, updateStep1, scrollStep2, updateStep2, scrollStep3 } =
   createWorldcupSlice.actions;

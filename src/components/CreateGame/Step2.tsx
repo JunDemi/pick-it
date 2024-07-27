@@ -1,13 +1,17 @@
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useAppDispatch } from "../../store/hooks/hooks";
+import { scrollStep3, updateStep2 } from "../../store/worldcup/createWorldcup";
 
 function Step2() {
-  //select 토글 상탸
+  //redux dispatch 요청 메소드
+  const dispatch = useAppDispatch();
+  //select 토글 상태
   const [selectToggle, setSelectToggle] = useState<boolean>(false);
-  //select option value상태
+  //토너먼트 범위 select option value상태
   const [optionValue, setOptionValue] =
-    useState<string>("토너먼트를 선택해주세요.");
+    useState<number>();
   //리액트 훅 폼
   const {
     handleSubmit,
@@ -21,12 +25,29 @@ function Step2() {
   const handleCategory = (data: { category: string }) => {
     //카테고리 최대 개수 제한
     if (categoryArray.length < 3) {
-      setCategoryArray([...categoryArray, data.category]);
+      setCategoryArray([...categoryArray, data.category]); //배열 state의 setState
       reset();
     } else {
       alert("카테고리는 최대 3개까지만 입력 가능합니다.");
     }
   };
+  //다음 단계로 버튼 클릭 이벤트
+  const step2Valid = () => {
+    //토너먼트가 선택되고 카테고리 배열 값이 존재할 때
+    if(optionValue && categoryArray.length > 0){
+      const sendData = { //Redux에 전송할 데이터 값을 하나의 객체로 정리
+        tournamentRange: optionValue,
+        category: categoryArray
+      };
+      //redux의 updateStep1 action 함수에 payload값으로 데이터 전송
+      dispatch(updateStep2(sendData));
+     /* updateStep2 입력 데이터가 성공적으로 redux 전역 상태값에 저장 되었을 시,
+    다음 step3로 가기 위한 조건문 검사 후 step3 이동 */
+    dispatch(scrollStep3(3));
+    }else{
+      alert("토너먼트가 선택되지 않았습니다.");
+    }
+  }
   return (
     <div className="create-game-step12">
       <h3 className="steps-page-number">2 / 3</h3>
@@ -37,7 +58,7 @@ function Step2() {
 
       <div className="step12-form">
         <div className="select-tournament">
-          {optionValue}
+          {optionValue ? optionValue + "강" : "토너먼트를 선택해주세요."}
           <motion.svg
             onClick={() => setSelectToggle((prev) => !prev)}
             xmlns="http://www.w3.org/2000/svg"
@@ -57,7 +78,7 @@ function Step2() {
             <div className="tournament-options">
               <span
                 onClick={() => {
-                  setOptionValue("8강");
+                  setOptionValue(8);
                   setSelectToggle(false);
                 }}
               >
@@ -65,7 +86,7 @@ function Step2() {
               </span>
               <span
                 onClick={() => {
-                  setOptionValue("16강");
+                  setOptionValue(16);
                   setSelectToggle(false);
                 }}
               >
@@ -103,7 +124,7 @@ function Step2() {
             </span>
           ))}
         </div>
-        <button className="next-step-button">
+        <button className="next-step-button" onClick={step2Valid}>
           다음 단계로
         </button>
       </div>

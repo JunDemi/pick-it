@@ -2,7 +2,7 @@ export interface CreateWorldCup {
   worldCupTitle: string;
   worldcupDescription: string;
   tournamentRange: number;
-  category: [];
+  category: string[];
   images: imageType[];
   pageStep: 1 | 2 | 3;
 }

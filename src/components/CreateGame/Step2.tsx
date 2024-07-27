@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 function Step2() {
@@ -14,15 +14,18 @@ function Step2() {
     register,
     formState: { errors },
     reset,
-  } = useForm({ mode: "onSubmit" });
-  //카테고리 텍스트 하나를 담는 상태
-  const [category, setCategory] = useState<string>("");
+  } = useForm<{ category: string }>({ mode: "onSubmit" });
   //설정된 카테고리들을 담는 배열
   const [categoryArray, setCategoryArray] = useState<string[]>([]);
-
   //카테고리 등록 핸들러
-  const handleCategory = (data: any) => {
-    console.log(data);
+  const handleCategory = (data: { category: string }) => {
+    //카테고리 최대 개수 제한
+    if (categoryArray.length < 3) {
+      setCategoryArray([...categoryArray, data.category]);
+      reset();
+    } else {
+      alert("카테고리는 최대 3개까지만 입력 가능합니다.");
+    }
   };
   return (
     <div className="create-game-step12">
@@ -32,7 +35,7 @@ function Step2() {
         월드컵 토너먼트 범위를 선택하고 카테고리를 3개 이하로 추가해주세요.
       </p>
 
-      <form className="step12-form" onSubmit={handleSubmit(handleCategory)}>
+      <div className="step12-form">
         <div className="select-tournament">
           {optionValue}
           <motion.svg
@@ -71,33 +74,39 @@ function Step2() {
             </div>
           )}
         </div>
-
-        <div className="category-input">
+        <form onSubmit={handleSubmit(handleCategory)}>
           <input
+            className="category-input"
             type="text"
             autoComplete="off"
-            placeholder="카테고리를 4글자 이하로 입력해주세요."
-            onChange={handleCategory}
+            placeholder="카테고리를 4글자 이하로 입력해주세요. (Enter 키 입력)"
+            {...register("category", {
+              required: true,
+              validate: {
+                max: (value: string) => value.length < 5 || "카테고리는 최대 4글자로 설정해주세요."
+              }
+            })}
           />
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="m7.49 12-3.75 3.75m0 0 3.75 3.75m-3.75-3.75h16.5V4.499"
-            />
-          </svg>
+          <p className="step-error-message">{errors.category && errors.category.message}</p>
+        </form>
+        <div className="category-list">
+          {categoryArray.map((data, number) => (
+            <span key={number}>
+              {data}
+              <svg 
+              onClick={() => {
+                setCategoryArray((items) => items.filter((_, index) => index !== number)); //Array[number]값에 있는 인덱스를 제거
+              }}
+              xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="#000">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+              </svg>
+            </span>
+          ))}
         </div>
-        {/* 해당 버튼 클릭 시 전역 상태로 페이지 넘버 전환 되게 온클릭 함수 만들어야 함*/}
-        <button className="next-step-button" type="submit">
+        <button className="next-step-button">
           다음 단계로
         </button>
-      </form>
+      </div>
     </div>
   );
 }

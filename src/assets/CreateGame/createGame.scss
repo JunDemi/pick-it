@@ -1,37 +1,30 @@
-.myfile {
-    display: none;
-}
-
 .create-game-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
-    max-width: 40rem;
     margin: 0 auto;
     background-color: red;
 
     .create-game-steps-container{
         position: absolute;
         top: 2rem;
-        
         .steps-page-number {
             color: #777777;
             font-family: 'p_bold';
             font-size: 18px;
         }
-    
         .steps-page-title {
             font-family: 'p_bold';
             font-size: 30px;
             letter-spacing: 3px;
             margin: 2rem 0;
         }
-    
         .steps-page-desc {
             font-size: 16px;
         }
-    
+
+
         .create-game-step12 {
             display: flex;
             flex-direction: column;
@@ -145,6 +138,74 @@
                 padding: 0.5rem 0;
         
                 margin-top: 2rem;
+            }
+        }
+
+        .create-game-step3 {
+            display: flex;
+            justify-content: space-between;
+            gap: 15rem;
+            .step3-left{
+                p{
+                    line-height: 2rem;
+                }
+            }
+
+            .step3-right{
+                .images-upload-container{
+                    cursor: pointer;
+                    input[type=file]{
+                        width: 0;
+                    }
+                    .label-content{
+                        padding: 5rem 8rem;
+                        border: 3px solid #000;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                        gap: 2.5rem;
+                        font-family: 'p_bold';
+                        font-size: 12px;
+                        svg{
+                            width: 3rem;
+                            height: 3rem;
+                        }
+                    }
+                }
+                .imagelist-paging{
+                    margin: 1rem 0 1.5rem 0;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    span{
+                        font-size: 12px;
+                        font-family: 'p_bold';
+                    }
+                    div{
+                        display: flex;
+                        gap: 1.5rem;
+                        button{
+                            border: none;
+                            cursor: pointer;
+                            background: none;
+                            svg{
+                                width: 1.5rem;
+                                height: 1.5rem;
+                            }
+                        }
+                    }
+                }
+                .imagelist-preview{
+                    display: flex;
+                    gap: 1rem;
+                    img{
+                        border: 1px solid;
+                        width: 6rem;
+                        height: 4rem;
+                        object-fit: cover;
+                    }
+                }
             }
         }
     }

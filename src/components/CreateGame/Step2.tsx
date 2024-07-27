@@ -44,7 +44,7 @@ function Step2() {
     다음 step3로 가기 위한 조건문 검사 후 step3 이동 */
     dispatch(scrollStep3(3));
     }else{
-      alert("토너먼트가 선택되지 않았습니다.");
+      alert("토너먼트 혹은 카테고리가 입력되지 않았습니다.");
     }
   }
   return (

@@ -6,11 +6,6 @@ export interface CreateWorldCup {
   pageStep: 1 | 2 | 3;
 }
 
-interface imageType {
-  image: File;
-  name: string;
-}
-
 export interface step1DataType {
   worldCupTitle: string;
   worldcupDescription: string;

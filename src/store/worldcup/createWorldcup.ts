@@ -6,7 +6,7 @@ const initialState: CreateWorldCup = {
   worldcupDescription: "",
   tournamentRange: 0,
   category: [],
-  pageStep: 3,
+  pageStep: 1,
 };
 
 const createWorldcupSlice = createSlice({

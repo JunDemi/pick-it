@@ -21,17 +21,22 @@ function Step3() {
     const fileList = event.dataTransfer.files;
     for (let i = 0; i < fileList.length; i++) {
       if (fileList[i].size >= 2097152) {
-        //파일 크기가 2MB 이상일 때 다음 루프로 스킵
-        continue;
+        //파일 크기가 2MB 이상일 때 리턴
+        return alert("2MB 미만으로 업로드 해주세요.");
       } else {
         middleList.push(fileList[i]); //중간자 배열에 삽입. 반복문에 setState를 하면 렌더링이 반복되기 때문
       }
-      if (middleList.length > createWorldcupData.tournamentRange) {
-        alert("이미지 개수가 초과되었습니다.");
-      } else {
-        setImageList(middleList.slice(0, createWorldcupData.tournamentRange));
-      }
     };
+    if (middleList.length > createWorldcupData.tournamentRange) {
+      return alert("이미지 개수가 초과되었습니다.");
+    } else {
+      setImageList(middleList.slice(0, createWorldcupData.tournamentRange));
+      //업로드 한 이미지들의 URL을 문자열로 변환하여 상수에 저장
+      const previewList = middleList.map((file) => { 
+        return URL.createObjectURL(file) as string;
+      });
+      setPreview(previewList);
+    }
   }
   //일반 클릭 이벤트
   const handleFile = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,22 +47,22 @@ function Step3() {
     if (fileList) {
       for (let i = 0; i < fileList.length; i++) {
         if (fileList[i].size >= 2097152) {
-          //파일 크기가 2MB 이상일 때 다음 루프로 스킵
-          continue;
+          //파일 크기가 2MB 이상일 때 리턴
+          return alert("2MB 미만으로 업로드 해주세요.");
         } else {
-
           middleList.push(fileList[i]); //중간자 배열에 삽입. 반복문에 setState를 하면 렌더링이 반복되기 때문
         }
       }
       if (middleList.length > createWorldcupData.tournamentRange) {
-        alert("이미지 개수가 초과되었습니다.");
+        return alert("이미지 개수가 초과되었습니다.");
       } else {
         setImageList(middleList.slice(0, createWorldcupData.tournamentRange));
+      
       }
     }
   };
-  console.log(imageList);
 
+  
   return (
     <>
       <div className="create-game-step3">
@@ -114,7 +119,7 @@ function Step3() {
           </div>
 
           <div className="imagelist-preview">
-            {preview.length > 0 && preview.slice(0, 4).map((file, number) => (
+            {preview.slice(0, 4).map((file, number) => (
               <img
                 key={number}
                 src={file}

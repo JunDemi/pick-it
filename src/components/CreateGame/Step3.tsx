@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useAppSelector } from "../../store/hooks/hooks";
+import Step3Modify from "./Step3Modify";
 
 function Step3() {
   //redux에 저장된 월드컵 생성 정보 셀렉터
@@ -76,7 +77,16 @@ function Step3() {
       }
     }
   };
-
+  //이미지 수정하기 버튼 클릭 시 등장하는 엘리먼트
+  const modifyRef = useRef(null);
+  const [modify, setModify] = useState<boolean>(false);
+  //이미지 수정하기 버튼 클릭 이벤트
+  const gotoModify = (modifyRef: React.MutableRefObject<null | any>) => {
+    setModify(true);
+    setTimeout(() => {
+      modifyRef.current.scrollIntoView({ behavior: 'smooth' });
+    }, 300)
+  };
   return (
     <>
       <div className="create-game-step3">
@@ -96,10 +106,11 @@ function Step3() {
               //토너먼트 범위만큼 이미지가 등록되면 등장
               imageList.length === createWorldcupData.tournamentRange &&
               <motion.button
+                onClick={() => gotoModify(modifyRef)}
                 disabled={imageList.length !== createWorldcupData.tournamentRange}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1, transition: { duration: 0.8 } }}
-                exit={{ opacity: 0, transition: { duration: 0.8 } }}
+                exit={{ opacity: 0, transition: { duration: 0.2 } }}
               >
                 이미지 이름 수정하기
               </motion.button>
@@ -120,30 +131,25 @@ function Step3() {
               multiple
               onChange={handleFile}
             />
-            <div className={(isDragOver ?  "dragged" : "leaved") + " label-content"}>
-              <motion.svg 
-              animate={isDragOver ? {y: -10, scale: 1.2, rotateZ: 5} : {}}
-              viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <div className={(isDragOver ? "dragged" : "leaved") + " label-content"}>
+              <motion.svg
+                animate={isDragOver ? { y: -10, scale: 1.2, rotateZ: 5 } : {}}
+                viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path fillRule="evenodd" clipRule="evenodd" d="M75 70C75 72.76 72.76 75 70 75H57.08L38.66 56.3375L60 34.9975L75 49.9975V70ZM10 75C7.24 75 5 72.76 5 70V67.6525L24.8625 49.8625L50.0025 75H10ZM20 10C25.5225 10 30 14.4775 30 20C30 25.5225 25.5225 30 20 30C14.4775 30 10 25.5225 10 20C10 14.4775 14.4775 10 20 10ZM70 0H10C4.4775 0 0 4.4775 0 10V70C0 75.5225 4.4775 80 10 80H70C75.5225 80 80 75.5225 80 70V10C80 4.4775 75.5225 0 70 0ZM20 25C22.76 25 25 22.76 25 20C25 17.24 22.76 15 20 15C17.24 15 15 17.24 15 20C15 22.76 17.24 25 20 25Z" fill={isDragOver ? "#8d8d8d" : "#000"} />
               </motion.svg>
-                {isDragOver ? "이미지를 놓아주세요." : "여기에 이미지를 업로드하세요."}
+              {isDragOver ? "이미지를 놓아주세요." : "여기에 이미지를 업로드하세요."}
             </div>
           </label>
 
           <div className="imagelist-paging">
             <span>{imageList.length + " / " + createWorldcupData.tournamentRange}</span>
-            <div>
-              <button>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#000">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
-                </svg>
-              </button>
-              <button>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#000">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-                </svg>
-              </button>
-            </div>
+            <button onClick={
+              () => {
+                setImageList([]);
+                setPreview([]);
+                setModify(false);
+              }
+            }>모두 지우기</button>
           </div>
           {preview.length > 0 &&
             <div className={(preview.length < 4 && "scroll-hide") + " imagelist-preview"}>
@@ -160,6 +166,7 @@ function Step3() {
                         //Array[number]값에 있는 인덱스를 제거}
                         setImageList((items) => items.filter((_, index) => index !== number));
                         setPreview((items) => items.filter((_, index) => index !== number));
+                        setModify(false);
                       }
                       }
                       xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5">
@@ -172,6 +179,14 @@ function Step3() {
           }
         </div>
       </div>
+
+      {modify && imageList.length === createWorldcupData.tournamentRange &&
+        <div 
+        className="step3-image-modify"
+         ref={modifyRef}>
+          <Step3Modify prop={imageList}/>
+        </div>
+      }
     </>
   );
 }

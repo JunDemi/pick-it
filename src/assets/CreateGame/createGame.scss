@@ -5,7 +5,6 @@
     position: relative;
     margin: 0 auto;
     background-color: red;
-
     .create-game-steps-container {
         position: absolute;
         top: 2rem;
@@ -218,27 +217,19 @@
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
-
-                    span {
-                        font-size: 12px;
-                        font-family: 'p_bold';
-                    }
-
-                    div {
-                        display: flex;
-                        gap: 1.5rem;
-
+                    font-size: 12px;
+                    font-family: 'p_bold';
                         button {
                             border: none;
                             cursor: pointer;
-                            background: none;
-
-                            svg {
-                                width: 1.5rem;
-                                height: 1.5rem;
+                            background-color: #000;
+                            color: white;
+                            font-family: 'p_bold';
+                            padding: 0.3rem 1rem;
+                            &:active{
+                                background-color: #686868;
                             }
                         }
-                    }
                 }
                 .scroll-hide {
                     &::-webkit-scrollbar {
@@ -285,6 +276,17 @@
                         }
                     }
                 }
+            }
+        }
+        .step3-image-modify{
+            margin-top: 20rem;
+            padding-top: 5rem;
+            .modify-head{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                font-size: 13px;
+                font-family: 'p_bold';
             }
         }
     }

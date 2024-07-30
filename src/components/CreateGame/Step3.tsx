@@ -184,7 +184,7 @@ function Step3() {
         <div 
         className="step3-image-modify"
          ref={modifyRef}>
-          <Step3Modify prop={imageList}/>
+          <Step3Modify imageList={imageList}/>
         </div>
       }
     </>

@@ -5,6 +5,7 @@
     position: relative;
     margin: 0 auto;
     background-color: red;
+
     .create-game-steps-container {
         position: absolute;
         top: 2rem;
@@ -163,10 +164,12 @@
                 flex-direction: column;
                 justify-content: space-between;
                 align-items: flex-start;
+
                 p {
                     line-height: 2rem;
                 }
-                button{
+
+                button {
                     cursor: pointer;
                     font-size: 13px;
                     color: #fff;
@@ -187,14 +190,17 @@
                     input[type=file] {
                         width: 0;
                     }
-                    .dragged{
+
+                    .dragged {
                         border: 3px solid #8d8d8d;
                         color: #8d8d8d;
                     }
-                    .leaved{
+
+                    .leaved {
                         border: 3px solid #000;
                         color: #000;
                     }
+
                     .label-content {
                         padding: 5rem 0;
                         display: flex;
@@ -219,58 +225,66 @@
                     align-items: center;
                     font-size: 12px;
                     font-family: 'p_bold';
-                        button {
-                            border: none;
-                            cursor: pointer;
-                            background-color: #000;
-                            color: white;
-                            font-family: 'p_bold';
-                            padding: 0.3rem 1rem;
-                            &:active{
-                                background-color: #686868;
-                            }
+
+                    button {
+                        border: none;
+                        cursor: pointer;
+                        background-color: #000;
+                        color: white;
+                        font-family: 'p_bold';
+                        padding: 0.3rem 1rem;
+
+                        &:active {
+                            background-color: #686868;
                         }
-                }
-                .scroll-hide {
-                    &::-webkit-scrollbar {
-                       display: none;
                     }
                 }
+
+                .scroll-hide {
+                    &::-webkit-scrollbar {
+                        display: none;
+                    }
+                }
+
                 .imagelist-preview {
                     border: 3px solid #000;
                     display: flex;
                     overflow-x: scroll;
                     padding: 10px;
                     gap: 10px;
+
                     div {
                         position: relative;
                         display: flex;
                         justify-content: center;
                         align-items: center;
+
                         img {
                             width: 7rem;
                             height: 5rem;
                             object-fit: cover;
                         }
-                        button{
+
+                        button {
                             border: none;
                             background: none;
                             display: none;
                             cursor: pointer;
                             position: absolute;
                             padding: 0;
-                            top:2px;
-                            right:2px;
-                        svg{
-                            width: 23px;
-                            height: 23px;
-                            fill: rgba(255, 255, 255, 0.7);
-                            stroke: #000;
+                            top: 2px;
+                            right: 2px;
+
+                            svg {
+                                width: 23px;
+                                height: 23px;
+                                fill: rgba(255, 255, 255, 0.7);
+                                stroke: #000;
                             }
                         }
-                       
-                        &:hover{
-                            button{
+
+                        &:hover {
+                            button {
                                 display: block;
                             }
                         }
@@ -278,15 +292,96 @@
                 }
             }
         }
-        .step3-image-modify{
-            margin-top: 20rem;
-            padding-top: 5rem;
-            .modify-head{
+
+        .step3-image-modify {
+            margin-top: 15rem;
+            padding-top: 10rem;
+
+            .modify-head {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
                 font-size: 13px;
                 font-family: 'p_bold';
+
+                button {
+                    cursor: pointer;
+                    background-color: #007BC7;
+                    border: none;
+                    padding: 0.5rem 1rem;
+                    color: #fff;
+                    font-family: 'p_bold';
+
+                    &:active {
+                        background-color: #005b94;
+                    }
+                }
+            }
+
+            .modify-section {
+                margin-top: 3rem;
+                width: 100%;
+                text-align: center;
+                font-size: 13px;
+                font-family: 'p_bold';
+
+                thead {
+                    background-color: #000;
+                    color: #fff;
+
+                    td {
+                        padding: 1rem 0;
+                        &:first-child{
+                            width: 5rem;
+                        }
+                        &:nth-child(2){
+                            width: 14rem;
+                        }
+                    }
+                }
+
+                tbody {
+                    td {
+                        padding: 1rem 0;
+                        vertical-align: middle;
+
+                        img {
+                            width: 12rem;
+                            height: 10rem;
+                            object-fit: cover;
+                        }
+
+                        input[type=text] {
+                            font-family: 'p_bold';
+                            font-size: 13px;
+                            padding: 0.5rem;
+                            border: 0.5px solid #949494;
+                            width: 80%;
+                            &:focus {
+                                background-color: #f7f6fd;
+                            }
+                        }
+                    }
+                }
+            }
+            .modify-paging{
+                margin: 2rem auto;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 0.5rem;
+                
+                .get-page{
+                    background-color: #000;
+                    color: #fff;
+                }
+                button{
+                    cursor: pointer;
+                    font-family: 'p_bold';
+                    border: 2px solid #000;
+                    background-color: #fff;
+                    padding: 0.5rem 1rem;
+                }
             }
         }
     }

@@ -26,7 +26,6 @@ function Login() {
     handleSubmit,
     register,
     formState: { errors },
-    reset,
   } = useForm<LoginType>({ mode: "onSubmit" });
   //폼 이벤트
   const onLoginValid = async (data: LoginType) => {

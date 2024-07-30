@@ -19,13 +19,11 @@ function FindUser() {
     const {
         handleSubmit: id_handle,
         register: id_register,
-        reset: id_reset,
     } = useForm<UserFind>({ mode: "onSubmit" });
 
     const {
         handleSubmit: pw_handle,
         register: pw_register,
-        reset: pw_reset,
     } = useForm<UserFind>({ mode: "onSubmit" });
 
     //아이디 찾기 폼 이벤트

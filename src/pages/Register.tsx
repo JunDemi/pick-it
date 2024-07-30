@@ -1,21 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import React from "react";
+import { Link } from "react-router-dom";
 import "../assets/Sign/sign.scss";
 import RegisterUser from "../components/Sign/RegisterUser";
 
 function Register() {
-  
-  const navigate = useNavigate();
-  //로그인 상태 확인
-  const isLogin: string | null = localStorage.getItem("pickit-user");
-
-  // useEffect(() => {
-  //   if (isLogin) {
-  //     navigate("/");
-  //   }
-  // }, [navigate, isLogin]);
-
   return (
     <section className="sign-container">
       <img

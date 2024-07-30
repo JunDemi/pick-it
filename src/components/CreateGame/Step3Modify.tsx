@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import React, { useState, useEffect } from "react";
+import { v4 as uuid } from "uuid";
+import { storage } from "../../server/firebase";
 import { useAppSelector } from "../../store/hooks/hooks";
-import { CreateGame } from "../../types/Worldcup";
 
 function Step3Modify(props: { imageList: File[] }) {
-    //로컬스토리지 사용자 정보 불러오기
-    const user = localStorage.getItem("pickit-user");
+  //로컬스토리지 사용자 정보 불러오기
+  const user = localStorage.getItem("pickit-user");
   //redux에 저장된 월드컵 생성 정보 셀렉터
   const createWorldcupData = useAppSelector(
     (state) => state.createWorldcupReducer
@@ -35,21 +37,44 @@ function Step3Modify(props: { imageList: File[] }) {
   };
   //이미지 수정 테이블 페이지 번호
   const [modifyPage, setModifyPage] = useState<number>(0);
+  //이미지 업로드 후 반환되는 객체 배열
+  const [uploadedImageObject, setUploadedImageObject] = useState<
+    {
+      fileIndex: number;
+      filePath: string;
+      fileName: string;
+    }[]>([]);
+
+  const [uploadData, setUploadData] = useState<any>();
   //최종 게임 생성 버튼 핸들러
-  const createGame = () => {
-    if(user){
-        //백엔드에 전송할 데이터 집합
-        const sendData:CreateGame = {
-            userId: JSON.parse(user).UserId as string, //사용자 ID
-            worldCupTitle: createWorldcupData.worldCupTitle, //월드컵 제목
-            worldcupDescription: createWorldcupData.worldcupDescription, //월드컵 설명
-            tournamentRange: createWorldcupData.tournamentRange, //토너먼트 범위
-            category: createWorldcupData.category, //카테고리 배열
-            images: inputData //이미지 목록(순번, 파일, 이름, 소스)
-        }
-        console.log(sendData);
+  const createGame = async () => {
+    if (user) {
+      const userId = JSON.parse(user).UserId as string; //사용자 ID
+      //월드컵 게임 이미지 파일 스토리지 업로드 함수
+      inputData.forEach((images) => {
+        const imageRef = ref(
+          //이미지 파일이름: 유저ID + 랜덤조합텍스트 + 파일이름
+          storage,
+          `worldcup-images/${userId + uuid() + images.file.name}`
+        );
+        uploadBytes(imageRef, images.file).then((imgPath) => {
+          getDownloadURL(imgPath.ref).then((url) => {
+            setUploadedImageObject((prev) => [...prev, {
+              fileIndex: images.index,
+              filePath: url,
+              fileName: images.name,
+            }]); //여러개의 이미지 데이터들을 상태에 저장
+          });
+        });
+      });
     }
   };
+  console.log(uploadedImageObject);
+  // useEffect(() => {
+  //   if(uploadedImageObject.length === inputData.length && uploadData) {
+  //     console.log(uploadedImageObject);
+  //   }
+  // },[uploadedImageObject, uploadData]);
   return (
     <>
       <div className="modify-head">

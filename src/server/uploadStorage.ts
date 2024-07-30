@@ -2,7 +2,7 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "./firebase";
 import { v4 as uuid } from "uuid";
 
-//파일 스토리지 업로드 함수
+//프로필 이미지 파일 스토리지 업로드 함수
 export const uploadProfile = async (userId: string, profileImg?: File) => {
   if (profileImg) {
     const imageRef = ref(

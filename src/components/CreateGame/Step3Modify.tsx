@@ -3,8 +3,13 @@ import React, { useState, useEffect } from "react";
 import { v4 as uuid } from "uuid";
 import { storage } from "../../server/firebase";
 import { useAppSelector } from "../../store/hooks/hooks";
+import { SendData } from "../../types/Worldcup";
+import { getCreateWorldCup } from "../../server/firebaseWorldcup";
+import { useNavigate } from "react-router-dom";
 
 function Step3Modify(props: { imageList: File[] }) {
+  //네비게이터
+  const navigate = useNavigate();
   //로컬스토리지 사용자 정보 불러오기
   const user = localStorage.getItem("pickit-user");
   //redux에 저장된 월드컵 생성 정보 셀렉터
@@ -44,10 +49,11 @@ function Step3Modify(props: { imageList: File[] }) {
       filePath: string;
       fileName: string;
     }[]>([]);
-
-  const [uploadData, setUploadData] = useState<any>();
+  //버튼 클릭시 로딩 동작  
+  const [loading, setLoading] = useState<boolean>(false);
   //최종 게임 생성 버튼 핸들러
   const createGame = async () => {
+    setLoading(true);
     if (user) {
       const userId = JSON.parse(user).UserId as string; //사용자 ID
       //월드컵 게임 이미지 파일 스토리지 업로드 함수
@@ -69,17 +75,31 @@ function Step3Modify(props: { imageList: File[] }) {
       });
     }
   };
-  console.log(uploadedImageObject);
-  // useEffect(() => {
-  //   if(uploadedImageObject.length === inputData.length && uploadData) {
-  //     console.log(uploadedImageObject);
-  //   }
-  // },[uploadedImageObject, uploadData]);
+  //업로드 이미지 객체 배열의 길이가 입력값 배열과 길이가 같아 지면 addDoc
+  useEffect(() => {
+    if(uploadedImageObject.length === inputData.length && user) { //user여부는 덤
+    //백엔드로 전송할 데이터
+      const sendData: SendData = {
+        userId: JSON.parse(user).UserId as string, //사용자 ID
+        worldcupTitle: createWorldcupData.worldcupTitle, //월드컵 제목
+        worldcupDescription: createWorldcupData.worldcupDescription, //월드컵 설명
+        tournamentRange: createWorldcupData.tournamentRange, //토너먼트 범위
+        category: createWorldcupData.category, //카테고리[],
+        worldcupImages: uploadedImageObject //이미지 인덱스,파일경로,이름[]
+      }
+      getCreateWorldCup(sendData).then(() => {
+        setLoading(false); //로딩 종료
+        navigate('/contents'); //월드컵 참여 페이지로 이동
+      });
+    }
+  },[uploadedImageObject]);
   return (
     <>
       <div className="modify-head">
         <h3>이미지 이름 수정</h3>
-        <button onClick={createGame}>수정 완료 및 월드컵 생성</button>
+        <button onClick={createGame} disabled={loading}>
+            {loading ? "업로드 중..." : "수정 완료 및 월드컵 생성"}
+        </button>
       </div>
       <table className="modify-section">
         <thead>

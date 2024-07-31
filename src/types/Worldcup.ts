@@ -1,5 +1,5 @@
 export interface CreateWorldCup {
-  worldCupTitle: string;
+  worldcupTitle: string;
   worldcupDescription: string;
   tournamentRange: number;
   category: string[];

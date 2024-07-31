@@ -46,9 +46,9 @@ function CreateGame() {
   return (
     <div className='create-game-container'>
       <AnimatePresence mode='sync'>
-        {[1, 2, 3].map(
+        {[1, 2, 3].map( //생성 단계가 총 3단계
           (number) =>
-            number === currentStepPage && (
+            number === currentStepPage && ( //map 인덱스와 현재 페이지 상태값이 동일한 컴포넌트만 렌더
               <motion.div
                 className='create-game-steps-container'
                 key={number}

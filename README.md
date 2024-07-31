@@ -1,24 +1,4 @@
-[프로젝트 구성안](https://thread-twilight-0d6.notion.site/Pick-it-2126d19b38c746178ac488dabd2dc086).
-
-## Convention
-
-### Commit Type 
-```
-Feat : 새로운 기능에 대한 커밋
-Fix : build 빌드 관련 파일 수정에 대한 커밋
-Build : 빌드 관련 파일 수정에 대한 커밋
-Chore : 그 외 자잘한 수정에 대한 커밋(rlxk qusrud)
-Ci : CI 관련 설정 수정에 대한 커밋
-Docs : 문서 수정에 대한 커밋
-Style : 코드 스타일 혹은 포맷 등에 관한 커밋
-Refactor : 코드 리팩토링에 대한 커밋
-Test : 테스트 코드 수정에 대한 커밋
-```
-
-### Commit message example
-
-```
-Feat: ~~~ <기능, 모듈, 컴포넌트> 추가
-
-~~ 할 수 있도록 기능을 추가함
-```
+#### `프레임워크 & 언어`
+<img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=ffffff"/> <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=ffffff"/>
+#### `사용 라이브러리`
+<img src="https://img.shields.io/badge/Tailwind CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=ffffff"/> <img src="https://img.shields.io/badge/Framer Motion-0055FF?style=for-the-badge&logo=framer&logoColor=ffffff"/> <img src="https://img.shields.io/badge/React Query-FF4154?style=for-the-badge&logo=reactquery&logoColor=ffffff"/> <img src="https://img.shields.io/badge/React Hook Form-EC5990?style=for-the-badge&logo=reacthookform&logoColor=ffffff"/> <img src="https://img.shields.io/badge/Recoil-3578E5?style=for-the-badge&logo=recoil&logoColor=ffffff"/> 

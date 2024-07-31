@@ -35,9 +35,10 @@ const createWorldcupSlice = createSlice({
         state.pageStep = action.payload;
       }
     },
+    // 월드컵 생성이 끝나면 초기값으로 되돌리기
+    getReset: () => initialState
   },
 });
 
 export default createWorldcupSlice.reducer;
-export const { updateStep1, scrollStep2, updateStep2, scrollStep3 } =
-  createWorldcupSlice.actions;
+export const { updateStep1, scrollStep2, updateStep2, scrollStep3, getReset } = createWorldcupSlice.actions;

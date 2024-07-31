@@ -2,10 +2,11 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import React, { useState, useEffect } from "react";
 import { v4 as uuid } from "uuid";
 import { storage } from "../../server/firebase";
-import { useAppSelector } from "../../store/hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks/hooks";
 import { SendData } from "../../types/Worldcup";
 import { getCreateWorldCup } from "../../server/firebaseWorldcup";
 import { useNavigate } from "react-router-dom";
+import { getReset } from "../../store/worldcup/createWorldcup";
 
 function Step3Modify(props: { imageList: File[] }) {
   //네비게이터
@@ -16,6 +17,8 @@ function Step3Modify(props: { imageList: File[] }) {
   const createWorldcupData = useAppSelector(
     (state) => state.createWorldcupReducer
   );
+  //redux dispatch 요청 메소드
+  const dispatch = useAppDispatch();
   //파일 프리뷰 반환 함수
   const fileURL = (file: File) => {
     return URL.createObjectURL(file) as string;
@@ -89,6 +92,7 @@ function Step3Modify(props: { imageList: File[] }) {
       }
       getCreateWorldCup(sendData).then(() => {
         setLoading(false); //로딩 종료
+        dispatch(getReset()); //redux초기화
         navigate('/contents'); //월드컵 참여 페이지로 이동
       });
     }

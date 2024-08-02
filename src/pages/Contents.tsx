@@ -1,9 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useInView } from "react-intersection-observer";
+import { useInfiniteQuery } from "react-query";
 import { Link } from "react-router-dom";
 import "../assets/Contents/contents.scss";
+import { getWorldCupList } from "../server/firebaseWorldcup";
+import { WorldcupList } from "../types/Worldcup";
 function Contents() {
     //인기순, 최신순 필터 state
     const [filter, setFilter] = useState<"pop" | "new">("pop");
+    //인터섹션 옵저버 훅
+    const { ref, inView } = useInView();
+    //리액트 쿼리 훅
+    const {
+        isLoading,
+        data: worldcupList,
+        fetchNextPage, //다음 페이지 불러오기
+        hasNextPage, //다음 페이지 존재 여부
+    } = useInfiniteQuery({
+        queryKey: ["worldcup_list"],
+        queryFn: ({ pageParam = 1 }) => getWorldCupList(pageParam), //pageParam값이 1일 때 DB에서는 8개의 데이터를 호출
+        getNextPageParam: (lastPage, allPages) => {
+            return allPages.length + 1; // 마지막 페이지가 될 때까지 pageParam값을 1씩 증가 / 1 * 8 -> 2 * 16 -> 3 * 24 ...
+        },
+    });
+    //ref에 닿으면 무한 스크롤 1회 작동
+    useEffect(() => {
+        if (inView) {
+            setTimeout(() =>
+                fetchNextPage()
+                , 1000);
+        }
+    }, [inView, hasNextPage, fetchNextPage]);
+    console.log(inView)
     return (
         <section className="contents-container">
             <div className="contents-top">
@@ -33,27 +61,34 @@ function Contents() {
             </div>
 
             <div className="contents-section">
-                {[...Array(36)].map((data) => (
-                    <div className="contents-worldcup-card" key={data}>
-                        <div className="card-thumbnail">
-                            <img src="/images/introduce.png" alt="" />
-                            <img src="/images/introduce.png" alt="" />
+                {!isLoading && worldcupList ?
+                    //infinifyQuery를 쓰면 페이지 수에 따른 배열이 중첩되기 때문에 가장 마지막 순번의 배열을 map
+                    worldcupList.pages[worldcupList.pages.length - 1].map((data: WorldcupList) => (
+                        <div className="contents-worldcup-card" key={data.worldcupId}>
+                            <div className="card-thumbnail">
+                                <img src={data.worldcupInfo.worldcupImages[0].filePath} alt="" />
+                                <img src={data.worldcupInfo.worldcupImages[1].filePath} alt="" />
+                            </div>
+                            <h3>{data.worldcupInfo.worldcupTitle}</h3>
+                            <p>{data.worldcupInfo.worldcupDescription}</p>
+                            <div className="card-category">
+                                {data.worldcupInfo.category.map((text, index) => (
+                                    <span key={index}>
+                                        #{text}
+                                    </span>
+                                ))}
+                            </div>
+                            <div className="card-link">
+                                <Link to=''>시작하기</Link>
+                                <Link to=''>랭킹보기</Link>
+                            </div>
                         </div>
-                        <h3>솔로 여가수 외모 순위</h3>
-                        <p>대한민국 솔로 여가수 중 좋아하는 이상형을 선택해주세요.</p>
-                        <div className="card-category">
-                            <span>#여자가수</span>
-                            <span>#솔로가수</span>
-                            <span>#외모순위</span>
-                        </div>
-                        <div className="card-link">
-                            <Link to=''>시작하기</Link>
-                            <Link to=''>랭킹보기</Link>
-                        </div>
-                    </div>
-                ))}
-
+                    ))
+                    :
+                    "로딩 중..."
+                }
             </div>
+            <div ref={ref}></div>
         </section>
     );
 }

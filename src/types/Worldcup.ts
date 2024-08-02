@@ -23,3 +23,7 @@ export interface SendData {
     fileName: string;
   }[];
 }
+export interface WorldcupList {
+  worldcupId: string;
+  worldcupInfo: SendData;
+}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useAppDispatch } from "../../store/hooks/hooks";
+import { useAppDispatch } from "../../hooks/redux";
 import { useForm } from "react-hook-form";
 import { scrollStep2, updateStep1 } from "../../store/worldcup/createWorldcup";
 import { step1DataType } from "../../types/Worldcup";

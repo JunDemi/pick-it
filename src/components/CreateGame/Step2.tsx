@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useAppDispatch } from "../../store/hooks/hooks";
+import { useAppDispatch } from "../../hooks/redux";
 import { scrollStep3, updateStep2 } from "../../store/worldcup/createWorldcup";
 
 function Step2() {

@@ -2,7 +2,7 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import React, { useState, useEffect } from "react";
 import { v4 as uuid } from "uuid";
 import { storage } from "../../server/firebase";
-import { useAppDispatch, useAppSelector } from "../../store/hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { SendData } from "../../types/Worldcup";
 import { getCreateWorldCup } from "../../server/firebaseWorldcup";
 import { useNavigate } from "react-router-dom";

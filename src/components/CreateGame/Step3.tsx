@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useState, useRef } from "react";
-import { useAppSelector } from "../../store/hooks/hooks";
+import { useAppSelector } from "../../hooks/redux";
 import Step3Modify from "./Step3Modify";
 
 function Step3() {

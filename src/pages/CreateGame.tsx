@@ -3,7 +3,7 @@ import "../assets/CreateGame/createGame.scss";
 import { useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import StepContainer from "../components/CreateGame/StepContainer";
-import { useAppSelector } from "../store/hooks/hooks";
+import { useAppSelector } from "../hooks/redux";
 
 const boxVar = {
   entry: {

@@ -132,7 +132,7 @@ function RegisterUser() {
                                     type="text"
                                     autoComplete="off"
                                     {...register("registerNickName", {
-                                        required: "*(특수문자 제외, 2~16자)",
+                                        required: "*(영문소문자/숫자, 특수문자 제외, 4~16자)",
                                         validate: {
                                             min: (value: string) =>
                                                 value.length >= 2 || "*닉네임은 최소 2자입니다.",

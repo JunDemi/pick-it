@@ -1,4 +1,4 @@
-import { addDoc, collection, getDocs, limit, orderBy, query, where } from "firebase/firestore";
+import { addDoc, collection, DocumentData, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "./firebase";
 import { SendData } from "../types/Worldcup";
 
@@ -23,16 +23,37 @@ export const getCreateWorldCup = async(argData: SendData) => {
 };
 
 //월드컵 리스트 불러오기(최신순)
-export const getWorldCupList = async(pageParam:number) => {
-  const resultArray: any[] = [];
+export const getWorldCupList = async({pageParam}: {pageParam: number}): Promise<{
+  data: {
+    worldcupId: string;
+    worldcupInfo: DocumentData;
+  }[];
+  currentPage: number;
+  nextPage: number | null;
+}> => {
+
+  const LIMIT = 8; //클라이언트에 불러올 배열 개수
+
    const worldcupQuery = query(
     worldcupRef,
-    orderBy("createAt", "desc"),
-    limit(pageParam * 8)
+    orderBy("createAt", "desc")
   );
-  const result = await getDocs(worldcupQuery); //문서화
-  result.docs.map((data) => {
-    resultArray.push({ worldcupId: data.id, worldcupInfo: data.data() }); //필드 고유의 id값과 필드 내용을 배열에 담기
+  //getDocs후 docs객체 할당
+  const getData = await getDocs(worldcupQuery).then((res) => {
+    return res.docs;
   });
-  return resultArray;
+  const result = getData.map((data) => {
+    return { worldcupId: data.id, worldcupInfo: data.data() };
+  });
+
+  //1초의 지연시간을 적용하고 promise값으로 리턴
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({
+        data: result.slice(pageParam, pageParam + LIMIT),
+        currentPage: pageParam,
+        nextPage: pageParam + LIMIT < result.length ? pageParam + LIMIT : null,
+      });
+    }, 1000);
+  });
 }

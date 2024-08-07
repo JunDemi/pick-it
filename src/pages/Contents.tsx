@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import { useInfiniteQuery } from "react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import "../assets/Contents/contents.scss";
 import { getWorldCupList } from "../server/firebaseWorldcup";

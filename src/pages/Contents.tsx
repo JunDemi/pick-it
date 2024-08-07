@@ -4,7 +4,6 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import "../assets/Contents/contents.scss";
 import { getWorldCupList } from "../server/firebaseWorldcup";
-import { WorldcupList } from "../types/Worldcup";
 function Contents() {
   //인기순, 최신순 필터 state
   const [filter, setFilter] = useState<"pop" | "new">("pop");
@@ -12,29 +11,23 @@ function Contents() {
   const { ref, inView } = useInView();
   //리액트 쿼리 훅
   const {
-    isLoading,
+    status,
+    error,
     data: worldcupList,
-    fetchNextPage, //다음 페이지 불러오기
-    hasNextPage, //다음 페이지 존재 여부
+    fetchNextPage, //다음 페이지 불러오기,
+    isFetchingNextPage //다음 페이지 불러오는 중
   } = useInfiniteQuery({
     queryKey: ["worldcup_list"],
-    queryFn: ({ pageParam = 1 }) => getWorldCupList(pageParam), //pageParam값이 1일 때 DB에서는 8개의 데이터를 호출
-    getNextPageParam: (lastPage, allPages) => {
-      return lastPage.length < allPages.length
-        ? lastPage.length
-        : lastPage.length + 1;
-      // 마지막 페이지가 될 때까지 pageParam값을 1씩 증가 / 1 * 8 -> 2 * 16 -> 3 * 24 ...
-    },
-    staleTime: Infinity,
+    queryFn: getWorldCupList, //getNextPageParam작성할 경우 pageParam값이 인자값으로 전달
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => lastPage.nextPage, //fetchNextPage가 작동하면 nextPage로 pageParam값 증가
   });
   //ref에 닿으면 무한 스크롤 1회 작동
   useEffect(() => {
-      if (inView) {
-          setTimeout(() =>
-              fetchNextPage()
-              , 1000);
-      }
-  }, [inView]);
+    if (inView) {
+      fetchNextPage();
+    }
+  }, [inView, fetchNextPage]);
   return (
     <>
       <section className="contents-container">
@@ -85,47 +78,46 @@ function Contents() {
           </Link>
         </div>
 
-        <div className="contents-section">
-          {!isLoading && worldcupList ? (
-            <>
-              {
-                //infinifyQuery를 쓰면 페이지 수에 따른 배열이 중첩되기 때문에 가장 마지막 순번의 배열을 map
-                worldcupList.pages[worldcupList.pages.length - 1].map(
-                  (data: WorldcupList) => (
+        <div >
+          {status === "pending"
+            ? "로딩중..."
+            : status === "error"
+            ? error.message
+            : worldcupList.pages.map((page) => (
+                <div key={page.currentPage} className="contents-section">
+                  {page.data.map((items) => (
                     <div
                       className="contents-worldcup-card"
-                      key={data.worldcupId}
+                      key={items.worldcupId}
                     >
                       <div className="card-thumbnail">
                         <img
-                          src={data.worldcupInfo.worldcupImages[0].filePath}
+                          src={items.worldcupInfo.worldcupImages[0].filePath}
                           alt=""
                         />
                         <img
-                          src={data.worldcupInfo.worldcupImages[1].filePath}
+                          src={items.worldcupInfo.worldcupImages[1].filePath}
                           alt=""
                         />
                       </div>
-                      <h3>{data.worldcupInfo.worldcupTitle}</h3>
-                      <p>{data.worldcupInfo.worldcupDescription}</p>
+                      <h3>{items.worldcupInfo.worldcupTitle}</h3>
+                      <p>{items.worldcupInfo.worldcupDescription}</p>
                       <div className="card-category">
-                        {data.worldcupInfo.category.map((text, index) => (
-                          <span key={index}>#{text}</span>
-                        ))}
+                        {items.worldcupInfo.category.map(
+                          (text: string, index: number) => (
+                            <span key={index}>#{text}</span>
+                          )
+                        )}
                       </div>
                       <div className="card-link">
                         <Link to="">시작하기</Link>
                         <Link to="">랭킹보기</Link>
                       </div>
                     </div>
-                  )
-                )
-              }
-              <div ref={ref}></div>
-            </>
-          ) : (
-            "로딩 중..."
-          )}
+                  ))}
+                </div>
+              ))}
+              <div ref={ref}>{isFetchingNextPage && "불러오는중..."}</div>
         </div>
       </section>
     </>

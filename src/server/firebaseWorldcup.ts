@@ -1,4 +1,11 @@
-import { addDoc, collection, DocumentData, getDocs, orderBy, query } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  DocumentData,
+  getDocs,
+  orderBy,
+  query,
+} from "firebase/firestore";
 import { db } from "./firebase";
 import { SendData } from "../types/Worldcup";
 
@@ -6,7 +13,7 @@ import { SendData } from "../types/Worldcup";
 const worldcupRef = collection(db, "worldcup");
 
 // 월드컵 생성
-export const getCreateWorldCup = async(argData: SendData) => {
+export const getCreateWorldCup = async (argData: SendData) => {
   //현재시간
   const currentTime = Date.now();
   //addDoc
@@ -18,12 +25,16 @@ export const getCreateWorldCup = async(argData: SendData) => {
     category: argData.category,
     worldcupImages: argData.worldcupImages,
     createAt: currentTime,
-    updateAt: currentTime
+    updateAt: currentTime,
   });
 };
 
 //월드컵 리스트 불러오기(최신순)
-export const getWorldCupList = async({pageParam}: {pageParam: number}): Promise<{
+export const getWorldCupList = async ({
+  pageParam,
+}: {
+  pageParam: number;
+}): Promise<{
   data: {
     worldcupId: string;
     worldcupInfo: DocumentData;
@@ -31,13 +42,9 @@ export const getWorldCupList = async({pageParam}: {pageParam: number}): Promise<
   currentPage: number;
   nextPage: number | null;
 }> => {
-
   const LIMIT = 8; //클라이언트에 불러올 배열 개수
 
-   const worldcupQuery = query(
-    worldcupRef,
-    orderBy("createAt", "desc")
-  );
+  const worldcupQuery = query(worldcupRef, orderBy("createAt", "desc"));
   //getDocs후 docs객체 할당
   const getData = await getDocs(worldcupQuery).then((res) => {
     return res.docs;
@@ -56,4 +63,4 @@ export const getWorldCupList = async({pageParam}: {pageParam: number}): Promise<
       });
     }, 1000);
   });
-}
+};

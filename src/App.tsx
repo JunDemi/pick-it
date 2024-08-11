@@ -14,6 +14,7 @@ import { PopupContext } from "./context/PopupContext";
 import { LocalUserData, PopupUserData } from "./types/Sign";
 import { getUserData } from "./server/firebaseAuth";
 import FindUser from "./pages/FindUser";
+import Game from "./pages/Game";
 
 function App() {
   const [userData, setUserData] = useState<PopupUserData>({
@@ -72,6 +73,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/contents' element={<Contents />} />
+        <Route path='/play-game/:id' element={<Game />} />
         <Route path='/create-game' element={<CreateGame />} />
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />

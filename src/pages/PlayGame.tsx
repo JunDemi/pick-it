@@ -10,7 +10,7 @@ function PlayGame() {
     return localStorage.getItem("game-data") || "";
   });
 
-  //토너먼트 범위 상태
+  //토너먼트 전체 범위 상태
   const [range, setRange] = useState<8 | 16 | 32 | 64 | 128>(8);
   //토너먼트 및 로딩UI 상태
   const [tournamentPopup, setTournamentPopup] = useState<boolean>(true);
@@ -119,6 +119,7 @@ function PlayGame() {
   ) : (
     <section className="game-container">
       <div className="game-title">
+      <span>{JSON.parse(data).GameRange}강</span>
         <h1>{JSON.parse(data).GameTitle}</h1>
       </div>
     </section>

@@ -71,10 +71,10 @@ export const getWorldCupList = async ({
 export const findSelectWorldcup = async (id: string) => {
   const currentWorldcupRef = doc(worldcupRef, id);
   const findWorldcupData = await getDoc(currentWorldcupRef);
-
   if (findWorldcupData.exists()) {
-    return findWorldcupData.data();
-  } else {
-    return new Error("해당 아이디의 월드컵을 찾지 못했습니다.");
+    return {
+      gameId: id,
+      gameInfo: findWorldcupData.data()
+    };
   }
 };

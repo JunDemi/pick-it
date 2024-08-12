@@ -1,0 +1,20 @@
+.before-game-message{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.tournament-select-popup {
+    
+}
+.game-container {
+    padding-top: 3rem;
+    .game-title{
+        display: flex;
+        justify-content: center;
+        font-family: 'p_bold';
+        h1{
+            font-size: 20px;
+        }
+    }
+}

@@ -67,7 +67,7 @@ export const getWorldCupList = async ({
   });
 };
 
-// 선택 월드컵 데이터 불러오기
+// 게임화면: 선택 월드컵 데이터 불러오기
 export const findSelectWorldcup = async (id: string) => {
   const currentWorldcupRef = doc(worldcupRef, id);
   const findWorldcupData = await getDoc(currentWorldcupRef);

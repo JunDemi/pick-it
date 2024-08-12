@@ -1,17 +1,8 @@
 import {
   addDoc,
-  arrayRemove,
-  arrayUnion,
   collection,
-  deleteDoc,
-  doc,
-  documentId,
-  getDoc,
   getDocs,
-  limit,
-  orderBy,
   query,
-  updateDoc,
   where,
 } from "firebase/firestore";
 import { db } from "./firebase";

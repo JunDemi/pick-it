@@ -8,7 +8,7 @@ function PlayGame() {
   const [data, setData] = useState<string>(() => {
     return localStorage.getItem("game-data") || "";
   });
-  //기타 state
+  //토너먼트 및 로딩UI 상태
   const [tournamentPopup, setTournamentPopup] = useState<boolean>(true);
   const [fetchLoading, setFetchLoading] = useState<boolean>(true);
 
@@ -25,6 +25,7 @@ function PlayGame() {
   // 로컬스토리지 setItem함수
   const setGameData = (
     gameId: string,
+    gameTitle: string,
     gameImage: {
       fileIndex: number;
       fileName: string;
@@ -40,7 +41,9 @@ function PlayGame() {
     setData(
       JSON.stringify({
         GameId: gameId,
+        GameTitle: gameTitle,
         GameImage: slicedImage,
+        GameRange: limit
       })
     );
   };
@@ -51,7 +54,7 @@ function PlayGame() {
     await fetchIdWorldcup().then(
       //반환된 promise를 로컬스토리지에 저장하는 과정
       (res) =>
-        res && setGameData(res.gameId, res.gameInfo.worldcupImages, limit)
+        res && setGameData(res.gameId, res.gameInfo.worldcupTitle, res.gameInfo.worldcupImages, limit)
     );
     //1초의 지연 시간 후 게임 데이터가 UI에 띄워지도록
     setTimeout(() => {
@@ -77,19 +80,20 @@ function PlayGame() {
       }
     }
   }, [gameId]);
+
   return fetchLoading ? (
     <>
       <div className="before-game-message">게임을 불러오는 중입니다...</div>
       {tournamentPopup && (
-        <div className="tournament-select-popup">
+        <form className="tournament-select-popup">
           <button onClick={() => startGame(8)}>클릭</button>
-        </div>
+        </form>
       )}
     </>
   ) : (
     <section className="game-container">
       <div className="game-title">
-        <h1>게임 제목</h1>
+        <h1>{JSON.parse(data).GameTitle}</h1>
       </div>
     </section>
   );

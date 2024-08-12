@@ -160,3 +160,37 @@ textarea {
 ::-webkit-scrollbar-thumb:active {
 	background: #616161;
 }
+/* 로딩 스피너 */
+.loading-spiner{
+	position: relative;
+	width: 40px;
+	height: 40px;
+	background-color: #5f5f5f;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	animation: rotate .7s linear infinite;
+	div{
+		background-color: #fff;
+		border-radius: 50%;
+		width: 33px;
+		height: 33px;
+	}
+	hr{
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 100%;
+		border: 7px solid #fff;
+	}
+	@keyframes rotate {
+		0%{
+			transform: rotate(0deg);
+		}
+		100%{
+			transform: rotate(360deg);
+		}
+	}
+}

@@ -2,12 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { findSelectWorldcup } from "../server/firebaseWorldcup";
 import "../assets/Contents/playGame.scss";
+import { AnimatePresence, motion } from "framer-motion";
 
 function PlayGame() {
   //로컬스토리지 값을 동적으로 저장하는 상태
   const [data, setData] = useState<string>(() => {
     return localStorage.getItem("game-data") || "";
   });
+
+  //토너먼트 범위 상태
+  const [range, setRange] = useState<8 | 16 | 32 | 64 | 128>(8);
   //토너먼트 및 로딩UI 상태
   const [tournamentPopup, setTournamentPopup] = useState<boolean>(true);
   const [fetchLoading, setFetchLoading] = useState<boolean>(true);
@@ -65,6 +69,7 @@ function PlayGame() {
   //state값이 변경될 때마다 로컬스토리지 업데이트
   useEffect(() => {
     localStorage.setItem("game-data", data);
+    fetchIdWorldcup().then(res => res && setRange(res.gameInfo.tournamentRange));
   }, [data]);
 
   useEffect(() => {
@@ -83,12 +88,33 @@ function PlayGame() {
 
   return fetchLoading ? (
     <>
-      <div className="before-game-message">게임을 불러오는 중입니다...</div>
+      <div className="before-game-message">
+        <h2>게임을 불러오는 중입니다...</h2>
+        <div className="loading-spiner">
+          <hr/>
+          <div/>
+        </div>
+      </div>
+      <AnimatePresence>
       {tournamentPopup && (
-        <form className="tournament-select-popup">
-          <button onClick={() => startGame(8)}>클릭</button>
-        </form>
+        <motion.div 
+        className="tournament-select-popup"
+        initial={{ opacity: 0 }}
+        animate={tournamentPopup ? { opacity: 1 } : { opacity: 0 }}
+        exit={{ opacity: 0 }}>
+          <h2>라운드를 선택해주세요.</h2>
+          <div className="select-buttons">
+          {range > 128 && <button onClick={() => startGame(range / 64)}>{range / 64}강</button>}
+          {range > 64 && <button onClick={() => startGame(range / 32)}>{range / 32}강</button>}
+          {range > 32 && <button onClick={() => startGame(range / 16)}>{range / 16}강</button>}
+          {range > 16 && <button onClick={() => startGame(range / 8)}>{range / 8}강</button>}
+          {range > 8 && <button onClick={() => startGame(range / 4)}>{range / 4}강</button>}
+          <button onClick={() => startGame(range / 2)}>{range / 2}강</button>
+          <button onClick={() => startGame(range)}>{range}강</button>
+          </div>
+        </motion.div>
       )}
+      </AnimatePresence>
     </>
   ) : (
     <section className="game-container">

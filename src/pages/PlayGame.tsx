@@ -15,6 +15,8 @@ function PlayGame() {
   //토너먼트 및 로딩UI 상태
   const [tournamentPopup, setTournamentPopup] = useState<boolean>(true);
   const [fetchLoading, setFetchLoading] = useState<boolean>(true);
+  //게임 카드 '선택하기' 클릭 시 오버레이를 위한 레이아웃 할당
+  const [selectCard, setSelectCard] = useState<string>("");
 
   // 동적 라우팅으로 전송받은 월드컵 아이디 값 조회
   const { id: gameId } = useParams();
@@ -26,7 +28,8 @@ function PlayGame() {
       return res;
     }
   };
-  // 로컬스토리지 setItem함수
+
+  // fetch로 받은 게임 데이터들을 조합하여 로컬스토리지에 셋업
   const setGameData = (
     gameId: string,
     gameTitle: string,
@@ -47,7 +50,7 @@ function PlayGame() {
         GameId: gameId,
         GameTitle: gameTitle,
         GameImage: slicedImage,
-        GameRange: limit
+        GameRange: limit,
       })
     );
   };
@@ -58,7 +61,13 @@ function PlayGame() {
     await fetchIdWorldcup().then(
       //반환된 promise를 로컬스토리지에 저장하는 과정
       (res) =>
-        res && setGameData(res.gameId, res.gameInfo.worldcupTitle, res.gameInfo.worldcupImages, limit)
+        res &&
+        setGameData(
+          res.gameId,
+          res.gameInfo.worldcupTitle,
+          res.gameInfo.worldcupImages,
+          limit
+        )
     );
     //1초의 지연 시간 후 게임 데이터가 UI에 띄워지도록
     setTimeout(() => {
@@ -69,9 +78,12 @@ function PlayGame() {
   //state값이 변경될 때마다 로컬스토리지 업데이트
   useEffect(() => {
     localStorage.setItem("game-data", data);
-    fetchIdWorldcup().then(res => res && setRange(res.gameInfo.tournamentRange));
+    fetchIdWorldcup().then(
+      (res) => res && setRange(res.gameInfo.tournamentRange)
+    ); //토너먼트 전체 범위 따로 상태 저장
   }, [data]);
 
+  //새로고침 초기화 방지를 위한 훅
   useEffect(() => {
     if (gameId && data) {
       //게임 페이지 입장 + 기존에 저장된 게임로컬스토리지가 존재할 때
@@ -86,43 +98,152 @@ function PlayGame() {
     }
   }, [gameId]);
 
+  //카드 선택 후 다음 게임으로
+  const nextGame = (parseData: {
+    GameId: string;
+    GameTitle: string;
+    GameImage: {
+      fileIndex: number;
+      fileName: string;
+      filePath: string;
+    }[];
+    GameRange: number;
+  }) => {
+    const deletePrevImage = parseData.GameImage.slice(2) //0번째와 1번째 인덱스 제거
+    let nextRound = parseData.GameRange;
+    if(nextRound / 2 === deletePrevImage.length) { //다음 라운드로 넘어갈지
+      nextRound = nextRound / 2; //다음 라운드로
+    }
+    //로컬스토리지 데이터 기반 state변경
+    setData(
+      JSON.stringify({
+        GameId: parseData.GameId,
+        GameTitle: parseData.GameTitle,
+        GameImage: deletePrevImage,
+        GameRange: nextRound,
+      })
+    );
+    //오버레이 닫기
+    setSelectCard("");
+  };
+
   return fetchLoading ? (
     <>
       <div className="before-game-message">
         <h2>게임을 불러오는 중입니다...</h2>
         <div className="loading-spiner">
-          <hr/>
-          <div/>
+          <hr />
+          <div />
         </div>
       </div>
       <AnimatePresence>
-      {tournamentPopup && (
-        <motion.div 
-        className="tournament-select-popup"
-        initial={{ opacity: 0 }}
-        animate={tournamentPopup ? { opacity: 1 } : { opacity: 0 }}
-        exit={{ opacity: 0 }}>
-          <h2>라운드를 선택해주세요.</h2>
-          <div className="select-buttons">
-          {range > 128 && <button onClick={() => startGame(range / 64)}>{range / 64}강</button>}
-          {range > 64 && <button onClick={() => startGame(range / 32)}>{range / 32}강</button>}
-          {range > 32 && <button onClick={() => startGame(range / 16)}>{range / 16}강</button>}
-          {range > 16 && <button onClick={() => startGame(range / 8)}>{range / 8}강</button>}
-          {range > 8 && <button onClick={() => startGame(range / 4)}>{range / 4}강</button>}
-          <button onClick={() => startGame(range / 2)}>{range / 2}강</button>
-          <button onClick={() => startGame(range)}>{range}강</button>
-          </div>
-        </motion.div>
-      )}
+        {tournamentPopup && (
+          <motion.div
+            className="tournament-select-popup"
+            initial={{ opacity: 0 }}
+            animate={tournamentPopup ? { opacity: 1 } : { opacity: 0 }}
+            exit={{ opacity: 0 }}
+          >
+            <h2>라운드를 선택해주세요.</h2>
+            <div className="select-buttons">
+              {range > 128 && (
+                <button onClick={() => startGame(range / 64)}>
+                  {range / 64}강
+                </button>
+              )}
+              {range > 64 && (
+                <button onClick={() => startGame(range / 32)}>
+                  {range / 32}강
+                </button>
+              )}
+              {range > 32 && (
+                <button onClick={() => startGame(range / 16)}>
+                  {range / 16}강
+                </button>
+              )}
+              {range > 16 && (
+                <button onClick={() => startGame(range / 8)}>
+                  {range / 8}강
+                </button>
+              )}
+              {range > 8 && (
+                <button onClick={() => startGame(range / 4)}>
+                  {range / 4}강
+                </button>
+              )}
+              <button onClick={() => startGame(range / 2)}>
+                {range / 2}강
+              </button>
+              <button onClick={() => startGame(range)}>{range}강</button>
+            </div>
+          </motion.div>
+        )}
       </AnimatePresence>
     </>
   ) : (
-    <section className="game-container">
-      <div className="game-title">
-      <span>{JSON.parse(data).GameRange}강</span>
-        <h1>{JSON.parse(data).GameTitle}</h1>
-      </div>
-    </section>
+    <>
+      <section className="game-container">
+        <div className="game-title">
+          <span>{JSON.parse(data).GameRange === 2 ? "결승" : JSON.parse(data).GameRange + "강"}</span>
+          <h1>{JSON.parse(data).GameTitle}</h1>
+        </div>
+        <AnimatePresence>
+          <div className="game-section">
+            {JSON.parse(data)
+              .GameImage.slice(0, 2)
+              .map(
+                (
+                  items: {
+                    fileIndex: number;
+                    fileName: string;
+                    filePath: string;
+                  },
+                  index: number
+                ) => (
+                  <div className="game-card" key={items.fileIndex}>
+                    <motion.img
+                      src={items.filePath}
+                      alt=""
+                      layoutId={String(index)}
+                    />
+                    <p>{items.fileName}</p>
+                    <button
+                      className={`btnBg${index}`}
+                      onClick={() => setSelectCard(String(index))}
+                    >
+                      선택하기
+                    </button>
+                  </div>
+                )
+              )}
+          </div>
+        </AnimatePresence>
+      </section>
+      <AnimatePresence>
+        {selectCard !== "" && (
+          <motion.div
+            className="card-selected"
+            initial={{ opacity: 0 }}
+            animate={selectCard !== "" ? { opacity: 1 } : { opacity: 0 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.img
+              src={JSON.parse(data).GameImage[Number(selectCard)].filePath}
+              alt=""
+              layoutId={selectCard}
+            />
+            <h1>
+              {JSON.parse(data).GameImage[Number(selectCard)].fileName}{" "}
+              {JSON.parse(data).GameRange / 2 === 2
+                ? "결승 "
+                : JSON.parse(data).GameRange / 2 + "강 "}
+              진출
+            </h1>
+            <button onClick={() => nextGame(JSON.parse(data))}>다음</button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
 

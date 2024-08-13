@@ -183,7 +183,7 @@ function PlayGame() {
     <>
       <section className="game-container">
         <div className="game-title">
-          <span>
+          <span className={`game-range-label-${JSON.parse(data).GameRange}`}>
             {JSON.parse(data).GameRange === 2
               ? "결승"
               : JSON.parse(data).GameRange === 1

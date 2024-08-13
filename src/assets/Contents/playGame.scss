@@ -65,7 +65,7 @@
         font-family: 'p_bold';
 
         h1 {
-            font-size: 24px;
+            font-size: 28px;
         }
 
         span {
@@ -74,8 +74,19 @@
             border: 2px solid #757575;
             border-radius: 30px;
             padding: 2px 10px;
-
-            font-size: 16px;
+            font-size: 20px;
+        }
+        .game-range-label-8 {
+            border-color: #c3268c;
+            color: #c3268c;
+        }
+        .game-range-label-4 {
+            border-color: #04cbcf;
+            color: #04cbcf;
+        }
+        .game-range-label-2 {
+            border-color: #e99b00;
+            color: #e99b00;
         }
     }
 
@@ -111,7 +122,7 @@
                 font-family: 'p_bold';
                 font-size: 16px;
                 cursor: pointer;
-                margin-top: 2.5rem;
+                margin-top: 1rem;
                 border: none;
                 padding: 1rem 2rem;
             }

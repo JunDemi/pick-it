@@ -95,11 +95,11 @@ function Contents() {
                   >
                     <div className='card-thumbnail'>
                       <img
-                        src={items.worldcupInfo.worldcupImages[0].filePath}
+                        src={items.worldcupInfo.worldcupImages[3].filePath}
                         alt=''
                       />
                       <img
-                        src={items.worldcupInfo.worldcupImages[1].filePath}
+                        src={items.worldcupInfo.worldcupImages[6].filePath}
                         alt=''
                       />
                     </div>

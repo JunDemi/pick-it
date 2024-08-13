@@ -7,12 +7,16 @@ import { PopupUserData } from "../../types/Sign";
 import { PopupContext, ToggleContextType } from "../../context/PopupContext";
 import { motion } from "framer-motion";
 import { IoClose } from "react-icons/io5";
+import { useAppDispatch } from "../../hooks/redux";
+import { getReset } from "../../store/worldcup/createWorldcup";
 
 interface PropsUserData {
   userData: PopupUserData;
 }
 
 const UserPopup = ({ userData }: PropsUserData) => {
+  //redux dispatch 요청 메소드
+  const dispatch = useAppDispatch();
   //네비게이터
   const navigate = useNavigate();
 
@@ -24,6 +28,9 @@ const UserPopup = ({ userData }: PropsUserData) => {
     signOut(auth);
     //로컬스토리지 로그인 정보 삭제
     localStorage.removeItem("pickit-user");
+    //전역 상태 초기화
+    dispatch(getReset()); //redux초기화
+    //메인으로 이동
     navigate("/");
   };
 

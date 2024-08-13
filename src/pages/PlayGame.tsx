@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { findSelectWorldcup } from "../server/firebaseWorldcup";
 import "../assets/Contents/playGame.scss";
 import { AnimatePresence, motion } from "framer-motion";
@@ -11,6 +11,8 @@ interface GameImageType {
 }
 
 function PlayGame() {
+  //네비게이터
+  const navigate = useNavigate();
   //로컬스토리지 값을 동적으로 저장하는 상태
   const [data, setData] = useState<string>(() => {
     return localStorage.getItem("game-data") || "";
@@ -49,11 +51,12 @@ function PlayGame() {
     //2단계. 매개변수 gameId와 상수 slicedImage를 로컬스토리지에 셋업
     setData(
       JSON.stringify({
-        GameId: gameId,
-        GameTitle: gameTitle,
-        GameImage: slicedImage,
-        WinImage: [],
-        GameRange: limit,
+        GameId: gameId, //게임 ID
+        GameTitle: gameTitle, //게임 제목
+        GameImage: slicedImage, //이미지 배열
+        WinImage: [], //선택한 이미지 배열
+        GameRange: limit, //게임 라운드
+        RoundLevel: 1, //해당 라운드의 n번째 매치
       })
     );
   };
@@ -107,10 +110,13 @@ function PlayGame() {
     parseData.GameImage = parseData.GameImage.slice(2); //게임 엔트리에 올라와있던 두 개의 항목 제거
     parseData.WinImage = [...parseData.WinImage, winCard]; //다음 라운드에 진출할 카드를 배열에 추가
     //엔트리 배열이 비어있으면 다음 라운드로
-    if (parseData.GameImage.length === 0) { 
-      parseData.GameRange = parseData.GameRange / 2; //다음 라운드
-      parseData.GameImage = parseData.WinImage;
-      parseData.WinImage = [];
+    if (parseData.GameImage.length === 0) {
+      parseData.GameRange = parseData.GameRange / 2; //다음 라운드 넘버
+      parseData.GameImage = parseData.WinImage.sort(() => Math.random() - 0.5); //선택된 이미지들의 배열로 재할당 후 다시 랜덤으로 배치
+      parseData.WinImage = []; //선택된 이미지 배열 제거
+      parseData.RoundLevel = 1; //라운드 매치 횟수 1번으로 초기화
+    } else {
+      parseData.RoundLevel++; //라운드 매치 횟수 1 증가
     }
 
     //로컬스토리지 데이터 기반 state변경
@@ -119,6 +125,12 @@ function PlayGame() {
     setSelectCard("");
   };
 
+  //게임 마무리 후 랭킹보기 페이지 이동
+  const goResultPage = () => {
+    localStorage.removeItem("game-data");
+    navigate("/");
+  };
+  
   return fetchLoading ? (
     <>
       <div className="before-game-message">
@@ -176,12 +188,19 @@ function PlayGame() {
     <>
       <section className="game-container">
         <div className="game-title">
-          <span>
+          <span className={`game-range-label-${JSON.parse(data).GameRange}`}>
             {JSON.parse(data).GameRange === 2
               ? "결승"
+              : JSON.parse(data).GameRange === 1
+              ? "우승"
               : JSON.parse(data).GameRange + "강"}
           </span>
           <h1>{JSON.parse(data).GameTitle}</h1>
+          {JSON.parse(data).GameRange !== 2 && (
+            <p>
+              {JSON.parse(data).RoundLevel} / {JSON.parse(data).GameRange / 2}
+            </p>
+          )}
         </div>
         <AnimatePresence>
           <div className="game-section">
@@ -195,6 +214,7 @@ function PlayGame() {
                     layoutId={String(items.fileIndex)}
                   />
                   <p>{items.fileName}</p>
+
                   <button
                     className={`btnBg${index}`}
                     onClick={() => setSelectCard(String(items.fileIndex))}
@@ -224,17 +244,32 @@ function PlayGame() {
               layoutId={selectCard}
             />
             <h1>
-              { JSON.parse(data).GameImage.find(
+              {
+                JSON.parse(data).GameImage.find(
                   (m: GameImageType) => m.fileIndex === Number(selectCard)
-                ).fileName}{" "}
+                ).fileName
+              }{" "}
               {JSON.parse(data).GameRange / 2 === 2
-                ? "결승 "
-                : JSON.parse(data).GameRange / 2 + "강 "}
-              진출
+                ? " 결승 진출"
+                : JSON.parse(data).GameRange / 2 === 1
+                ? " 우승!"
+                : JSON.parse(data).GameRange / 2 + "강 진출"}
             </h1>
-            <button onClick={() => nextGame(JSON.parse(data).GameImage.find(
-                  (m: GameImageType) => m.fileIndex === Number(selectCard)
-                ))}>다음</button>
+            {JSON.parse(data).GameRange / 2 === 1 ? (
+              <button onClick={goResultPage}>랭킹보기</button>
+            ) : (
+              <button
+                onClick={() =>
+                  nextGame(
+                    JSON.parse(data).GameImage.find(
+                      (m: GameImageType) => m.fileIndex === Number(selectCard)
+                    )
+                  )
+                }
+              >
+                다음
+              </button>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

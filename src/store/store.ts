@@ -6,7 +6,9 @@ const worldcupReducers = combineReducers({
 });
 
 const store = configureStore({
-  reducer: worldcupReducers,
+  reducer: {
+    worldcupReducers: worldcupReducers,
+  },
 });
 
 export type RootState = ReturnType<typeof store.getState>;

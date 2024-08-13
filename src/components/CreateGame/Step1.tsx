@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useAppDispatch } from "../../hooks/redux";
 import { useForm } from "react-hook-form";
 import { scrollStep2, updateStep1 } from "../../store/worldcup/createWorldcup";

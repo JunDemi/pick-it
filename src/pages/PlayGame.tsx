@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { findSelectWorldcup } from "../server/firebaseWorldcup";
+import {
+  findSelectWorldcup,
+  getCreateRankAndUpdateView,
+} from "../server/firebaseWorldcup";
 import "../assets/Contents/playGame.scss";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAppDispatch } from "../hooks/redux";
@@ -130,19 +133,23 @@ function PlayGame() {
   };
 
   //게임 마무리 후 랭킹보기 페이지 이동
-  const goResultPage = (argData: GameImageType) => {
-    //dispatch에 전송할 payload
-    const payloadData = {
-      gameId: gameId,
-      fileIndex: argData.fileIndex,
-      fileName: argData.fileName,
-      filePath: argData.filePath,
+  const goResultPage = async (argData: GameImageType) => {
+    //로컬스토리지의 유저 정보 불러오기
+    const getUser = localStorage.getItem("pickit-user");
+    if (gameId) {
+      //dispatch에 전송할 payload
+      const payloadData = {
+        gameId: gameId,
+        userId: getUser ? String(JSON.parse(getUser).UserId) : null, //로그인한 사용자인지 익명인지
+        fileIndex: argData.fileIndex,
+        fileName: argData.fileName,
+        filePath: argData.filePath,
+      };
+      dispatch(getWinnerImage(payloadData)); //리덕스에 dispatch
+      localStorage.removeItem("game-data"); //게임 진행을 했던 로컬스토리지 제거
+      await getCreateRankAndUpdateView(payloadData); //firebase우승데이터 테이블 생성 & 해당 월드컵 조회수 증가 메소드
+      navigate(`/game-review/${payloadData.gameId}`); //현재 파라미터 값을 가진 랭킹보기 페이지로 이동
     }
-    if(gameId) {
-      dispatch(getWinnerImage(payloadData));
-    }
-    localStorage.removeItem("game-data");
-    navigate("/");
   };
 
   return fetchLoading ? (

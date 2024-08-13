@@ -3,6 +3,7 @@ import { FinishWorldcup } from "../../types/Worldcup";
 
 const initialState: FinishWorldcup = {
   gameId: "",
+  userId: null,
   fileIndex: 0,
   fileName: "",
   filePath: ""
@@ -15,6 +16,7 @@ const finishWorldcupSlice = createSlice({
     // playGame 클라이언트에서 입력값을 넘겨받은 후 게임Id, 우승한 데이터의 이미지 정보 업데이트
     getWinnerImage: (state, action) => {
         state.gameId = action.payload.gameId;
+        state.userId = action.payload.userId;
         state.fileIndex = action.payload.fileIndex;
         state.fileName = action.payload.fileName;
         state.filePath = action.payload.filePath;

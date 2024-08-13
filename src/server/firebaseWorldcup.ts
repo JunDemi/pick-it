@@ -5,8 +5,10 @@ import {
   DocumentData,
   getDoc,
   getDocs,
+  increment,
   orderBy,
   query,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "./firebase";
 import { SendData } from "../types/Worldcup";
@@ -28,6 +30,7 @@ export const getCreateWorldCup = async (argData: SendData) => {
     worldcupImages: argData.worldcupImages,
     createAt: currentTime,
     updateAt: currentTime,
+    view: 0,
   });
 };
 
@@ -74,7 +77,30 @@ export const findSelectWorldcup = async (id: string) => {
   if (findWorldcupData.exists()) {
     return {
       gameId: id,
-      gameInfo: findWorldcupData.data()
+      gameInfo: findWorldcupData.data(),
     };
   }
+};
+
+//
+export const getCreateRankAndUpdateView = async (payloadData: {
+  gameId: string;
+  userId: string | null;
+  fileIndex: number;
+  fileName: string;
+  filePath: string;
+}) => {
+  // //단일 월드컵 이미지 랭킹 데이터 추가
+  // await addDoc(collection(db, "imageRank"), {
+  //   gameId: payloadData.gameId,
+  //   userId: payloadData.userId,
+  //   fileIndex: payloadData.fileIndex,
+  //   fileName: payloadData.fileName,
+  //   filePath: payloadData.filePath,
+  // });
+  //조회 수 업데이트
+  const updateRef = doc(db, "worldcup", payloadData.gameId);
+  await updateDoc(updateRef, {
+    view: increment(1), //조회수 1 증가
+  });
 };

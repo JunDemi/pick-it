@@ -4,6 +4,12 @@ import { findSelectWorldcup } from "../server/firebaseWorldcup";
 import "../assets/Contents/playGame.scss";
 import { AnimatePresence, motion } from "framer-motion";
 
+interface GameImageType {
+  fileIndex: number;
+  fileName: string;
+  filePath: string;
+}
+
 function PlayGame() {
   //로컬스토리지 값을 동적으로 저장하는 상태
   const [data, setData] = useState<string>(() => {
@@ -16,7 +22,7 @@ function PlayGame() {
   const [tournamentPopup, setTournamentPopup] = useState<boolean>(true);
   const [fetchLoading, setFetchLoading] = useState<boolean>(true);
   //게임 카드 '선택하기' 클릭 시 오버레이를 위한 레이아웃 할당
-  const [selectCard, setSelectCard] = useState<string>("");
+  const [selectCard, setSelectCard] = useState<string>(""); //선택된 카드
 
   // 동적 라우팅으로 전송받은 월드컵 아이디 값 조회
   const { id: gameId } = useParams();
@@ -33,11 +39,7 @@ function PlayGame() {
   const setGameData = (
     gameId: string,
     gameTitle: string,
-    gameImage: {
-      fileIndex: number;
-      fileName: string;
-      filePath: string;
-    }[],
+    gameImage: GameImageType[],
     limit: number
   ) => {
     //1단계. 이미지 배열 랜덤 배치 후 limit만큼 slice
@@ -50,6 +52,7 @@ function PlayGame() {
         GameId: gameId,
         GameTitle: gameTitle,
         GameImage: slicedImage,
+        WinImage: [],
         GameRange: limit,
       })
     );
@@ -99,30 +102,19 @@ function PlayGame() {
   }, [gameId]);
 
   //카드 선택 후 다음 게임으로
-  const nextGame = (parseData: {
-    GameId: string;
-    GameTitle: string;
-    GameImage: {
-      fileIndex: number;
-      fileName: string;
-      filePath: string;
-    }[];
-    GameRange: number;
-  }) => {
-    const deletePrevImage = parseData.GameImage.slice(2) //0번째와 1번째 인덱스 제거
-    let nextRound = parseData.GameRange;
-    if(nextRound / 2 === deletePrevImage.length) { //다음 라운드로 넘어갈지
-      nextRound = nextRound / 2; //다음 라운드로
+  const nextGame = (winCard: GameImageType) => {
+    const parseData = JSON.parse(data);
+    parseData.GameImage = parseData.GameImage.slice(2); //게임 엔트리에 올라와있던 두 개의 항목 제거
+    parseData.WinImage = [...parseData.WinImage, winCard]; //다음 라운드에 진출할 카드를 배열에 추가
+    //엔트리 배열이 비어있으면 다음 라운드로
+    if (parseData.GameImage.length === 0) { 
+      parseData.GameRange = parseData.GameRange / 2; //다음 라운드
+      parseData.GameImage = parseData.WinImage;
+      parseData.WinImage = [];
     }
+
     //로컬스토리지 데이터 기반 state변경
-    setData(
-      JSON.stringify({
-        GameId: parseData.GameId,
-        GameTitle: parseData.GameTitle,
-        GameImage: deletePrevImage,
-        GameRange: nextRound,
-      })
-    );
+    setData(JSON.stringify(parseData));
     //오버레이 닫기
     setSelectCard("");
   };
@@ -184,38 +176,33 @@ function PlayGame() {
     <>
       <section className="game-container">
         <div className="game-title">
-          <span>{JSON.parse(data).GameRange === 2 ? "결승" : JSON.parse(data).GameRange + "강"}</span>
+          <span>
+            {JSON.parse(data).GameRange === 2
+              ? "결승"
+              : JSON.parse(data).GameRange + "강"}
+          </span>
           <h1>{JSON.parse(data).GameTitle}</h1>
         </div>
         <AnimatePresence>
           <div className="game-section">
             {JSON.parse(data)
               .GameImage.slice(0, 2)
-              .map(
-                (
-                  items: {
-                    fileIndex: number;
-                    fileName: string;
-                    filePath: string;
-                  },
-                  index: number
-                ) => (
-                  <div className="game-card" key={items.fileIndex}>
-                    <motion.img
-                      src={items.filePath}
-                      alt=""
-                      layoutId={String(index)}
-                    />
-                    <p>{items.fileName}</p>
-                    <button
-                      className={`btnBg${index}`}
-                      onClick={() => setSelectCard(String(index))}
-                    >
-                      선택하기
-                    </button>
-                  </div>
-                )
-              )}
+              .map((items: GameImageType, index: number) => (
+                <div className="game-card" key={items.fileIndex}>
+                  <motion.img
+                    src={items.filePath}
+                    alt=""
+                    layoutId={String(items.fileIndex)}
+                  />
+                  <p>{items.fileName}</p>
+                  <button
+                    className={`btnBg${index}`}
+                    onClick={() => setSelectCard(String(items.fileIndex))}
+                  >
+                    선택하기
+                  </button>
+                </div>
+              ))}
           </div>
         </AnimatePresence>
       </section>
@@ -228,18 +215,26 @@ function PlayGame() {
             exit={{ opacity: 0 }}
           >
             <motion.img
-              src={JSON.parse(data).GameImage[Number(selectCard)].filePath}
+              src={
+                JSON.parse(data).GameImage.find(
+                  (m: GameImageType) => m.fileIndex === Number(selectCard)
+                ).filePath
+              }
               alt=""
               layoutId={selectCard}
             />
             <h1>
-              {JSON.parse(data).GameImage[Number(selectCard)].fileName}{" "}
+              { JSON.parse(data).GameImage.find(
+                  (m: GameImageType) => m.fileIndex === Number(selectCard)
+                ).fileName}{" "}
               {JSON.parse(data).GameRange / 2 === 2
                 ? "결승 "
                 : JSON.parse(data).GameRange / 2 + "강 "}
               진출
             </h1>
-            <button onClick={() => nextGame(JSON.parse(data))}>다음</button>
+            <button onClick={() => nextGame(JSON.parse(data).GameImage.find(
+                  (m: GameImageType) => m.fileIndex === Number(selectCard)
+                ))}>다음</button>
           </motion.div>
         )}
       </AnimatePresence>

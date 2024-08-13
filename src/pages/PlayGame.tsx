@@ -116,7 +116,7 @@ function PlayGame() {
       parseData.WinImage = []; //선택된 이미지 배열 제거
       parseData.RoundLevel = 1; //라운드 매치 횟수 1번으로 초기화
     } else {
-      parseData.RoundLevel = parseData.RoundLevel + 1; //라운드 매치 횟수 1 증가
+      parseData.RoundLevel++; //라운드 매치 횟수 1 증가
     }
 
     //로컬스토리지 데이터 기반 state변경
@@ -130,6 +130,7 @@ function PlayGame() {
     localStorage.removeItem("game-data");
     navigate("/");
   };
+  
   return fetchLoading ? (
     <>
       <div className="before-game-message">

@@ -3,6 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { findSelectWorldcup } from "../server/firebaseWorldcup";
 import "../assets/Contents/playGame.scss";
 import { AnimatePresence, motion } from "framer-motion";
+import { useAppDispatch } from "../hooks/redux";
+import { getWinnerImage } from "../store/worldcup/finishWorldcup";
 
 interface GameImageType {
   fileIndex: number;
@@ -11,6 +13,8 @@ interface GameImageType {
 }
 
 function PlayGame() {
+  //redux dispatch 요청 메소드
+  const dispatch = useAppDispatch();
   //네비게이터
   const navigate = useNavigate();
   //로컬스토리지 값을 동적으로 저장하는 상태
@@ -126,11 +130,21 @@ function PlayGame() {
   };
 
   //게임 마무리 후 랭킹보기 페이지 이동
-  const goResultPage = () => {
+  const goResultPage = (argData: GameImageType) => {
+    //dispatch에 전송할 payload
+    const payloadData = {
+      gameId: gameId,
+      fileIndex: argData.fileIndex,
+      fileName: argData.fileName,
+      filePath: argData.filePath,
+    }
+    if(gameId) {
+      dispatch(getWinnerImage(payloadData));
+    }
     localStorage.removeItem("game-data");
     navigate("/");
   };
-  
+
   return fetchLoading ? (
     <>
       <div className="before-game-message">
@@ -256,7 +270,17 @@ function PlayGame() {
                 : JSON.parse(data).GameRange / 2 + "강 진출"}
             </h1>
             {JSON.parse(data).GameRange / 2 === 1 ? (
-              <button onClick={goResultPage}>랭킹보기</button>
+              <button
+                onClick={() =>
+                  goResultPage(
+                    JSON.parse(data).GameImage.find(
+                      (m: GameImageType) => m.fileIndex === Number(selectCard)
+                    )
+                  )
+                }
+              >
+                랭킹보기
+              </button>
             ) : (
               <button
                 onClick={() =>

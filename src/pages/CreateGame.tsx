@@ -41,7 +41,7 @@ function CreateGame() {
 
   //redux에 저장된 step page number selector
   const currentStepPage = useAppSelector(
-    (state) => state.worldcupReducers.createWorldcupReducer.pageStep
+    (state) => state.createWorldcupReducers.createWorldcupReducer.pageStep
   );
   return (
     <div className='create-game-container'>

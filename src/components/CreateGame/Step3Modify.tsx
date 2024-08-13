@@ -16,7 +16,7 @@ function Step3Modify(props: { imageList: File[] }) {
   const user = localStorage.getItem("pickit-user");
   //redux에 저장된 월드컵 생성 정보 셀렉터
   const createWorldcupData = useAppSelector(
-    (state) => state.worldcupReducers.createWorldcupReducer
+    (state) => state.createWorldcupReducers.createWorldcupReducer
   );
   //redux dispatch 요청 메소드
   const dispatch = useAppDispatch();

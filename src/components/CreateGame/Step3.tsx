@@ -6,7 +6,7 @@ import Step3Modify from "./Step3Modify";
 function Step3() {
   //redux에 저장된 월드컵 생성 정보 셀렉터
   const createWorldcupData = useAppSelector(
-    (state) => state.worldcupReducers.createWorldcupReducer
+    (state) => state.createWorldcupReducers.createWorldcupReducer
   );
   //파일 배열 저장
   const [imageList, setImageList] = useState<File[]>([]);

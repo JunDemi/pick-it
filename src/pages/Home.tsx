@@ -1,9 +1,12 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Banner from "../components/Home/Banner/Banner";
-import { useLocation } from "react-router-dom";
+import { useAppSelector } from "../hooks/redux";
 
 function Home() {
-  const location = useLocation();
+  const ddd = useAppSelector(
+    (state) => state.finishWorldcupReducers.finishWorldcupReducer
+  );
+  console.log(ddd);
   return (
     <section style={{ padding: "0 7rem" }}>
       <Banner />

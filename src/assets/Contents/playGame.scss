@@ -131,6 +131,13 @@
                     background-color: #798d89;
                 }
             }
+            .game-set-button{
+                background-color: #000;
+
+                &:hover {
+                    background-color: #515151;
+                }
+            }
         }
     }
 }

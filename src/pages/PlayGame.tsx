@@ -51,11 +51,12 @@ function PlayGame() {
     //2단계. 매개변수 gameId와 상수 slicedImage를 로컬스토리지에 셋업
     setData(
       JSON.stringify({
-        GameId: gameId,
-        GameTitle: gameTitle,
-        GameImage: slicedImage,
-        WinImage: [],
-        GameRange: limit,
+        GameId: gameId, //게임 ID
+        GameTitle: gameTitle, //게임 제목
+        GameImage: slicedImage, //이미지 배열
+        WinImage: [], //선택한 이미지 배열
+        GameRange: limit, //게임 라운드
+        RoundLevel: 1, //해당 라운드의 n번째 매치
       })
     );
   };
@@ -112,7 +113,10 @@ function PlayGame() {
     if (parseData.GameImage.length === 0) {
       parseData.GameRange = parseData.GameRange / 2; //다음 라운드 넘버
       parseData.GameImage = parseData.WinImage.sort(() => Math.random() - 0.5); //선택된 이미지들의 배열로 재할당 후 다시 랜덤으로 배치
-      parseData.WinImage = [];
+      parseData.WinImage = []; //선택된 이미지 배열 제거
+      parseData.RoundLevel = 1; //라운드 매치 횟수 1번으로 초기화
+    } else {
+      parseData.RoundLevel = parseData.RoundLevel + 1; //라운드 매치 횟수 1 증가
     }
 
     //로컬스토리지 데이터 기반 state변경
@@ -191,6 +195,11 @@ function PlayGame() {
               : JSON.parse(data).GameRange + "강"}
           </span>
           <h1>{JSON.parse(data).GameTitle}</h1>
+          {JSON.parse(data).GameRange !== 2 && (
+            <p>
+              {JSON.parse(data).RoundLevel} / {JSON.parse(data).GameRange / 2}
+            </p>
+          )}
         </div>
         <AnimatePresence>
           <div className="game-section">

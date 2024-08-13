@@ -1,13 +1,20 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import createWorldcup from "./worldcup/createWorldcup";
+import finishWorldcup from "./worldcup/finishWorldcup";
 
-const worldcupReducers = combineReducers({
+//월드컵 생성
+const createWorldcupReducers = combineReducers({
   createWorldcupReducer: createWorldcup,
+});
+//월드컵 우승자
+const finishWorldcupReducers = combineReducers({
+  finishWorldcupReducer: finishWorldcup,
 });
 
 const store = configureStore({
   reducer: {
-    worldcupReducers: worldcupReducers,
+    createWorldcupReducers: createWorldcupReducers,
+    finishWorldcupReducers: finishWorldcupReducers,
   },
 });
 

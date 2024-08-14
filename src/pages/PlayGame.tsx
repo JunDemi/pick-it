@@ -6,8 +6,6 @@ import {
 } from "../server/firebaseWorldcup";
 import "../assets/Contents/playGame.scss";
 import { AnimatePresence, motion } from "framer-motion";
-import { useAppDispatch } from "../hooks/redux";
-import { getWinnerImage } from "../store/worldcup/finishWorldcup";
 
 interface GameImageType {
   fileIndex: number;
@@ -16,8 +14,6 @@ interface GameImageType {
 }
 
 function PlayGame() {
-  //redux dispatch 요청 메소드
-  const dispatch = useAppDispatch();
   //네비게이터
   const navigate = useNavigate();
   //로컬스토리지 값을 동적으로 저장하는 상태
@@ -30,6 +26,8 @@ function PlayGame() {
   //토너먼트 및 로딩UI 상태
   const [tournamentPopup, setTournamentPopup] = useState<boolean>(true);
   const [fetchLoading, setFetchLoading] = useState<boolean>(true);
+  //게임 종료 후 랭킹보기 클릭 시 로딩 동작 상태
+  const [endLoading, setEndLoading] = useState<boolean>(false);
   //게임 카드 '선택하기' 클릭 시 오버레이를 위한 레이아웃 할당
   const [selectCard, setSelectCard] = useState<string>(""); //선택된 카드
 
@@ -134,6 +132,7 @@ function PlayGame() {
 
   //게임 마무리 후 랭킹보기 페이지 이동
   const goResultPage = async (argData: GameImageType) => {
+    setEndLoading(true);
     //로컬스토리지의 유저 정보 불러오기
     const getUser = localStorage.getItem("pickit-user");
     if (gameId) {
@@ -145,7 +144,6 @@ function PlayGame() {
         fileName: argData.fileName,
         filePath: argData.filePath,
       };
-      dispatch(getWinnerImage(payloadData)); //리덕스에 dispatch
       localStorage.removeItem("game-data"); //게임 진행을 했던 로컬스토리지 제거
       await getCreateRankAndUpdateView(payloadData); //firebase우승데이터 테이블 생성 & 해당 월드컵 조회수 증가 메소드
       navigate(`/game-review/${payloadData.gameId}`); //현재 파라미터 값을 가진 랭킹보기 페이지로 이동
@@ -278,6 +276,7 @@ function PlayGame() {
             </h1>
             {JSON.parse(data).GameRange / 2 === 1 ? (
               <button
+                disabled={endLoading}
                 onClick={() =>
                   goResultPage(
                     JSON.parse(data).GameImage.find(
@@ -286,7 +285,7 @@ function PlayGame() {
                   )
                 }
               >
-                랭킹보기
+                {endLoading ? "로딩중..." : "랭킹보기"}
               </button>
             ) : (
               <button

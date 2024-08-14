@@ -128,7 +128,7 @@ export const getCreateRankAndUpdateView = async (payloadData: {
       const updateImageRankRef = doc(db, "imageRank", findId);
       //이미지 랭킹 우승 횟수 업데이트
       await updateDoc(updateImageRankRef, {
-         //비회원일경우 null. (arrayUnion은 기존 배열에 새로 추가. 배열 내에 동일한 id가 있다면 추가되지 않음)
+        //비회원일경우 null. (arrayUnion은 기존 배열에 새로 추가. 배열 내에 동일한 id가 있다면 추가되지 않음)
         userId: arrayUnion(payloadData.userId && payloadData.userId),
         winRate: increment(1), //우승 횟수 1 증가
       });
@@ -139,4 +139,18 @@ export const getCreateRankAndUpdateView = async (payloadData: {
   await updateDoc(updateRef, {
     view: increment(1), //조회수 1 증가
   });
+};
+
+//매개변수 = 월드컵 게임 ID, 이미지 랭킹 데이터 불러오기
+export const getImageRankList = async(gameID?: string) => {
+  const rankFindQuery = query(imageRankRef, where("gameId", "==", gameID));
+  const imageRankDocs = await getDocs(rankFindQuery).then(res => {return res.docs});
+  const result = imageRankDocs.map(data => {
+    return {
+      fileName: data.data().fileName,
+      filePath: data.data().filePath,
+      winRate: data.data().winRate,
+    }
+  });
+  console.log(result);
 };

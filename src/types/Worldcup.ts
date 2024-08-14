@@ -32,7 +32,13 @@ export interface WorldcupList {
 //월드컵 이후 1등 데이터 리듀서
 export interface FinishWorldcup {
   gameId: string;
+  userId: string | null;
   fileIndex: number;
   fileName: string;
   filePath: string;
+}
+export interface ImageRankData {
+  fileName: string;
+  filePath: string;
+  winRate: number;
 }

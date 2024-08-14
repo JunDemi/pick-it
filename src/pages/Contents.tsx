@@ -117,10 +117,10 @@ function Contents() {
                       )}
                     </div>
                     <div className='card-link'>
-                      <Link to={{ pathname: `/play-game/${items.worldcupId}` }}>
+                      <Link to={`/play-game/${items.worldcupId}`}>
                         시작하기
                       </Link>
-                      <Link to=''>랭킹보기</Link>
+                      <Link to={`/game-review/${items.worldcupId}`}>랭킹보기</Link>
                     </div>
                   </div>
                 ))}

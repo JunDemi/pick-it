@@ -13,7 +13,7 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "./firebase";
-import { SendData } from "../types/Worldcup";
+import { ImageRankData, SendData } from "../types/Worldcup";
 
 //파이어베이스 DB연동
 const worldcupRef = collection(db, "worldcup");
@@ -141,16 +141,26 @@ export const getCreateRankAndUpdateView = async (payloadData: {
   });
 };
 
-//매개변수 = 월드컵 게임 ID, 이미지 랭킹 데이터 불러오기
-export const getImageRankList = async(gameID?: string) => {
+//매개변수 = 월드컵 게임 ID(url파라미터), 이미지 랭킹 데이터 불러오기
+export const getImageRankList = async (gameID?: string): Promise<ImageRankData[] | null> => {
+  //쿼리
   const rankFindQuery = query(imageRankRef, where("gameId", "==", gameID));
-  const imageRankDocs = await getDocs(rankFindQuery).then(res => {return res.docs});
-  const result = imageRankDocs.map(data => {
-    return {
-      fileName: data.data().fileName,
-      filePath: data.data().filePath,
-      winRate: data.data().winRate,
-    }
-  });
-  console.log(result);
+  const imageRankDocs = await getDocs(rankFindQuery);
+  //잘못된 파라미터 주소나 월드컵 랭킹이 아예 없는 경우
+  if (imageRankDocs.empty) {
+    return null;
+  } else {
+    const result = imageRankDocs.docs.map((data) => {
+      return {
+        fileName: data.data().fileName,
+        filePath: data.data().filePath,
+        winRate: data.data().winRate,
+      };
+    });
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(result);
+      }, 1000);
+    });
+  }
 };

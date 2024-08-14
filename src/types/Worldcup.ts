@@ -37,3 +37,8 @@ export interface FinishWorldcup {
   fileName: string;
   filePath: string;
 }
+export interface ImageRankData {
+  fileName: string;
+  filePath: string;
+  winRate: number;
+}

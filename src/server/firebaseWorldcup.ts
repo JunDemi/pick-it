@@ -14,7 +14,6 @@ import {
 } from "firebase/firestore";
 import { db } from "./firebase";
 import { SendData } from "../types/Worldcup";
-import { v4 as uuid } from "uuid";
 
 //파이어베이스 DB연동
 const worldcupRef = collection(db, "worldcup");
@@ -111,7 +110,7 @@ export const getCreateRankAndUpdateView = async (payloadData: {
     await addDoc(collection(db, "imageRank"), {
       findKey: payloadData.gameId + "-" + String(payloadData.fileIndex), //아이디와 파일인덱스 식별
       gameId: payloadData.gameId,
-      userId: payloadData.userId ? [payloadData.userId] : ["익명" + uuid()], //비회원일경우 "익명 + (유니크텍스트)"으로 등록
+      userId: payloadData.userId && [payloadData.userId], //비회원일경우 null
       fileIndex: payloadData.fileIndex,
       fileName: payloadData.fileName,
       filePath: payloadData.filePath,
@@ -129,8 +128,8 @@ export const getCreateRankAndUpdateView = async (payloadData: {
       const updateImageRankRef = doc(db, "imageRank", findId);
       //이미지 랭킹 우승 횟수 업데이트
       await updateDoc(updateImageRankRef, {
-         //비회원일경우 "익명 + (유니크텍스트)"으로 등록 (arrayUnion은 기존 배열에 새로 추가. 배열 내에 동일한 id가 있다면 추가되지 않음)
-        userId: arrayUnion(payloadData.userId ? payloadData.userId : "익명" + uuid()),
+        //비회원일경우 null. (arrayUnion은 기존 배열에 새로 추가. 배열 내에 동일한 id가 있다면 추가되지 않음)
+        userId: arrayUnion(payloadData.userId && payloadData.userId),
         winRate: increment(1), //우승 횟수 1 증가
       });
     }
@@ -140,4 +139,18 @@ export const getCreateRankAndUpdateView = async (payloadData: {
   await updateDoc(updateRef, {
     view: increment(1), //조회수 1 증가
   });
+};
+
+//매개변수 = 월드컵 게임 ID, 이미지 랭킹 데이터 불러오기
+export const getImageRankList = async(gameID?: string) => {
+  const rankFindQuery = query(imageRankRef, where("gameId", "==", gameID));
+  const imageRankDocs = await getDocs(rankFindQuery).then(res => {return res.docs});
+  const result = imageRankDocs.map(data => {
+    return {
+      fileName: data.data().fileName,
+      filePath: data.data().filePath,
+      winRate: data.data().winRate,
+    }
+  });
+  console.log(result);
 };

@@ -1,5 +1,6 @@
 import {
   addDoc,
+  arrayUnion,
   collection,
   doc,
   DocumentData,
@@ -9,12 +10,15 @@ import {
   orderBy,
   query,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import { db } from "./firebase";
 import { SendData } from "../types/Worldcup";
+import { v4 as uuid } from "uuid";
 
 //파이어베이스 DB연동
 const worldcupRef = collection(db, "worldcup");
+const imageRankRef = collection(db, "imageRank");
 
 // 월드컵 생성
 export const getCreateWorldCup = async (argData: SendData) => {
@@ -82,7 +86,7 @@ export const findSelectWorldcup = async (id: string) => {
   }
 };
 
-//
+//단일 월드컵에 대한 이미지 랭킹. 각 이미지의 우승 횟수를 업데이트
 export const getCreateRankAndUpdateView = async (payloadData: {
   gameId: string;
   userId: string | null;
@@ -90,16 +94,49 @@ export const getCreateRankAndUpdateView = async (payloadData: {
   fileName: string;
   filePath: string;
 }) => {
-  // //단일 월드컵 이미지 랭킹 데이터 추가
-  // await addDoc(collection(db, "imageRank"), {
-  //   gameId: payloadData.gameId,
-  //   userId: payloadData.userId,
-  //   fileIndex: payloadData.fileIndex,
-  //   fileName: payloadData.fileName,
-  //   filePath: payloadData.filePath,
-  // });
-  //조회 수 업데이트
+  //해당 게임 아이디를 가진 데이터 업데이트
   const updateRef = doc(db, "worldcup", payloadData.gameId);
+  //단일 이미지 랭킹 존재 여부를 확인
+  const rankFindQuery = query(
+    imageRankRef,
+    where(
+      "findKey",
+      "==",
+      payloadData.gameId + "-" + String(payloadData.fileIndex)
+    ) //아이디와 파일인덱스 식별키가 동일한 데이터 추출
+  );
+  const imageRankFinder = await getDocs(rankFindQuery);
+  //해당 아이디를 가진 데이터가 존재하지 않으면 addDoc, 존재하면 updateDoc
+  if (imageRankFinder.empty) {
+    await addDoc(collection(db, "imageRank"), {
+      findKey: payloadData.gameId + "-" + String(payloadData.fileIndex), //아이디와 파일인덱스 식별
+      gameId: payloadData.gameId,
+      userId: payloadData.userId ? [payloadData.userId] : ["익명" + uuid()], //비회원일경우 "익명 + (유니크텍스트)"으로 등록
+      fileIndex: payloadData.fileIndex,
+      fileName: payloadData.fileName,
+      filePath: payloadData.filePath,
+      winRate: 1,
+    });
+  } else {
+    //이미지 랭킹 데이터의 ID값 불러오기
+    const findId = imageRankFinder.docs.find(
+      (data) =>
+        data.data().findKey ===
+        payloadData.gameId + "-" + String(payloadData.fileIndex)
+    )?.id;
+    //undefined가 아니면
+    if (findId) {
+      const updateImageRankRef = doc(db, "imageRank", findId);
+      //이미지 랭킹 우승 횟수 업데이트
+      await updateDoc(updateImageRankRef, {
+         //비회원일경우 "익명 + (유니크텍스트)"으로 등록 (arrayUnion은 기존 배열에 새로 추가. 배열 내에 동일한 id가 있다면 추가되지 않음)
+        userId: arrayUnion(payloadData.userId ? payloadData.userId : "익명" + uuid()),
+        winRate: increment(1), //우승 횟수 1 증가
+      });
+    }
+  }
+
+  //조회 수 업데이트
   await updateDoc(updateRef, {
     view: increment(1), //조회수 1 증가
   });

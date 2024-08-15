@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Header from "./components/Header";
 import Home from "./pages/Home";
 import "../src/assets/global.scss";
@@ -67,7 +67,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Header />
+      <HeaderDisplay/>
       {localUser !== null && userPopupToggle ? (
         <UserPopup userData={userData} />
       ) : null}
@@ -86,3 +86,9 @@ function App() {
 }
 
 export default App;
+
+function HeaderDisplay() {
+  //현재 경로가 'play-game' (게임 진행중 일 때)
+  const path = useLocation().pathname.includes('/play-game');
+  return path ? null : <Header/>
+}

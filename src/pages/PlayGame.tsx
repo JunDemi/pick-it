@@ -153,9 +153,9 @@ function PlayGame() {
 
   return fetchLoading ? (
     <>
-      <div className='before-game-message'>
+      <div className="before-game-message">
         <h2>게임을 불러오는 중입니다...</h2>
-        <div className='loading-spiner'>
+        <div className="loading-spiner">
           <hr />
           <div />
         </div>
@@ -163,13 +163,13 @@ function PlayGame() {
       <AnimatePresence>
         {tournamentPopup && (
           <motion.div
-            className='tournament-select-popup'
+            className="tournament-select-popup"
             initial={{ opacity: 0 }}
             animate={tournamentPopup ? { opacity: 1 } : { opacity: 0 }}
             exit={{ opacity: 0 }}
           >
             <h2>라운드를 선택해주세요.</h2>
-            <div className='select-buttons'>
+            <div className="select-buttons">
               {range > 128 && (
                 <button onClick={() => startGame(range / 64)}>
                   {range / 64}강
@@ -206,16 +206,18 @@ function PlayGame() {
     </>
   ) : (
     <>
-      <section className='game-container'>
-        <div className='game-title'>
-          <span className={`game-range-label-${JSON.parse(data).GameRange}`}>
-            {JSON.parse(data).GameRange === 2
-              ? "결승"
-              : JSON.parse(data).GameRange === 1
-              ? "우승"
-              : JSON.parse(data).GameRange + "강"}
-          </span>
-          <h1>{JSON.parse(data).GameTitle}</h1>
+      <section className="game-container">
+        <div className="game-title">
+          <h1>
+            <span className={`game-range-label-${JSON.parse(data).GameRange}`}>
+              {JSON.parse(data).GameRange === 2
+                ? "결승"
+                : JSON.parse(data).GameRange === 1
+                ? "우승"
+                : JSON.parse(data).GameRange + "강"}
+            </span>
+            {JSON.parse(data).GameTitle}
+          </h1>
           {JSON.parse(data).GameRange !== 2 && (
             <p>
               {JSON.parse(data).RoundLevel} / {JSON.parse(data).GameRange / 2}
@@ -223,20 +225,20 @@ function PlayGame() {
           )}
         </div>
         <AnimatePresence>
-          <div className='game-section'>
+          <div className="game-section">
             {JSON.parse(data)
               .GameImage.slice(0, 2)
-              .map((items: GameImageType, index: number) => (
-                <div className='game-card' key={items.fileIndex}>
+              .map((items: GameImageType) => (
+                <div className="game-card" key={items.fileIndex}>
                   <motion.img
                     src={items.filePath}
-                    alt=''
+                    alt=""
                     layoutId={String(items.fileIndex)}
                   />
                   <p>{items.fileName}</p>
 
                   <button
-                    className='select-button'
+                    className="select-button"
                     onClick={() => setSelectCard(String(items.fileIndex))}
                   >
                     선택하기
@@ -249,7 +251,7 @@ function PlayGame() {
       <AnimatePresence>
         {selectCard !== "" && (
           <motion.div
-            className='card-selected'
+            className="card-selected"
             initial={{ opacity: 0 }}
             animate={selectCard !== "" ? { opacity: 1 } : { opacity: 0 }}
             exit={{ opacity: 0 }}
@@ -258,17 +260,17 @@ function PlayGame() {
               <>
                 <Confetti particleCount={100} mode={"fall"} />
 
-                <motion.div className='select-card'>
+                <motion.div className="select-card">
                   <motion.img
                     src={
                       JSON.parse(data).GameImage.find(
                         (m: GameImageType) => m.fileIndex === Number(selectCard)
                       ).filePath
                     }
-                    alt=''
+                    alt=""
                     layoutId={selectCard}
                   />
-                  <div className='select-infoBox'>
+                  <div className="select-infoBox">
                     <h1>
                       {
                         JSON.parse(data).GameImage.find(
@@ -276,23 +278,45 @@ function PlayGame() {
                             m.fileIndex === Number(selectCard)
                         ).fileName
                       }{" "}
-                      우승!
+                      우승!!!
+                      <svg
+                        className="win-star top"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"
+                        />
+                      </svg>
+                      <svg
+                        className="win-star bottom"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"
+                        />
+                      </svg>
                     </h1>
                   </div>
                 </motion.div>
               </>
             ) : (
-              <motion.div className='select-card'>
+              <motion.div className="select-card">
                 <motion.img
                   src={
                     JSON.parse(data).GameImage.find(
                       (m: GameImageType) => m.fileIndex === Number(selectCard)
                     ).filePath
                   }
-                  alt=''
+                  alt=""
                   layoutId={selectCard}
                 />
-                <div className='select-infoBox'>
+                <div className="select-infoBox">
                   <h1>
                     {
                       JSON.parse(data).GameImage.find(
@@ -300,8 +324,8 @@ function PlayGame() {
                       ).fileName
                     }{" "}
                     {JSON.parse(data).GameRange / 2 === 2
-                      ? " 결승 진출"
-                      : JSON.parse(data).GameRange / 2 + "강 진출"}
+                      ? " 결승 진출!"
+                      : JSON.parse(data).GameRange / 2 + "강 진출!"}
                   </h1>
                 </div>
               </motion.div>
@@ -322,7 +346,7 @@ function PlayGame() {
             ) : (
               <motion.button
                 initial={{ opacity: 0 }}
-                animate={{ opacity: 1, transition: { delay: 1 } }}
+                animate={{ opacity: 1, transition: { delay: 0.5 } }}
                 onClick={() =>
                   nextGame(
                     JSON.parse(data).GameImage.find(

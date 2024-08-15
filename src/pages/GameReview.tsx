@@ -18,6 +18,8 @@ function GameReview() {
     });
   }, [gameId]);
 
+  console.log(imgRankData);
+
   return isLoading ? (
     <div className="before-game-message">
       <h2>랭킹을 불러오는 중입니다...</h2>

@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { FaUser } from "react-icons/fa";
-import { PopupContext } from "../context/PopupContext";
+import { PopupContext } from "../../context/PopupContext";
 
 function Header() {
   //유저 프로필 팝업창 toggle 상태값

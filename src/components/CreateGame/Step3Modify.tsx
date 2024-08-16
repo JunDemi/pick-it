@@ -8,12 +8,14 @@ import { getCreateWorldCup } from "../../server/firebaseWorldcup";
 import { useNavigate } from "react-router-dom";
 import { getReset } from "../../store/worldcup/createWorldcup";
 import { AnimatePresence, motion } from "framer-motion";
+import { getUserData } from "../../server/firebaseAuth";
 
 function Step3Modify(props: { imageList: File[] }) {
   //네비게이터
   const navigate = useNavigate();
   //로컬스토리지 사용자 정보 불러오기
   const user = localStorage.getItem("pickit-user");
+  const [userNickName, setUserNickName] = useState<string>("");
   //redux에 저장된 월드컵 생성 정보 셀렉터
   const createWorldcupData = useAppSelector(
     (state) => state.createWorldcupReducers.createWorldcupReducer
@@ -63,6 +65,7 @@ function Step3Modify(props: { imageList: File[] }) {
     setLoading(true);
     if (user) {
       const userId = JSON.parse(user).UserId as string; //사용자 ID
+      await getUserData(userId).then(res => { setUserNickName(res[1]) }); //nickName할당
       //월드컵 게임 이미지 파일 스토리지 업로드 함수
       inputData.forEach((images) => {
         const imageRef = ref(
@@ -89,9 +92,11 @@ function Step3Modify(props: { imageList: File[] }) {
   useEffect(() => {
     if (uploadedImageObject.length === inputData.length && user) {
       //user여부는 덤
-      //백엔드로 전송할 데이터
+      const userId = JSON.parse(user).UserId as string
+      // //백엔드로 전송할 데이터
       const sendData: SendData = {
-        userId: JSON.parse(user).UserId as string, //사용자 ID
+        userId: userId, //사용자 ID
+        nickName: userNickName, //사용자 닉네임
         worldcupTitle: createWorldcupData.worldcupTitle, //월드컵 제목
         worldcupDescription: createWorldcupData.worldcupDescription, //월드컵 설명
         tournamentRange: createWorldcupData.tournamentRange, //토너먼트 범위

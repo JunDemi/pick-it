@@ -106,6 +106,7 @@ function Contents() {
                     <div className='worldcup-title'>
                       <h3>{items.worldcupInfo.worldcupTitle}</h3>
                     </div>
+                    <p className="worldcup-creator-name">{items.worldcupInfo.nickName}님이 작성</p>
                     <div className='worldcup-description'>
                       <p>{items.worldcupInfo.worldcupDescription}</p>
                     </div>

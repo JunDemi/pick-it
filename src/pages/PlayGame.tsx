@@ -7,6 +7,7 @@ import {
 import "../assets/Contents/playGame.scss";
 import { AnimatePresence, motion } from "framer-motion";
 import Confetti from "react-confetti-boom";
+import GameHeader from "../components/WorldcupGame/GameHeader";
 
 interface GameImageType {
   fileIndex: number;
@@ -206,6 +207,7 @@ function PlayGame() {
     </>
   ) : (
     <>
+      <GameHeader/>
       <section className="game-container">
         <div className="game-title">
           <h1>
@@ -258,7 +260,7 @@ function PlayGame() {
           >
             {JSON.parse(data).GameRange / 2 === 1 ? (
               <>
-                <Confetti particleCount={100} mode={"fall"} />
+                <Confetti particleCount={200} mode={"fall"} />
 
                 <motion.div className="select-card">
                   <motion.img

@@ -1,0 +1,27 @@
+.game-header-container {
+    z-index: 30;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    padding: 1rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .game-header-icons {
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        color: #000;
+        font-size: 13px;
+        justify-content: center;
+        align-items: center;
+    }
+    .right-icons{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 2.5rem;
+    }
+}

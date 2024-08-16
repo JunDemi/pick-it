@@ -29,7 +29,7 @@ function GameReview() {
       </div>
     </div>
   ) : (
-    imgRankData ? <div>yes</div> : <p>랭킹 정보가 없습니다.</p>
+    imgRankData ? <section>yes</section> : <p>랭킹 정보가 없습니다.</p>
   );
 }
 

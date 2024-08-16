@@ -89,6 +89,10 @@
             @media screen and (min-width:1351px) {
                 width: 18rem;
             }
+             //뷰포트 1800이상 
+             @media screen and (min-width:1800px) {
+                width: 22rem;
+            }
 
             margin: 0 auto;
             display: flex;

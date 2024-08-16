@@ -54,10 +54,14 @@
 }
 
 .game-container {
-    margin-top: 2rem;
     padding: 0 7rem;
+    height: 100vh;
+    overflow-y: hidden;
+    display: flex;
+    flex-direction: column;
 
     .game-title {
+        margin-top: 2rem;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -103,7 +107,7 @@
     }
 
     .game-section {
-        margin-top: 2rem;
+        flex-grow: 1;
         display: flex;
         justify-content: center;
         gap: 7rem;
@@ -115,6 +119,7 @@
             align-items: center;
             width: 33rem;
             gap: 1.5rem;
+
 
             img {
                 border-radius: 20px;
@@ -141,17 +146,17 @@
                 padding: 10px 40px;
                 border-radius: 8px;
                 border: 0;
-                background-color: rgb(110, 110, 110);
+                background-color: #074C77;
                 letter-spacing: 1.5px;
                 font-size: 13px;
                 transition: all 0.3s ease;
-                box-shadow: rgb(68, 68, 68) 0px 10px 0px 0px;
+                box-shadow: #05324f 0px 8px 0px 0px;
                 color: hsl(0, 0%, 100%);
                 font-family: 'p_bold';
                 cursor: pointer;
 
                 &:hover {
-                    box-shadow: rgb(46, 46, 46) 0px 7px 0px 0px;
+                    box-shadow: #042a41 0px 5px 0px 0px;
                 }
 
                 &:active {

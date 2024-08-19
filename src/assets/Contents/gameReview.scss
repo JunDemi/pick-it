@@ -8,23 +8,24 @@
         flex-direction: column;
         gap: 3rem;
 
+        .aside-title{
+            font-size: 12px;
+            font-family: 'p_bold';
+            color: #6d6d6d;
+        }
         .info-name {
             display: flex;
             flex-direction: column;
             gap: 1rem;
-            h1{
-                font-size: 15px;
-                font-family: 'p_bold';
-            }
             .thunbnail{
                 display: flex;
                 align-items: center;
                 gap: 1.5rem;
-                font-size: 18px;
+                font-size: 16px;
                 font-family: 'p_bold';
                 div{
-                    width: 8rem;
-                    height: 6rem;
+                    width: 6rem;
+                    height: 5rem;
                     display: flex;
                     overflow: hidden;
                     img{
@@ -32,6 +33,31 @@
                         object-fit: cover;
                     }
                 }
+            }
+            .categories{
+                display: flex;
+                gap: 10px;
+                span{
+                    font-size: 12px;
+                    padding: 8px 20px;
+                    font-family: 'p_thin';
+                    color: #203B98;
+                    border: 1px solid #203B98;
+                    border-radius: 30px;
+                }
+            }
+        }
+        .info-my-pick{
+            h2{
+                margin: 1rem 0 0.5rem 0;
+                font-size: 14px;
+                font-family: 'p_bold';
+            }
+            img{
+                width: 10rem;
+                height: 10rem;
+                object-fit: cover;
+                border-radius: 10px;
             }
         }
     }

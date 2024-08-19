@@ -8,6 +8,7 @@ import { ImageRankData } from "../types/Worldcup";
 import { DocumentData } from "firebase/firestore";
 import "../assets/Contents/gameReview.scss";
 import CreatorInfo from "../components/GameReview/CreatorInfo";
+import ImageRankTable from "../components/GameReview/ImageRankTable";
 
 function GameReview() {
   //로그인 상태
@@ -115,7 +116,7 @@ function GameReview() {
           월드컵 시작하기
         </Link>
       </aside>
-      <section className="game-review-rank">section</section>
+      <ImageRankTable allImg={allData.gameInfo.worldcupImages} imgRankData={imgRankData}/>
     </div>
   ) : (
     <div className="before-game-message">랭킹 정보를 불러오지 못했습니다.</div>

@@ -3,7 +3,7 @@ import {
   findSelectWorldcup,
   getImageRankList,
 } from "../server/firebaseWorldcup";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { ImageRankData } from "../types/Worldcup";
 import { DocumentData } from "firebase/firestore";
 import "../assets/Contents/gameReview.scss";
@@ -26,14 +26,17 @@ function GameReview() {
 
   //현재 회원이 해당 월드컵에서 고른 이미지 데이터 불러오기
   const getMyRecentPick = () => {
-    if(isUser && imgRankData) {
+    if (isUser && imgRankData) {
       const userId = JSON.parse(isUser).UserId; //유저 ID
-      const list = imgRankData.map((data) => { //이미지 랭크 배열에서 유저ID 배열에 해당 유저가 존재하는 값만 추출
-        return data.userId.indexOf(userId) === 0 ? data : null;
-      }).filter(data => data !== null); //null값으로 리턴 되는 배열은 제거
+      const list = imgRankData
+        .map((data) => {
+          //이미지 랭크 배열에서 유저ID 배열에 해당 유저가 존재하는 값만 추출
+          return data.userId.indexOf(userId) === 0 ? data : null;
+        })
+        .filter((data) => data !== null); //null값으로 리턴 되는 배열은 제거
       return list[0];
     }
-  }
+  };
 
   useEffect(() => {
     if (gameId) {
@@ -50,7 +53,6 @@ function GameReview() {
         .then(() => setIsLoading(false)); // 3.로딩 종료
     }
   }, [gameId]);
-
 
   return isLoading ? (
     <div className="before-game-message">
@@ -78,14 +80,40 @@ function GameReview() {
             ))}
           </div>
         </div>
-        {isUser &&
+        {isUser && (
           <div className="info-my-pick">
             <h1 className="aside-title">회원님이 최근에 선택한 사진</h1>
-            <h2>{getMyRecentPick()?.fileName}</h2>
-            <img src={getMyRecentPick()?.filePath} alt=""/>
+            {getMyRecentPick() ? (
+              <>
+                <h2>{getMyRecentPick()?.fileName}</h2>
+                <img src={getMyRecentPick()?.filePath} alt="" />
+              </>
+            ) : (
+              <h3>* 월드컵에 참여하시면 볼 수 있습니다.</h3>
+            )}
           </div>
-        }
-        <CreatorInfo creatorId={allData.gameInfo.userId} creatorName={allData.gameInfo.nickName} imgRankData={imgRankData}/>
+        )}
+        <CreatorInfo
+          creatorId={allData.gameInfo.userId}
+          creatorName={allData.gameInfo.nickName}
+          imgRankData={imgRankData}
+        />
+        <Link className="restart-game" to={`/play-game/${gameId}`}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3"
+            />
+          </svg>
+          월드컵 시작하기
+        </Link>
       </aside>
       <section className="game-review-rank">section</section>
     </div>

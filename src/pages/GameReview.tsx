@@ -16,7 +16,6 @@ function GameReview() {
   const { id: gameId } = useParams();
   // 이미지 랭킹정보를 저장하는 상태 (gameId값이 잘못되었거나 랭킹이 아예 없을 경우 null을 할당하게 된다)
   const [imgRankData, setImgRankData] = useState<ImageRankData[] | null>(null);
-  const [myPick, setMyPick] = useState<ImageRankData | null>(null);
   // 해당 ID의 월드컵 전체정보를 불러오는 상태
   const [allData, setAllData] = useState<{
     gameId: string;
@@ -86,7 +85,7 @@ function GameReview() {
             <img src={getMyRecentPick()?.filePath} alt=""/>
           </div>
         }
-        <CreatorInfo creatorId={allData.gameInfo.userId} imgRankData={imgRankData}/>
+        <CreatorInfo creatorId={allData.gameInfo.userId} creatorName={allData.gameInfo.nickName} imgRankData={imgRankData}/>
       </aside>
       <section className="game-review-rank">section</section>
     </div>

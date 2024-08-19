@@ -42,4 +42,6 @@ export interface ImageRankData {
   fileName: string;
   filePath: string;
   winRate: number;
+  userId: string[];
+  updateAt: number;
 }

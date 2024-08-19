@@ -118,6 +118,7 @@ export const getCreateRankAndUpdateView = async (payloadData: {
       fileName: payloadData.fileName,
       filePath: payloadData.filePath,
       winRate: 1,
+      updateAt: Date.now()
     });
   } else {
     //이미지 랭킹 데이터의 ID값 불러오기
@@ -134,6 +135,7 @@ export const getCreateRankAndUpdateView = async (payloadData: {
         //비회원일경우 null. (arrayUnion은 기존 배열에 새로 추가. 배열 내에 동일한 id가 있다면 추가되지 않음)
         userId: arrayUnion(payloadData.userId && payloadData.userId),
         winRate: increment(1), //우승 횟수 1 증가
+        updateAt: Date.now()
       });
     }
   }
@@ -147,7 +149,7 @@ export const getCreateRankAndUpdateView = async (payloadData: {
 //매개변수 = 월드컵 게임 ID(url파라미터), 이미지 랭킹 데이터 불러오기
 export const getImageRankList = async (gameID: string): Promise<ImageRankData[] | null> => {
   //쿼리
-  const rankFindQuery = query(imageRankRef, where("gameId", "==", gameID));
+  const rankFindQuery = query(imageRankRef, where("gameId", "==", gameID), orderBy("updateAt", "desc"));
   const imageRankDocs = await getDocs(rankFindQuery);
   //잘못된 파라미터 주소나 월드컵 랭킹이 아예 없는 경우
   if (imageRankDocs.empty) {
@@ -157,7 +159,9 @@ export const getImageRankList = async (gameID: string): Promise<ImageRankData[] 
       return {
         fileName: data.data().fileName,
         filePath: data.data().filePath,
+        userId: data.data().userId,
         winRate: data.data().winRate,
+        updateAt: data.data().updateAt
       };
     });
     return new Promise((resolve) => {

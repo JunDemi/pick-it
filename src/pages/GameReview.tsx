@@ -85,8 +85,8 @@ function GameReview() {
             <h1 className="aside-title">회원님이 최근에 선택한 사진</h1>
             {getMyRecentPick() ? (
               <>
-                <h2>{getMyRecentPick()?.fileName}</h2>
                 <img src={getMyRecentPick()?.filePath} alt="" />
+                <span>{getMyRecentPick()?.fileName}</span>
               </>
             ) : (
               <h3>* 월드컵에 참여하시면 볼 수 있습니다.</h3>
@@ -109,7 +109,7 @@ function GameReview() {
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3"
+              d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z"
             />
           </svg>
           월드컵 시작하기

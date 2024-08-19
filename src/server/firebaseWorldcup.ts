@@ -113,7 +113,7 @@ export const getCreateRankAndUpdateView = async (payloadData: {
     await addDoc(collection(db, "imageRank"), {
       findKey: payloadData.gameId + "-" + String(payloadData.fileIndex), //아이디와 파일인덱스 식별
       gameId: payloadData.gameId,
-      userId: payloadData.userId && [payloadData.userId], //비회원일경우 null
+      userId: payloadData.userId ? [payloadData.userId] : "", //비회원일경우 비어있는값
       fileIndex: payloadData.fileIndex,
       fileName: payloadData.fileName,
       filePath: payloadData.filePath,
@@ -132,8 +132,8 @@ export const getCreateRankAndUpdateView = async (payloadData: {
       const updateImageRankRef = doc(db, "imageRank", findId);
       //이미지 랭킹 우승 횟수 업데이트
       await updateDoc(updateImageRankRef, {
-        //비회원일경우 null. (arrayUnion은 기존 배열에 새로 추가. 배열 내에 동일한 id가 있다면 추가되지 않음)
-        userId: arrayUnion(payloadData.userId && payloadData.userId),
+        //비회원일경우 비어있는값. (arrayUnion은 기존 배열에 새로 추가. 배열 내에 동일한 id가 있다면 추가되지 않음)
+        userId: arrayUnion(payloadData.userId ? payloadData.userId : ""),
         winRate: increment(1), //우승 횟수 1 증가
         updateAt: Date.now()
       });

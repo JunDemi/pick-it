@@ -83,6 +83,8 @@ export const findSelectWorldcup = async (id: string) => {
       gameId: id,
       gameInfo: findWorldcupData.data(),
     };
+  } else{
+    return null;
   }
 };
 
@@ -143,7 +145,7 @@ export const getCreateRankAndUpdateView = async (payloadData: {
 };
 
 //매개변수 = 월드컵 게임 ID(url파라미터), 이미지 랭킹 데이터 불러오기
-export const getImageRankList = async (gameID?: string): Promise<ImageRankData[] | null> => {
+export const getImageRankList = async (gameID: string): Promise<ImageRankData[] | null> => {
   //쿼리
   const rankFindQuery = query(imageRankRef, where("gameId", "==", gameID));
   const imageRankDocs = await getDocs(rankFindQuery);

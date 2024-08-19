@@ -64,9 +64,14 @@ function ImageRankTable(props: {
                     ))}
                 </tbody>
             </table>
-            <button className="more-rank" onClick={() => { limit < mergedData.length ? setLimit(prev => prev + 4) : setLimit(4) }}>
-                {limit < mergedData.length ? "더보기" : "처음으로"}
-            </button>
+            {limit < mergedData.length &&
+                <div className="more-rank">
+                    <button
+                        onClick={() => setLimit(prev => prev + 4)}>
+                        더보기
+                    </button>
+                </div>
+            }
         </section>
 
     );

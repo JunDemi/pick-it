@@ -11,36 +11,42 @@
         justify-content: flex-start;
         align-items: flex-start;
 
-        .aside-title{
+        .aside-title {
             font-size: 12px;
             font-family: 'p_bold';
             color: #6d6d6d;
         }
+
         .info-name {
             display: flex;
             flex-direction: column;
             gap: 1rem;
-            .thunbnail{
+
+            .thunbnail {
                 display: flex;
                 align-items: center;
                 gap: 1.5rem;
                 font-size: 16px;
                 font-family: 'p_bold';
-                div{
+
+                div {
                     width: 6rem;
                     height: 5rem;
                     display: flex;
                     overflow: hidden;
-                    img{
+
+                    img {
                         width: 50%;
                         object-fit: cover;
                     }
                 }
             }
-            .categories{
+
+            .categories {
                 display: flex;
                 gap: 10px;
-                span{
+
+                span {
                     font-size: 12px;
                     padding: 8px 20px;
                     color: #203B98;
@@ -49,10 +55,12 @@
                 }
             }
         }
-        .info-my-pick{
+
+        .info-my-pick {
             display: flex;
             flex-direction: column;
-            span{
+
+            span {
                 font-size: 12px;
                 font-family: 'p_bold';
                 border: 1px solid #e99b00;
@@ -61,38 +69,44 @@
                 border-radius: 30px;
                 text-align: center;
             }
-            img{
+
+            img {
                 margin: 1rem 0 0.5rem 0;
                 width: 10rem;
                 height: 10rem;
                 object-fit: cover;
                 border-radius: 10px;
             }
-            h3{
+
+            h3 {
                 color: #919191;
                 margin-top: 2rem;
                 font-size: 16px;
             }
         }
-        .info-creator{
-            .creator{
+
+        .info-creator {
+            .creator {
                 margin: 1rem 0;
                 display: flex;
                 align-items: center;
                 gap: 1rem;
                 font-size: 13px;
                 color: #484848;
-                img{
+
+                img {
                     width: 3rem;
                     height: 3rem;
                     border-radius: 50%;
                     object-fit: cover;
                 }
             }
-            .buttons{
+
+            .buttons {
                 display: flex;
                 align-items: center;
                 gap: 10px;
+
                 button {
                     font-family: 'p_bold';
                     font-size: 12px;
@@ -102,21 +116,25 @@
                     background: none;
                     cursor: pointer;
                 }
+
                 .follow {
                     color: #0095F6;
                     border-color: #0095F6;
                 }
+
                 .quest {
                     color: #5BD03E;
                     border-color: #5BD03E;
                 }
+
                 .report {
                     color: #F5889C;
                     border-color: #F5889C;
                 }
             }
         }
-        .restart-game{
+
+        .restart-game {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -126,11 +144,13 @@
             font-family: 'p_bold';
             font-size: 15px;
             padding: 10px 10px;
-            svg{
+
+            svg {
                 width: 1.5rem;
                 height: 1.5rem;
             }
-            &:hover{
+
+            &:hover {
                 background-color: #3a3a3a;
             }
         }
@@ -138,52 +158,65 @@
 
     .game-review-rank {
         flex-grow: 1;
-        .review-rank-table{
+
+        .review-rank-table {
             width: 100%;
             border-collapse: collapse;
             border-spacing: 0;
             font-family: 'p_bold';
-            td{
+
+            td {
                 vertical-align: middle;
-                &:nth-child(1){
+
+                &:nth-child(1) {
                     width: 5rem;
                 }
-                &:nth-child(2){
+
+                &:nth-child(2) {
                     width: 9rem;
                 }
-                &:nth-child(3){
+
+                &:nth-child(3) {
                     width: 15rem;
                 }
             }
-            thead{
+
+            thead {
                 background-color: #000;
                 color: #fff;
                 font-size: 16px;
-                td{
-                    
+
+                td {
+
                     text-align: center;
                     padding: 1rem 0;
                 }
             }
-            tbody{
+
+            tbody {
                 font-size: 13px;
-                tr{
-                    &:nth-child(2n){
+
+                tr {
+                    &:nth-child(2n) {
                         background-color: #f5f5f5;
                     }
-                    td{
+
+                    td {
                         height: 7.5rem;
                         text-align: center;
-                        img{
+
+                        img {
                             display: block;
                             width: 100%;
                             height: 100%;
                             object-fit: cover;
                         }
-                        &:nth-child(4){
+
+                        &:nth-child(4) {
                             padding-right: 1rem;
                         }
-                        .percentage-graph{
+
+                        .percentage-graph {
                             position: relative;
                             height: 30%;
                             border-top-right-radius: 30px;
@@ -193,9 +226,10 @@
                             align-items: center;
                             animation: entry .8s ease-in-out;
                         }
+
                         @keyframes entry {
                             0% {
-                                color: rgba(0,0,0,0);
+                                color: rgba(0, 0, 0, 0);
                                 width: 0;
                             }
                         }
@@ -203,25 +237,27 @@
                 }
             }
         }
-        .more-rank{
-            width: 100%;
-            font-family: 'p_bold';
-            font-size: 15px;
-            cursor: pointer;
-            border: none;
-            background-color: #000;
-            color: #fff;
-            padding: 1rem 3rem;
+
+        .more-rank {
             display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 30px;
-            svg{
-                width: 1rem;
-                height: 1rem;
-            }
-            &:hover{
-                background-color: #3a3a3a;
+            justify-content: flex-end;
+            margin-top: 10px;
+            button {
+                font-family: 'p_bold';
+                font-size: 15px;
+                cursor: pointer;
+                border: none;
+                background-color: #000;
+                color: #fff;
+                padding: 1rem 3rem;
+                svg {
+                    width: 1rem;
+                    height: 1rem;
+                }
+
+                &:hover {
+                    background-color: #3a3a3a;
+                }
             }
         }
     }

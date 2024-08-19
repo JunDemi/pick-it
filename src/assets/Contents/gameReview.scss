@@ -1,0 +1,43 @@
+.game-review-container {
+    display: flex;
+    margin-top: 1rem;
+    padding: 0 5rem;
+
+    .game-review-info {
+        display: flex;
+        flex-direction: column;
+        gap: 3rem;
+
+        .info-name {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            h1{
+                font-size: 15px;
+                font-family: 'p_bold';
+            }
+            .thunbnail{
+                display: flex;
+                align-items: center;
+                gap: 1.5rem;
+                font-size: 18px;
+                font-family: 'p_bold';
+                div{
+                    width: 8rem;
+                    height: 6rem;
+                    display: flex;
+                    overflow: hidden;
+                    img{
+                        width: 50%;
+                        object-fit: cover;
+                    }
+                }
+            }
+        }
+    }
+
+    .game-review-rank {
+        flex-grow: 1;
+        background-color: blue;
+    }
+}

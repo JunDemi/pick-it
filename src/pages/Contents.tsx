@@ -32,9 +32,9 @@ function Contents() {
   }, [inView, fetchNextPage]);
   return (
     <>
-      <section className='contents-container'>
-        <div className='contents-top'>
-          <div className='contents-top-filter'>
+      <section className="contents-container">
+        <div className="contents-top">
+          <div className="contents-top-filter">
             <button
               onClick={() => setFilter("pop")}
               className={
@@ -53,29 +53,29 @@ function Contents() {
             </button>
           </div>
 
-          <form className='contents-top-search'>
+          <form className="contents-top-search">
             <input
-              type='text'
-              autoComplete='off'
-              placeholder='월드컵 키워드 혹은 태그를 입력하여 검색하세요.'
+              type="text"
+              autoComplete="off"
+              placeholder="월드컵 키워드 혹은 태그를 입력하여 검색하세요."
             />
-            <button type='submit'>
+            <button type="submit">
               <svg
-                xmlns='http://www.w3.org/2000/svg'
-                fill='none'
-                viewBox='0 0 24 24'
-                strokeWidth='1.5'
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
               >
                 <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  d='m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z'
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
                 />
               </svg>
             </button>
           </form>
 
-          <Link to='/create-game' className='contents-top-create'>
+          <Link to="/create-game" className="contents-top-create">
             월드컵 생성
           </Link>
         </div>
@@ -87,41 +87,50 @@ function Contents() {
             error.message
           ) : (
             worldcupList.pages.map((page) => (
-              <div key={page.currentPage} className='contents-section'>
+              <div key={page.currentPage} className="contents-section">
                 {page.data.map((items) => (
                   <div
-                    className='contents-worldcup-card'
+                    className="contents-worldcup-card"
                     key={items.worldcupId}
                   >
-                    <div className='card-thumbnail'>
-                      <img
-                        src={items.worldcupInfo.worldcupImages[3].filePath}
-                        alt=''
-                      />
-                      <img
-                        src={items.worldcupInfo.worldcupImages[6].filePath}
-                        alt=''
-                      />
+                    <div>
+                      <div className="card-thumbnail">
+                        <img
+                          src={items.worldcupInfo.worldcupImages[3].filePath}
+                          alt=""
+                        />
+                        <img
+                          src={items.worldcupInfo.worldcupImages[6].filePath}
+                          alt=""
+                        />
+                      </div>
+                      <div className="worldcup-title">
+                        <h3>{items.worldcupInfo.worldcupTitle}</h3>
+                      </div>
+                      <p className="worldcup-creator-name">
+                        {items.worldcupInfo.nickName}님이 작성
+                      </p>
+                      <div className="worldcup-description">
+                        <p>{items.worldcupInfo.worldcupDescription}</p>
+                      </div>
                     </div>
-                    <div className='worldcup-title'>
-                      <h3>{items.worldcupInfo.worldcupTitle}</h3>
-                    </div>
-                    <p className="worldcup-creator-name">{items.worldcupInfo.nickName}님이 작성</p>
-                    <div className='worldcup-description'>
-                      <p>{items.worldcupInfo.worldcupDescription}</p>
-                    </div>
-                    <div className='card-category'>
-                      {items.worldcupInfo.category.map(
-                        (text: string, index: number) => (
-                          <span key={index}>#{text}</span>
-                        )
-                      )}
-                    </div>
-                    <div className='card-link'>
-                      <Link to={`/play-game/${items.worldcupId}`}>
-                        시작하기
-                      </Link>
-                      <Link to={`/game-review/${items.worldcupId}`}>랭킹보기</Link>
+
+                    <div>
+                      <div className="card-category">
+                        {items.worldcupInfo.category.map(
+                          (text: string, index: number) => (
+                            <span key={index}>#{text}</span>
+                          )
+                        )}
+                      </div>
+                      <div className="card-link">
+                        <Link to={`/play-game/${items.worldcupId}`}>
+                          시작하기
+                        </Link>
+                        <Link to={`/game-review/${items.worldcupId}`}>
+                          랭킹보기
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 ))}

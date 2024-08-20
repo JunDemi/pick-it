@@ -160,7 +160,7 @@ textarea {
 ::-webkit-scrollbar-thumb:active {
 	background: #616161;
 }
-/* 로딩 스피너 */
+/* 로딩 스피너 애니메이션 */
 .loading-spiner{
 	position: relative;
 	width: 40px;
@@ -191,6 +191,44 @@ textarea {
 		}
 		100%{
 			transform: rotate(360deg);
+		}
+	}
+}
+/* 로딩 막대기 애니메이션 */
+.loading-bar{
+	display: flex;
+	align-items: flex-end;
+	gap: 1px;
+	height: 20px;
+	div{
+		width: 10px;
+		border: 1px solid #fff;
+		background-color: #000;
+		&:nth-child(1){
+			animation: loadingBar 0.7s linear infinite;   
+		}
+		&:nth-child(2){
+			animation: loadingBar 1s linear infinite;   
+		}
+		&:nth-child(3){
+			animation: loadingBar 1.6s linear infinite;   
+		}
+		@keyframes loadingBar {
+			0%{
+				height: 5px;
+			}
+			25%{
+				height: 10px;
+			}
+			50%{
+				height: 20px;
+			}
+			75%{
+				height: 10px;
+			}
+			100%{
+				height: 5px;
+			}
 		}
 	}
 }

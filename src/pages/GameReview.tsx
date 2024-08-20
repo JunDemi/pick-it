@@ -33,9 +33,10 @@ function GameReview() {
       const list = imgRankData
         .map((data) => {
           //이미지 랭크 배열에서 유저ID 배열에 해당 유저가 존재하는 값만 추출
-          return data.userId.indexOf(userId) === 0 ? data : null;
+          return data.userId.indexOf(userId) === -1 ? null : data;
         })
         .filter((data) => data !== null); //null값으로 리턴 되는 배열은 제거
+      
       return list[0];
     }
   };

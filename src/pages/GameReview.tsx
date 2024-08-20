@@ -87,14 +87,14 @@ function GameReview() {
         </div>
         {isUser && (
           <div className="info-my-pick">
-            <h1 className="aside-title">회원님이 최근에 선택한 사진</h1>
+            <h1 className="aside-title">회원님이 최근에 선택한 이미지</h1>
             {getMyRecentPick() ? (
               <>
                 <img src={getMyRecentPick()?.filePath} alt="" />
                 <span>{getMyRecentPick()?.fileName}</span>
               </>
             ) : (
-              <h3>* 월드컵에 참여하시면 볼 수 있습니다.</h3>
+              <h3>* 아직 참여하지 않은 월드컵입니다.</h3>
             )}
           </div>
         )}

@@ -9,6 +9,7 @@ import { DocumentData } from "firebase/firestore";
 import "../assets/Contents/gameReview.scss";
 import CreatorInfo from "../components/GameReview/CreatorInfo";
 import ImageRankTable from "../components/GameReview/ImageRankTable";
+import Comments from "../components/GameReview/Comment";
 
 function GameReview() {
   //로그인 상태
@@ -64,6 +65,7 @@ function GameReview() {
       </div>
     </div>
   ) : allData && imgRankData ? (
+    <>
     <div className="game-review-container">
       <aside className="game-review-info">
         <div className="wrapper">
@@ -120,6 +122,8 @@ function GameReview() {
       </aside>
       <ImageRankTable allImg={allData.gameInfo.worldcupImages} imgRankData={imgRankData}/>
     </div>
+    <Comments/>
+    </>
   ) : (
     <div className="before-game-message">랭킹 정보를 불러오지 못했습니다.</div>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { ImageRankData } from "../../types/Worldcup";
 
 function ImageRankTable(props: {
@@ -62,7 +62,7 @@ function ImageRankTable(props: {
                              style={{
                                  width: `${getPercentage(data.winRate)}%`,
                                  color: `${data.winRate === 0 ? '#000' : '#fff'}`,
-                                 backgroundColor: `${data.winRate === 0 ? 'rgba(0,0,0,0)' : '#000'}`
+                                 backgroundColor: `${data.winRate === 0 ? 'rgba(0,0,0,0)' : '#06b8d7'}`
                              }}>
                              {data.winRate}
                          </div>

@@ -22,7 +22,7 @@
         padding: 3rem 4rem;
         background-color: #fff;
         overflow: hidden;
-        border: 2px solid #5a5a5a;
+        border: 2px solid #000;
 
         .user-profile {
             display: flex;
@@ -37,6 +37,7 @@
                 overflow: hidden;
                 border-radius: 50%;
                 background-color: rgba(119,119,119,0.2);
+                border: 2px solid #000;
 
                 img {
                     width: 100%;
@@ -64,15 +65,16 @@
                     height: 3.5rem;
                     margin-top: 1.5rem;
                     border: none;
-                    background-color: #5a5a5a;
+                    background-color: #f64343;
+                    border: 2px solid #000;
                     color: #fff;
                     font-family: 'p_bold';
                     font-size: 14px;
-                    transition: all 0.3s ease-in-out;
+                    transition: all 0.2s ease-in-out;
                     cursor: pointer;
 
                     &:hover {
-                        background-color: #000;
+                        background-color: #b60000;
                     }
                 }
             }
@@ -94,16 +96,16 @@
                 button {
                     width: 100%;
                     height: 3.5rem;
-                    background-color: #5a5a5a;
+                    background-color: #000;
                     border: none;
                     color: #fff;
                     font-family: 'p_bold';
                     font-size: 14px;
-                    transition: all 0.3s ease-in-out;
+                    transition: all 0.2s ease-in-out;
                     cursor: pointer;
 
                     &:hover {
-                        background-color: #000;
+                        background-color: #303030;
                     }
                 }
             }
@@ -119,14 +121,8 @@
 
             svg {
                 font-size: 2rem;
-                color: #5a5a5a;
+                color: #000;
                 transition: all 0.3s ease-in-out;
-            }
-
-            &:hover {
-                svg {
-                    color: #000;
-                }
             }
         }
     }

@@ -198,11 +198,10 @@ textarea {
 .loading-bar{
 	display: flex;
 	align-items: flex-end;
-	gap: 1px;
 	height: 20px;
 	div{
 		width: 10px;
-		border: 1px solid #fff;
+		border: 0.5px solid #fff;
 		background-color: #000;
 		&:nth-child(1){
 			animation: loadingBar 0.7s linear infinite;   

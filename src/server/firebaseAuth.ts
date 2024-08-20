@@ -79,14 +79,6 @@ export const userIdCheck = async (userId: string) => {
   return result.empty ? userId : "중복됨";
 };
 
-// 아이디 찾기
-export const findUserId = async (nickName: string) => {
-  const nickNameQuery = query(authRef, where("userNickName", "==", nickName));
-  const result = await getDocs(nickNameQuery);
-
-  return result.empty ? "empty" : String(result.docs[0].data()["userId"]);
-};
-
 // 비밀번호 찾기
 export const findPassword = async (userId: string) => {
   const userIdQuery = query(authRef, where("userId", "==", userId));

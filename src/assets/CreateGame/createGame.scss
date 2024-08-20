@@ -38,7 +38,7 @@
                 font-family: 'p_bold';
                 padding: 0.5rem 1rem;
                 width: 20rem;
-                border: 0.5px solid #949494;
+                border: 2px solid #000;
 
                 &::placeholder {
                     color: #949494;
@@ -55,7 +55,7 @@
                 padding: 0.5rem 1rem;
                 width: 20rem;
                 height: 7rem;
-                border: 0.5px solid #949494;
+                border: 2px solid #000;
 
                 &:focus {
                     background-color: #f7f6fd;
@@ -67,7 +67,7 @@
                 font-size: 13px;
                 font-family: 'p_bold';
                 padding: 0.5rem 1rem;
-                border: 0.5px solid #949494;
+                border: 2px solid #000;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
@@ -77,6 +77,7 @@
                     cursor: pointer;
                     width: 1rem;
                     height: 1rem;
+                    stroke-width: 2px;
                 }
 
                 .tournament-options {
@@ -86,7 +87,7 @@
                     top: 1px;
                     margin-top: 2rem;
                     display: flex;
-                    border: 0.5px solid #949494;
+                    border: 2px solid #000;
                     border-top: none;
                     flex-direction: column;
 
@@ -126,7 +127,7 @@
                         font-family: 'p_bold';
                         font-size: 13px;
                         padding: 0.3rem 0.5rem;
-                        border: 0.5px solid #949494;
+                        border: 2px solid #000;
                         display: flex;
                         justify-content: space-between;
                         align-items: center;
@@ -306,14 +307,14 @@
 
                 button {
                     cursor: pointer;
-                    background-color: #007BC7;
-                    border: none;
+                    background-color: #00ad74;
+                    border: 2px solid #000;
                     padding: 0.5rem 1rem;
                     color: #fff;
                     font-family: 'p_bold';
 
                     &:active {
-                        background-color: #005b94;
+                        background-color: #007f55;
                     }
                 }
             }
@@ -324,6 +325,7 @@
                 text-align: center;
                 font-size: 13px;
                 font-family: 'p_bold';
+                border: 2px solid #000;
 
                 thead {
                     background-color: #000;
@@ -341,11 +343,17 @@
                 }
 
                 tbody {
+                    tr{
+                      &:nth-child(2n){
+                        background-color: #f5f5f5;
+                      }  
+                    }
                     td {
                         padding: 1rem 0;
                         vertical-align: middle;
 
                         img {
+                            border: 2px solid #000;
                             width: 12rem;
                             height: 10rem;
                             object-fit: cover;
@@ -355,7 +363,7 @@
                             font-family: 'p_bold';
                             font-size: 13px;
                             padding: 0.5rem;
-                            border: 0.5px solid #949494;
+                            border: 2px solid #000;
                             width: 80%;
                             &:focus {
                                 background-color: #f7f6fd;
@@ -420,7 +428,7 @@
                         cursor: pointer;
                         background-color: #00ad74;
                         color: #fff;
-                        border: none;
+                        border: 2px solid #000;
                         font-family: 'p_bold';
                         padding: 0.5rem 0;
                     }

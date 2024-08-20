@@ -39,7 +39,7 @@ export const getCreateWorldCup = async (argData: SendData) => {
 };
 
 //월드컵 리스트 불러오기(최신순)
-export const getWorldCupList = async ({
+export const getWorldCupList = async (filter: "pop" | "new", {
   pageParam,
 }: {
   pageParam: number;
@@ -53,7 +53,9 @@ export const getWorldCupList = async ({
 }> => {
   const LIMIT = 8; //클라이언트에 불러올 배열 개수
 
-  const worldcupQuery = query(worldcupRef, orderBy("createAt", "desc"));
+  //filter에 따라 view내림차순 혹은 최신순 정렬
+  const worldcupQuery = query(worldcupRef, orderBy(filter === "new" ? "createAt" : "view", "desc"));
+
   //getDocs후 docs객체 할당
   const getData = await getDocs(worldcupQuery).then((res) => {
     return res.docs;
@@ -61,7 +63,7 @@ export const getWorldCupList = async ({
   const result = getData.map((data) => {
     return { worldcupId: data.id, worldcupInfo: data.data() };
   });
-
+  
   //1초의 지연시간을 적용하고 promise값으로 리턴
   return new Promise((resolve) => {
     setTimeout(() => {

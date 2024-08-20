@@ -156,6 +156,7 @@
         flex-grow: 1;
 
         .review-rank-table {
+            border: 2px solid #000;
             width: 100%;
             border-collapse: collapse;
             border-spacing: 0;
@@ -170,10 +171,13 @@
 
                 &:nth-child(2) {
                     width: 9rem;
+                    border-left: 2px solid #000;
+                    border-right: 2px solid #000;
                 }
 
                 &:nth-child(3) {
                     width: 15rem;
+                    border-right: 2px solid #000;
                 }
             }
 
@@ -220,6 +224,10 @@
                             justify-content: center;
                             align-items: center;
                             animation: entry .8s ease-in-out;
+                            border: 2px solid #000;
+                            border-left: none;
+                            color: #fff;
+                            background-color: #06b8d7;
                         }
 
                         @keyframes entry {

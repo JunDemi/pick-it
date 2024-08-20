@@ -80,7 +80,7 @@
         .contents-worldcup-card{
             overflow: hidden;
             border-radius: 10px;
-            box-shadow: 2px 2px 6px #cccccc;
+            border: 2px solid #000;
             //뷰포트 1350이하
             @media screen and (max-width:1350px) {
                 width: 15rem;

@@ -101,7 +101,18 @@
         }
 
         .round-level{
-            width: 65rem;
+            //뷰포트 1350이하
+            @media screen and (max-width:1350px) {
+                width: 50rem;
+            }
+            //뷰포트 1351이상 
+            @media screen and (min-width:1351px) {
+                width: 65rem;
+            }
+             //뷰포트 1800이상 
+             @media screen and (min-width:1800px) {
+                width: 80rem;
+            }
             p {
                 padding: 0 1rem;
                 text-align: right;
@@ -112,6 +123,7 @@
                 height: 0.8rem;
                 background-color: #ddd;
                 border-radius: 30px;
+                border: 2px solid #000;
                 overflow: hidden;
                 .track{
                     height: 100%;
@@ -161,7 +173,7 @@
             .select-button {
                 padding: 10px 40px;
                 border-radius: 8px;
-                border: 0;
+                border: 2px solid #000;
                 background-color: #074C77;
                 letter-spacing: 1.5px;
                 font-size: 13px;
@@ -213,6 +225,7 @@
             height: 100%;
             object-fit: cover;
             border-radius: 2rem;
+            border: 2px solid #000;
         }
 
         .select-infoBox {

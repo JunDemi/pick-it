@@ -37,7 +37,7 @@ const UserPopup = ({ userData }: PropsUserData) => {
   const containerMotion = {
     initial: {
       opacity: 0,
-      y: 20,
+      y: 10,
     },
 
     animate: {
@@ -45,9 +45,9 @@ const UserPopup = ({ userData }: PropsUserData) => {
       y: 0,
 
       transition: {
-        staggerChildren: 0.3,
-        delayChildren: 0.3,
-        duration: 0.5,
+        staggerChildren: 0.1,
+        delayChildren: 0.2,
+        duration: 0.2,
       },
     },
   };
@@ -60,6 +60,7 @@ const UserPopup = ({ userData }: PropsUserData) => {
     animate: {
       opacity: 1,
     },
+
   };
 
   return (
@@ -68,6 +69,7 @@ const UserPopup = ({ userData }: PropsUserData) => {
       variants={containerMotion}
       initial='initial'
       animate='animate'
+      exit='exit'
     >
       <div className='userPopup-wrap'>
         <div
@@ -107,7 +109,10 @@ const UserPopup = ({ userData }: PropsUserData) => {
 
         <motion.ul className='user-menu' variants={itemMotion}>
           <li>
-            <button type='button' className='menu' value='마이페이지'>
+            <button className='menu' onClick={() => {
+              setUserPopupToggle && setUserPopupToggle(false);
+              navigate("/mypage");
+            }}>
               마이페이지
             </button>
           </li>

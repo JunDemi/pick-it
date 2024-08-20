@@ -16,6 +16,7 @@ import FindUser from "./pages/FindUser";
 import PlayGame from "./pages/PlayGame";
 import GameReview from "./pages/GameReview";
 import HeaderDisplay from "./components/Header/HeaderDisplay";
+import MyPage from "./pages/MyPage";
 
 function App() {
   const [userData, setUserData] = useState<PopupUserData>({
@@ -80,6 +81,7 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
         <Route path='/find-user' element={<FindUser />} />
+        <Route path='/mypage' element={<MyPage />} />
       </Routes>
     </BrowserRouter>
   );

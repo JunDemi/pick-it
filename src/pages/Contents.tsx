@@ -43,6 +43,13 @@ function Contents() {
     }, 1000);
   }, [filter]);
 
+  //게시물이 올라오고 3일까지는 'new'태그가 붙도록 설정
+  const currentDate = Date.now();
+  const isNewCard = (createAt: number) => {
+    //259200000 = 밀리초로 3일
+    return currentDate - createAt < 259200000 ? true : false;
+  };
+
   return (
     <section className="contents-container">
       <div className="contents-top">
@@ -94,6 +101,9 @@ function Contents() {
             <div key={page.currentPage} className="contents-section">
               {page.data.map((items) => (
                 <div className="contents-worldcup-card" key={items.worldcupId}>
+                  {isNewCard(items.worldcupInfo.createAt) && (
+                    <span className="new-tag">NEW</span>
+                  )}
                   <div>
                     <div className="card-thumbnail">
                       <img
@@ -117,6 +127,28 @@ function Contents() {
                   </div>
 
                   <div>
+                    <div className="card-view">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth="2"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
+                        />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                        />
+                      </svg>
+
+                      {items.worldcupInfo.view}
+                    </div>
                     <div className="card-category">
                       {items.worldcupInfo.category.map(
                         (text: string, index: number) => (
@@ -143,9 +175,9 @@ function Contents() {
       {filterLoading && (
         <div className="filter-loading">
           <div className="loading-bar">
-            <div/>
-            <div/>
-            <div/>
+            <div />
+            <div />
+            <div />
           </div>
           데이터를 불러오는 중입니다...
         </div>

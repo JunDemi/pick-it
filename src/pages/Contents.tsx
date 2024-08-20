@@ -146,8 +146,7 @@ function Contents() {
                           d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
                         />
                       </svg>
-
-                      {items.worldcupInfo.view}
+                      : {items.worldcupInfo.view}
                     </div>
                     <div className="card-category">
                       {items.worldcupInfo.category.map(

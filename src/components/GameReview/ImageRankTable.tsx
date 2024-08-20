@@ -9,6 +9,7 @@ function ImageRankTable(props: {
     }[];
     imgRankData: ImageRankData[];
 }) {
+    //테이블 데이터 리밋 상태
     const [limit, setLimit] = useState<number>(4);
 
     //전달받은 props들을 하나의 배열로 합체
@@ -24,14 +25,16 @@ function ImageRankTable(props: {
     }).sort((winA, winB) => winB.winRate - winA.winRate); //우승 횟수 순으로 내림차순 정렬
 
 
+    
     //해당 월드컵의 최다 우승 횟수의 비율만큼 백분율을 반환(그래프 구현 용도)
-    const getPercentage = (winRate: number) => {
-        let maxValue = 0;
-        mergedData.forEach(row => {
-            if (row.winRate > maxValue) { maxValue = row.winRate }
-        });
+    let maxValue = 0;
+    mergedData.forEach(row => {
+        if (row.winRate > maxValue) { maxValue = row.winRate } //해당 월드컵의 최다 우승 횟수를 maxValue에 할당
+    });
+    const getPercentage = (winRate: number) => { //백분율 반환
         return (winRate / maxValue) * 100;
     }
+    
     return (
         <section className="game-review-rank">
             <table className="review-rank-table">
@@ -51,14 +54,20 @@ function ImageRankTable(props: {
                                 <img src={data.filePath} alt="" /></td>
                             <td>{data.fileName}</td>
                             <td>
-                                <div className="percentage-graph"
-                                    style={{
-                                        width: `${getPercentage(data.winRate)}%`,
-                                        color: `${data.winRate === 0 ? '#000' : '#fff'}`,
-                                        backgroundColor: `${data.winRate === 0 ? 'rgba(0,0,0,0)' : '#000'}`
-                                    }}>
-                                    {data.winRate}
-                                </div>
+                                
+                            {data.winRate === 0 ? 
+                                "우승 기록이 없습니다."
+                            : 
+                             <div className="percentage-graph"
+                             style={{
+                                 width: `${getPercentage(data.winRate)}%`,
+                                 color: `${data.winRate === 0 ? '#000' : '#fff'}`,
+                                 backgroundColor: `${data.winRate === 0 ? 'rgba(0,0,0,0)' : '#000'}`
+                             }}>
+                             {data.winRate}
+                         </div>
+                            }
+                               
                             </td>
                         </tr>
                     ))}

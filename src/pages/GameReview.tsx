@@ -66,6 +66,7 @@ function GameReview() {
   ) : allData && imgRankData ? (
     <div className="game-review-container">
       <aside className="game-review-info">
+        <div className="wrapper">
         <div className="info-name">
           <h1 className="aside-title">게임 정보</h1>
           <div className="thunbnail">
@@ -115,6 +116,7 @@ function GameReview() {
           </svg>
           월드컵 시작하기
         </Link>
+        </div>
       </aside>
       <ImageRankTable allImg={allData.gameInfo.worldcupImages} imgRankData={imgRankData}/>
     </div>

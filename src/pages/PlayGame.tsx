@@ -207,23 +207,37 @@ function PlayGame() {
     </>
   ) : (
     <>
-      <GameHeader/>
+      <GameHeader />
       <section className="game-container">
         <div className="game-title">
           <h1>
+            {JSON.parse(data).GameTitle}
             <span className={`game-range-label-${JSON.parse(data).GameRange}`}>
               {JSON.parse(data).GameRange === 2
                 ? "결승"
-                : JSON.parse(data).GameRange === 1
-                ? "우승"
                 : JSON.parse(data).GameRange + "강"}
             </span>
-            {JSON.parse(data).GameTitle}
           </h1>
+
           {JSON.parse(data).GameRange !== 2 && (
-            <p>
-              {JSON.parse(data).RoundLevel} / {JSON.parse(data).GameRange / 2}
-            </p>
+            <div className="round-level">
+              <p>
+                {JSON.parse(data).RoundLevel} / {JSON.parse(data).GameRange / 2}
+              </p>
+
+              <div className="game-progress-bar">
+                <div
+                  className="track"
+                  style={{
+                    width: `${
+                      (JSON.parse(data).RoundLevel /
+                        (JSON.parse(data).GameRange / 2)) *
+                      100
+                    }%`,
+                  }}
+                />
+              </div>
+            </div>
           )}
         </div>
         <AnimatePresence>
@@ -261,7 +275,6 @@ function PlayGame() {
             {JSON.parse(data).GameRange / 2 === 1 ? (
               <>
                 <Confetti particleCount={200} mode={"fall"} />
-
                 <motion.div className="select-card">
                   <motion.img
                     src={

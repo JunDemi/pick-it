@@ -216,8 +216,6 @@
                             font-size: 15px;
                             position: relative;
                             height: 30%;
-                            border-top-right-radius: 30px;
-                            border-bottom-right-radius: 30px;
                             display: flex;
                             justify-content: center;
                             align-items: center;
@@ -260,4 +258,11 @@
             }
         }
     }
+}
+
+//댓글 컴포넌트
+.game-comment-container{
+    height: 30rem;
+    display: grid;
+    place-items: center;
 }

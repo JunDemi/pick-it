@@ -3,8 +3,9 @@
 
     .contents-top {
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-start;
         align-items: center;
+        gap: 16rem;
 
         .contents-top-filter {
             display: flex;
@@ -35,11 +36,12 @@
         }
 
         .contents-top-search {
-            border: 1.5px solid #999999;
+            border: 2px solid #000;
             display: flex;
             justify-content: center;
             width: 45rem;
             padding: 5px 0 5px 10px;
+            flex-grow: 1;
 
             input[type=text] {
                 width: 100%;
@@ -57,7 +59,7 @@
                 svg {
                     width: 1.5rem;
                     height: 1.5rem;
-                    stroke: #999999;
+                    stroke: #000;
                 }
             }
         }
@@ -101,6 +103,7 @@
             font-family: 'p_bold';
 
             .card-thumbnail{
+                border-bottom: 2px solid #000;
                 width: 100%;
                 @media screen and (max-width:1350px) {
                     height: 13rem;
@@ -156,6 +159,7 @@
                 margin: 1rem 0;
             }
             .card-link{
+                border-top: 2px solid #000;
                 display: flex;
                 a{
                     width: 50%;

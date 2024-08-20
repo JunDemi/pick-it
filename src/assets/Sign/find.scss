@@ -1,11 +1,9 @@
 .find-container {
     display: flex;
     justify-content: center;
-    gap: 4rem;
-
-
+    
     .find-form {
-        border: 1px solid #949494;
+        border: 2px solid #000;
         padding: 2rem 3rem;
 
         h1 {
@@ -23,7 +21,7 @@
                 font-family: 'p_thin';
                 padding: 1rem 2rem;
                 width: 16rem;
-                border: 0.5px solid #949494;
+                border: 2px solid #000;
 
                 &::placeholder {
                     color: #949494;

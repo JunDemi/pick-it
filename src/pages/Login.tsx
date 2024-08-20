@@ -47,7 +47,7 @@ function Login() {
         <div className="login-form-top">
           <h1>로그인</h1>
           <div>
-            <Link to="/find-user">아이디 / 비밀번호 찾기</Link>
+            <Link to="/find-user">비밀번호 찾기</Link>
           </div>
         </div>
         <form

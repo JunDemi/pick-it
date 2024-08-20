@@ -82,10 +82,6 @@ function Contents() {
             </svg>
           </button>
         </form>
-
-        <Link to="/create-game" className="contents-top-create">
-          월드컵 생성
-        </Link>
       </div>
 
       <div>

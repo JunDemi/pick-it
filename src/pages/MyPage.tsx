@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../assets/MyPage/myPage.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getUserData } from "../server/firebaseAuth";
 import { getMyPlayAmount } from "../server/firebaseWorldcup";
 import { DocumentData } from "firebase/firestore";
@@ -13,6 +13,16 @@ function MyPage() {
   const remainData = localStorage.getItem("game-data");
   //로컬스토리지에 존재하는 유저 데이터
   const user = localStorage.getItem("pickit-user");
+
+    //네비게이션
+    const navigate = useNavigate();
+  
+    useEffect(() => {
+      if (!user) {
+        alert("로그인 후 이용 가능합니다.");
+        navigate("/login");
+      }
+    }, [navigate, user]);
   // 내월드컵/참여/댓글 메뉴 선택 상태
   const [filterMenu, setFilterMenu] = useState<"내 월드컵" | "참여" | "댓글">("내 월드컵");
   // 내 프로필 정보 상태 ["이미지경로", "닉네임"]

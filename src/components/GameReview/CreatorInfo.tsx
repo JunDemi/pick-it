@@ -7,7 +7,10 @@ function CreatorInfo(props: {
   creatorName: string;
   imgRankData: ImageRankData[];
 }) {
+  //제작자 프로필 이미지 정보 상태
   const [creatorImg, setCreatorImg] = useState<string>();
+
+  //사용자 정보 불러오기
   useEffect(() => {
     getUserData(props.creatorId).then((res) => setCreatorImg(res));
   }, [props.creatorId]);

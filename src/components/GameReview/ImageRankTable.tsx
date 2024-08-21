@@ -54,7 +54,7 @@ function ImageRankTable(props: {
         <tbody>
           {mergedData.slice(0, limit).map((data, index) => (
             <tr key={data.fileIndex}>
-              <td>{index + 1}</td>
+              <td>{data.winRate === 0 ? "-" : index + 1}</td>
               <td>
                 <img src={data.filePath} alt="" />
               </td>

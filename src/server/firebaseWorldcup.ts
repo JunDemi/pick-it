@@ -39,11 +39,14 @@ export const getCreateWorldCup = async (argData: SendData) => {
 };
 
 //월드컵 리스트 불러오기(최신순)
-export const getWorldCupList = async (filter: "pop" | "new", {
-  pageParam,
-}: {
-  pageParam: number;
-}): Promise<{
+export const getWorldCupList = async (
+  filter: "pop" | "new",
+  {
+    pageParam,
+  }: {
+    pageParam: number;
+  }
+): Promise<{
   data: {
     worldcupId: string;
     worldcupInfo: DocumentData;
@@ -54,7 +57,10 @@ export const getWorldCupList = async (filter: "pop" | "new", {
   const LIMIT = 8; //클라이언트에 불러올 배열 개수
 
   //filter에 따라 view내림차순 혹은 최신순 정렬
-  const worldcupQuery = query(worldcupRef, orderBy(filter === "new" ? "createAt" : "view", "desc"));
+  const worldcupQuery = query(
+    worldcupRef,
+    orderBy(filter === "new" ? "createAt" : "view", "desc")
+  );
 
   //getDocs후 docs객체 할당
   const getData = await getDocs(worldcupQuery).then((res) => {
@@ -63,7 +69,7 @@ export const getWorldCupList = async (filter: "pop" | "new", {
   const result = getData.map((data) => {
     return { worldcupId: data.id, worldcupInfo: data.data() };
   });
-  
+
   //1초의 지연시간을 적용하고 promise값으로 리턴
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -85,7 +91,7 @@ export const findSelectWorldcup = async (id: string) => {
       gameId: id,
       gameInfo: findWorldcupData.data(),
     };
-  } else{
+  } else {
     return null;
   }
 };
@@ -120,7 +126,7 @@ export const getCreateRankAndUpdateView = async (payloadData: {
       fileName: payloadData.fileName,
       filePath: payloadData.filePath,
       winRate: 1,
-      updateAt: Date.now()
+      updateAt: Date.now(),
     });
   } else {
     //이미지 랭킹 데이터의 ID값 불러오기
@@ -137,7 +143,7 @@ export const getCreateRankAndUpdateView = async (payloadData: {
         //비회원일경우 비어있는값. (arrayUnion은 기존 배열에 새로 추가. 배열 내에 동일한 id가 있다면 추가되지 않음)
         userId: arrayUnion(payloadData.userId ? payloadData.userId : ""),
         winRate: increment(1), //우승 횟수 1 증가
-        updateAt: Date.now()
+        updateAt: Date.now(),
       });
     }
   }
@@ -149,9 +155,15 @@ export const getCreateRankAndUpdateView = async (payloadData: {
 };
 
 //매개변수 = 월드컵 게임 ID(url파라미터), 이미지 랭킹 데이터 불러오기
-export const getImageRankList = async (gameID: string): Promise<ImageRankData[] | null> => {
+export const getImageRankList = async (
+  gameID: string
+): Promise<ImageRankData[] | null> => {
   //쿼리
-  const rankFindQuery = query(imageRankRef, where("gameId", "==", gameID), orderBy("updateAt", "desc"));
+  const rankFindQuery = query(
+    imageRankRef,
+    where("gameId", "==", gameID),
+    orderBy("updateAt", "desc")
+  );
   const imageRankDocs = await getDocs(rankFindQuery);
   //잘못된 파라미터 주소나 월드컵 랭킹이 아예 없는 경우
   if (imageRankDocs.empty) {
@@ -163,7 +175,7 @@ export const getImageRankList = async (gameID: string): Promise<ImageRankData[] 
         filePath: data.data().filePath,
         userId: data.data().userId,
         winRate: data.data().winRate,
-        updateAt: data.data().updateAt
+        updateAt: data.data().updateAt,
       };
     });
     return new Promise((resolve) => {
@@ -172,4 +184,42 @@ export const getImageRankList = async (gameID: string): Promise<ImageRankData[] 
       }, 1000);
     });
   }
+};
+
+//내 월드컵 개수, 참여 월드컵 개수, (댓글 개수) 불러오기
+export const getMyPlayAmount = async (userId: string) => {
+  //내 월드컵 불러오는 쿼리
+  const findWorldcupQuery = query(
+    collection(db, "worldcup"),
+    where("userId", "==", userId)
+  );
+  // 내 ID가 포함된 이미지 랭킹 불러오기
+  const findplayedQuery = query(
+    collection(db, "imageRank"),
+    where("userId", "==", [userId]) // 배열 컬럼의 where문은 '[키워드]'로 검색할 수 있음
+  );
+
+  //내 월드컵 할당
+  const myWorldcupAmount = await getDocs(findWorldcupQuery).then((result) => {
+    return result.docs.map((data) => {
+      return {
+        gameId: data.id,
+        gameInfo: data.data(),
+      }
+    });
+  });
+  // 참여 월드컵 할당
+  const playedAmount = await getDocs(findplayedQuery).then((result) => {
+    return result.docs.map((data) => {
+      return {
+        gameId: data.id,
+        gameInfo: data.data(),
+      }
+    });
+  });
+
+  return {
+    myWorldcup: myWorldcupAmount,
+    playedWorldcup: playedAmount,
+  };
 };

@@ -63,15 +63,17 @@ function Step3Modify(props: { imageList: File[] }) {
   //최종 게임 생성 버튼 핸들러
   const createGame = async () => {
     setLoading(true);
+    const date = Date.now();
+    
     if (user) {
       const userId = JSON.parse(user).UserId as string; //사용자 ID
       await getUserData(userId).then(res => { setUserNickName(res[1]) }); //nickName할당
       //월드컵 게임 이미지 파일 스토리지 업로드 함수
       inputData.forEach((images) => {
         const imageRef = ref(
-          //이미지 파일이름: 유저ID + 랜덤조합텍스트 + 파일이름
+          //이미지 파일이름: 유저ID / 현재날짜밀리초 /랜덤조합텍스트 + 파일이름
           storage,
-          `worldcup-images/${userId + uuid() + images.file.name}`
+          `worldcup-images/${userId}/${date}/${uuid() + images.file.name}`
         );
         uploadBytes(imageRef, images.file).then((imgPath) => {
           getDownloadURL(imgPath.ref).then((url) => {

@@ -26,8 +26,9 @@ const UserPopup = ({ userData }: PropsUserData) => {
   const logOut = () => {
     //로그아웃 메소드
     signOut(auth);
-    //로컬스토리지 로그인 정보 삭제
+    //로컬스토리지 로그인, 게임 데이터 정보 삭제
     localStorage.removeItem("pickit-user");
+    localStorage.removeItem("game-data");
     //전역 상태 초기화
     dispatch(getReset()); //redux초기화
     //메인으로 이동

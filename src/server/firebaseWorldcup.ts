@@ -196,7 +196,7 @@ export const getMyPlayAmount = async (userId: string) => {
   // 내 ID가 포함된 이미지 랭킹 불러오기
   const findplayedQuery = query(
     collection(db, "imageRank"),
-    where("userId", "==", [userId]) // 배열 컬럼의 where문은 '[키워드]'로 검색할 수 있음
+    where("userId", "array-contains", userId) // 배열 컬럼의 where문은 array-contains로 검색할 수 있음
   );
 
   //내 월드컵 할당

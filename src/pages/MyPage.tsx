@@ -3,7 +3,6 @@ import "../assets/MyPage/myPage.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { getUserData } from "../server/firebaseAuth";
 import { getMyPlayAmount } from "../server/firebaseWorldcup";
-import { DocumentData } from "firebase/firestore";
 import MyWorldcup from "../components/MyPage/MyWorldcup";
 import PlayedWorldcup from "../components/MyPage/PlayedWorldcup";
 import { MyPageDataType } from "../types/MyPage";
@@ -48,7 +47,7 @@ function MyPage() {
 
         {(myProfile && myPlayeData) &&
           <div className="aside-profile">
-            <img src={myProfile[0]} alt="" />
+            <img src={myProfile[0] === "default" ? "/images/user.png" : myProfile[0]} alt="" />
             <h2>{myProfile[1]}</h2>
             <Link to="">프로필 수정</Link>
             <div className="my-played">

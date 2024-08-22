@@ -3,11 +3,13 @@
     text-align: center;
 }
 .mypage-container {
+    position: relative;
     padding: 0 7rem;
-    display: flex;
-    gap: 2rem;
 
     .mypage-aside {
+        position: fixed;
+        left: 7rem;
+        top: 6rem;
         max-width: 20rem;
         display: flex;
         flex-direction: column;
@@ -133,9 +135,8 @@
     }
 
     .mypage-section {
-        flex-grow: 1;
         padding: 1rem 2rem;
-
+        margin-left: 20rem;
         .menu-filter {
             button {
                 cursor: pointer;
@@ -194,6 +195,7 @@
             .mypage-card-container {
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
+                row-gap: 2rem;
 
                 .card {
                     display: flex;

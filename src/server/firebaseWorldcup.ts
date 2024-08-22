@@ -4,6 +4,7 @@ import {
   collection,
   doc,
   DocumentData,
+  documentId,
   getDoc,
   getDocs,
   increment,
@@ -186,7 +187,7 @@ export const getImageRankList = async (
   }
 };
 
-//내 월드컵 개수, 참여 월드컵 개수, (댓글 개수) 불러오기
+//내 월드컵, 참여 월드컵, (댓글) 불러오기
 export const getMyPlayAmount = async (userId: string) => {
   //내 월드컵 불러오는 쿼리
   const findWorldcupQuery = query(
@@ -205,21 +206,52 @@ export const getMyPlayAmount = async (userId: string) => {
       return {
         gameId: data.id,
         gameInfo: data.data(),
-      }
+      };
     });
   });
   // 참여 월드컵 할당
   const playedAmount = await getDocs(findplayedQuery).then((result) => {
-    return result.docs.map((data) => {
-      return {
-        gameId: data.id,
-        gameInfo: data.data(),
-      }
-    });
+    return (
+      result.docs
+        .map((data) => {
+          //map함수를 사용하여 월드컵 ID값만 배열에 저장
+          return String(data.data().gameId);
+        })
+        //filter를 사용하여 배열 내 중복된 월드컵 ID값을 제거
+        .filter((value, index, self) => self.indexOf(value) === index)
+    );
   });
-
   return {
     myWorldcup: myWorldcupAmount,
     playedWorldcup: playedAmount,
   };
 };
+
+// 내가 참여한 월드컵 ID를 통해 월드컵의 전체 정보 가져오기
+export const getPlayedWorldcup = (worldcupId: string[]) => {
+
+  //참여한 월드컵 ID배열 map
+  const worldcupArray = worldcupId.map(async(id) => {
+    const findWorldcupQuery = query(
+      collection(db, "worldcup"),
+      where(documentId(), "==", id)
+    );
+    const worldcupDocs = await getDocs(findWorldcupQuery).then((res) => {
+      return res.docs.map((res2) => {
+        return {
+          gameId: res2.id,
+          gameInfo: res2.data(),
+        }
+      });
+    });
+    //데이터는 하나지면 배열 형태로 불러오기 때문애 [0]만 반환
+    return worldcupDocs[0];
+  });
+
+  //Promise.all()을 사용하여 map배열 내에 있는 모든 promise반환이 완료된 값을 최종 리턴
+  return Promise.all(worldcupArray);
+
+};
+
+
+/* 전송할 데이터가 월드컵 전체 데이터를 부를 필요는 없음. 메모리 누수 해결을 위해 딱 필요한 값만 리턴 할 것 */

@@ -6,7 +6,9 @@ import { compareTime } from "../../Utils/compareTime";
 function MyWorldcup(props: { data: MyPageDataType[] }) {
   const [filter, setFilter] = useState<"new" | "pop">("new");
 
-  return (
+  return props.data.length === 0 ? (
+    <div className="mypage-no-data">생성하신 월드컵이 없습니다.</div>
+  ) : (
     <div className="mypage-worldcup-container">
       <div className="top-filter">
         <button
@@ -47,9 +49,9 @@ function MyWorldcup(props: { data: MyPageDataType[] }) {
                       <span key={n}>#{text}</span>
                     ))}
                   </div>
-                  <h4>최근수정일: {compareTime(item.gameInfo.updateAt)}</h4>
+                  <h4>{compareTime(item.gameInfo.createAt)}</h4>
                   <div className="card-links">
-                    <Link to="">랭킹보기</Link>
+                    <Link to={`../game-review/${item.gameId}`}>랭킹보기</Link>
                     <Link to="">수정하기</Link>
                   </div>
                 </div>

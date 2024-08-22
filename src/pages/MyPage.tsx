@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../assets/MyPage/myPage.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { getUserData } from "../server/firebaseAuth";
-import { getMyPlayAmount } from "../server/firebaseWorldcup";
+import { getMyPlayAmount, getPlayedWorldcup } from "../server/firebaseWorldcup";
 import MyWorldcup from "../components/MyPage/MyWorldcup";
 import PlayedWorldcup from "../components/MyPage/PlayedWorldcup";
 import { MyPageDataType } from "../types/MyPage";
@@ -26,18 +26,24 @@ function MyPage() {
   const [filterMenu, setFilterMenu] = useState<"내 월드컵" | "참여" | "댓글">("내 월드컵");
   // 내 프로필 정보 상태 ["이미지경로", "닉네임"]
   const [myProfile, setMyProfile] = useState<string[]>();
-  //내 월드컵, 참여, 댓글 수
-  const [myPlayeData, setMyPlayData] = useState<{
-    myWorldcup: MyPageDataType[];
-    playedWorldcup: MyPageDataType[];
-  }>();
-
+  //내 월드컵
+  const [myWorldcupData, setMyWorldcupData] = useState<MyPageDataType[]>();
+  //참여 월드컵
+  const [myPlayedData, setMyPlayedData] = useState<MyPageDataType[]>();
+  
   useEffect(() => {
     if (user) {
       //회원 프로필 이미지 및 닉네임 불러오기
       getUserData(String(JSON.parse(user).UserId)).then((res) => setMyProfile(res));
-      //내 월드컵, 참여, 댓글 수 불러오기
-      getMyPlayAmount(String(JSON.parse(user).UserId)).then((res) => setMyPlayData(res));
+      //내 월드컵, 참여, 댓글 불러오기
+      getMyPlayAmount(String(JSON.parse(user).UserId)).then((res) => 
+        {
+          //1차 state할당
+          setMyWorldcupData(res.myWorldcup);
+          //참여 월드컵 ID값 반환 후 다른 함수에 전송
+          return res.playedWorldcup;
+          //참여한 월드컵 ID의 월드컵 전체 정보
+        }).then(playedData => getPlayedWorldcup(playedData).then(res2 => setMyPlayedData(res2)));
     }
   }, []);
 
@@ -45,18 +51,18 @@ function MyPage() {
     <div className="mypage-container">
       <aside className="mypage-aside">
 
-        {(myProfile && myPlayeData) &&
+        {(myProfile && myWorldcupData && myPlayedData) &&
           <div className="aside-profile">
             <img src={myProfile[0] === "default" ? "/images/user.png" : myProfile[0]} alt="" />
             <h2>{myProfile[1]}</h2>
             <Link to="">프로필 수정</Link>
             <div className="my-played">
               <div onClick={() => setFilterMenu("내 월드컵")}>
-                <h3>{myPlayeData.myWorldcup.length}</h3>
+                <h3>{myWorldcupData.length}</h3>
                 <p>내 월드컵</p>
               </div>
               <div onClick={() => setFilterMenu("참여")}>
-                <h3>{myPlayeData.playedWorldcup.length}</h3>
+                <h3>{myPlayedData.length}</h3>
                 <p>참여</p>
               </div>
               <div onClick={() => setFilterMenu("댓글")}>
@@ -102,8 +108,8 @@ function MyPage() {
             댓글
           </button>
         </div>
-        {(myPlayeData && filterMenu === "내 월드컵") && <MyWorldcup data={myPlayeData.myWorldcup}/>}
-        {(myPlayeData && filterMenu === "참여") && <PlayedWorldcup/>}
+        {(myWorldcupData && filterMenu === "내 월드컵") && <MyWorldcup data={myWorldcupData}/>}
+        {(myPlayedData && filterMenu === "참여") && <PlayedWorldcup data={myPlayedData}/>}
       </section>
     </div>
   );

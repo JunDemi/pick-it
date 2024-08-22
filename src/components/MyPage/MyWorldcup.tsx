@@ -51,8 +51,8 @@ function MyWorldcup(props: { data: MyPageDataType[] }) {
                   </div>
                   <h4>{compareTime(item.gameInfo.createAt)}</h4>
                   <div className="card-links">
-                    <Link to={`../game-review/${item.gameId}`}>랭킹보기</Link>
                     <Link to="">수정하기</Link>
+                    <Link to={`../game-review/${item.gameId}`}>랭킹보기</Link>
                   </div>
                 </div>
               </div>

@@ -77,7 +77,7 @@ function MyPage() {
             alt=""
           />
           <h2>{myProfile[1]}</h2>
-          <Link to="">프로필 수정</Link>
+          <Link to="/edit-profile">프로필 수정</Link>
           <div className="my-played">
             <div onClick={() => setFilterMenu("내 월드컵")}>
               <h3>{myWorldcupData.length}</h3>

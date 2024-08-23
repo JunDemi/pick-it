@@ -75,7 +75,7 @@ function EditProfile() {
     navigate("/mypage");
   };
 
-  return myProfile ? (
+  return (myProfile && user) ? (
     <>
       <section className="edit-profile-container">
         <div className="edit-main">
@@ -189,7 +189,7 @@ function EditProfile() {
           >
             <div className="edit-popup-container">
                 <IoClose onClick={() => setEditPopUp(false)}/>
-            {popUpType === "닉네임" && <EditNickName/>}
+            {popUpType === "닉네임" && <EditNickName userId={JSON.parse(user).UserId} userName={myProfile[1]}/>}
             {popUpType === "비밀번호" && <EditPassword/>}
             {popUpType === "회원탈퇴" && <DeleteUser/>}
             </div>

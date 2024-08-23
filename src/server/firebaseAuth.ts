@@ -40,13 +40,14 @@ export const getAuthenticInfo = (
     userPw: userPw,
     userNickName: userNickName,
     userImg: userImg,
+    worldcupHistory: [], //월드컵 참여 기록
   });
 };
 
 /* userPopup 컴포넌트 사용자 조회 */
 export const getUserData = async (userid: string) => {
   // 사용자 컬렉션에 매개변수로 넘겨받은 userid값을 문서 필드값 userId와 비교하여 사용자 조회
-  const findRef = query(collection(db, "users"), where("userId", "==", userid));
+  const findRef = query(authRef, where("userId", "==", userid));
   const findIdDocs = await getDocs(findRef);
 
   const profileImgUrl: any = [];
@@ -61,6 +62,17 @@ export const getUserData = async (userid: string) => {
     return profileImgUrl;
   }
 };
+// 월드컵 참여 기록을 위한 users 문서ID 조회
+export const getUserDocumentId = async(userId: string) => {
+  const findRef = query(authRef, where("userId", "==", userId));
+  const findIdDocs = await getDocs(findRef).then(docRes => {return docRes.docs});
+
+  const userDocId = findIdDocs.map((doc) => {
+    return doc.id;
+  });
+
+  return userDocId[0];
+}
 
 // 회원가입 닉네임 중복확인
 export const nickNameCheck = async (nickName: string) => {

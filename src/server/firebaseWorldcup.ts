@@ -14,6 +14,7 @@ import {
 } from "firebase/firestore";
 import { db } from "./firebase";
 import { ImageRankData, SendData } from "../types/Worldcup";
+import { getUserDocumentId } from "./firebaseAuth";
 
 //파이어베이스 DB연동
 const worldcupRef = collection(db, "worldcup");
@@ -147,7 +148,20 @@ export const getCreateRankAndUpdateView = async (payloadData: {
       });
     }
   }
-
+  //로그인 중일 경우 해당 회원의 월드컵 참여 기록 업데이트
+  if(payloadData.userId){
+    //firebaseAuth.ts 함수: 해당 유저의 문서 ID를 불러옴
+    const myDocId = await getUserDocumentId(payloadData.userId);
+    //해당 문서 ID를 가진 테이블 매칭 후 업데이트
+    const authRef = doc(db, "users", myDocId);
+    await updateDoc(authRef, {
+      //worldcupHistory배열 컬럼 추가. { 게임아이디, 참여일 }
+      worldcupHistory: arrayUnion({
+        gameId: payloadData.gameId,
+        playedAt: Date.now()
+      }),
+    });
+  }
   //조회 수 업데이트
   await updateDoc(updateRef, {
     view: increment(1), //조회수 1 증가

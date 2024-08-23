@@ -121,3 +121,92 @@
         color: #f0607b;
     }
 }
+.edit-popup{
+    z-index: 31;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .edit-popup-container{
+        padding: 10px;
+        width: 30rem;
+        background-color: #fff;
+        border: 2px solid #000;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        svg{
+            cursor: pointer;
+            width: 2rem;
+            height: 2rem;
+        }
+        .edit-section{
+            width: 100%;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            h1{
+                font-family: 'p_bold';
+                font-size: 24px;
+            }
+            table{
+                width: 100%;
+                td{
+                    padding: 10px 0;
+                    font-size: 15px;
+                    .readonly-text{
+                        background-color: #e1dfea;
+                        
+                    }
+                    .change-text{
+                        background-color: #fff;
+                        &:focus {
+                            background-color: #f7f6fd;
+                        }
+                    }
+                    input[type=text], input[type=password]{
+                        font-family: 'p_normal';
+                        width: 94%;
+                        border: 2px solid #000;
+                        font-size: 15px;
+                        padding: 0.5rem 0 0.5rem 10px;
+                    }
+                }
+            }
+            button{
+                font-family: 'p_bold';
+                font-size: 16px;
+                padding: 1rem 0;
+                cursor: pointer;
+                border: none;
+                color: #fff;
+            }
+        }
+        .edit-info{
+            button{
+                background-color: #000;
+                &:hover{
+                    background-color: #232323;
+                }
+            }
+        }
+        .delete-user{
+            h1{
+                color: #f0607b;
+            }
+            button{
+                background-color: #f0607b;
+                &:hover{
+                    background-color: #c53650;
+                }
+            }
+        }
+    }
+}

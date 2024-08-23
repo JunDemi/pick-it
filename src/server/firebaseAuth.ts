@@ -79,7 +79,7 @@ export const nickNameCheck = async (nickName: string) => {
   const nickNameQuery = query(authRef, where("userNickName", "==", nickName));
   const result = await getDocs(nickNameQuery);
   //중복되지 않으면 닉네임을 반환
-  return result.empty ? nickName : "중복됨";
+  return result.empty ? nickName : "already-exist";
 };
 
 //아이디 중복확인
@@ -88,7 +88,7 @@ export const userIdCheck = async (userId: string) => {
   const result = await getDocs(userIdQuery);
 
   //중복되지 않으면 ID를 반환
-  return result.empty ? userId : "중복됨";
+  return result.empty ? userId : "already-exist";
 };
 
 // 비밀번호 찾기

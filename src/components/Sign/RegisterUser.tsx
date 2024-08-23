@@ -7,6 +7,7 @@ import { auth } from "../../server/firebase";
 import { uploadProfile } from "../../server/uploadStorage";
 import { getAuthenticInfo, nickNameCheck, userIdCheck } from "../../server/firebaseAuth";
 import { AnimatePresence, motion } from "framer-motion";
+import { capitalLetters, englishLetters, specialLetters } from "../../Utils/regExp";
 
 function RegisterUser() {
     //네비게이터
@@ -61,11 +62,11 @@ function RegisterUser() {
     //중복 확인 1차
     useEffect(() => {
         //닉네임이 중복일 경우
-        if (checkedNickName === "중복됨") {
+        if (checkedNickName === "already-exist") {
             alert("닉네임이 중복되었습니다.");
             setLoading(false);
         }
-        else if (checkedUserId === "중복됨") {
+        else if (checkedUserId === "already-exist") {
             alert("아이디가 중복되었습니다.");
             setLoading(false);
         }
@@ -293,11 +294,3 @@ function RegisterUser() {
 }
 
 export default RegisterUser;
-
-//특수문자 정규표현식
-const specialLetters: RegExp =
-    /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
-//영문 정규표현식
-const englishLetters: RegExp = /[^a-zA-Z0-9\s]/;
-//영문 대소문자 정규표현식
-const capitalLetters: RegExp = /[A-Z]/;

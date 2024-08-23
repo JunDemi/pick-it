@@ -17,6 +17,7 @@ import PlayGame from "./pages/PlayGame";
 import GameReview from "./pages/GameReview";
 import HeaderDisplay from "./components/Header/HeaderDisplay";
 import MyPage from "./pages/MyPage";
+import EditProfile from "./pages/EditProfile";
 
 function App() {
   const [userData, setUserData] = useState<PopupUserData>({
@@ -82,6 +83,7 @@ function App() {
         <Route path='/register' element={<Register />} />
         <Route path='/find-user' element={<FindUser />} />
         <Route path='/mypage' element={<MyPage />} />
+        <Route path='/edit-profile' element={<EditProfile/>}/>
       </Routes>
     </BrowserRouter>
   );

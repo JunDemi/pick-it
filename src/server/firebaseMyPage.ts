@@ -1,11 +1,14 @@
 import {
   collection,
+  doc,
   documentId,
   getDocs,
   query,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { db } from "./firebase";
+import { deleteProfileImg } from "./deleteStorage";
 
 //파이어베이스 DB연동
 const authRef = collection(db, "users");
@@ -88,3 +91,23 @@ export const getUserWorldcupHistory = async (userId: string) => {
 
   return myWorldcupHisory[0];
 };
+
+//프로필 이미지 변경
+export const setMyProfileImage = async(userId: string, imgPath: string) => {
+  const findRef = query(authRef, where("userId", "==", userId));
+  const findIdDocs = await getDocs(findRef).then((docRes) => {
+    return docRes.docs;
+  });
+  //해당 유저 데이터의 문서 전체 불러오기
+  const findUser = findIdDocs.find((data) => data.data()["userId"] === userId);
+  if(findUser) {
+    //기존 프로필 이미지 스토리지에 제거
+    await deleteProfileImg(findUser.data()["userImg"]);
+    //업데이트 쿼리
+    const userRef = doc(db, "users", findUser.id); //문서 ID
+    await updateDoc(userRef, {
+      userImg: imgPath === "default" ? "default" : imgPath,
+    });
+
+  }
+}

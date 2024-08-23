@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import "../assets/MyPage/myPage.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { getUserData } from "../server/firebaseAuth";
-import { getMyPlayAmount, getPlayedWorldcup } from "../server/firebaseMyPage";
+import {
+  getMyPlayAmount,
+  getPlayedWorldcup,
+  getUserWorldcupHistory,
+} from "../server/firebaseMyPage";
 import MyWorldcup from "../components/MyPage/MyWorldcup";
 import PlayedWorldcup from "../components/MyPage/PlayedWorldcup";
 import { MyPageDataType } from "../types/MyPage";
@@ -32,7 +36,13 @@ function MyPage() {
   const [myWorldcupData, setMyWorldcupData] = useState<MyPageDataType[]>();
   //참여 월드컵
   const [myPlayedData, setMyPlayedData] = useState<MyPageDataType[]>();
-
+  //유저별 월드컵 참여 기록
+  const [myHistory, setMyHistory] = useState<
+    {
+      gameId: string;
+      playedAt: number;
+    }[]
+  >();
   useEffect(() => {
     if (user) {
       //회원 프로필 이미지 및 닉네임 불러오기
@@ -51,10 +61,14 @@ function MyPage() {
         .then((playedData) =>
           getPlayedWorldcup(playedData).then((res2) => setMyPlayedData(res2))
         );
+      //유저별 월드컵 참여 기록 불러오기
+      getUserWorldcupHistory(String(JSON.parse(user).UserId)).then((res) =>
+        setMyHistory(res)
+      );
     }
   }, []);
 
-  return (myProfile && myWorldcupData && myPlayedData) ? (
+  return myProfile && myWorldcupData && myPlayedData && myHistory ? (
     <div className="mypage-container">
       <aside className="mypage-aside">
         <div className="aside-profile">
@@ -125,7 +139,9 @@ function MyPage() {
           </button>
         </div>
         {filterMenu === "내 월드컵" && <MyWorldcup data={myWorldcupData} />}
-        {filterMenu === "참여" && <PlayedWorldcup data={myPlayedData} />}
+        {filterMenu === "참여" && (
+          <PlayedWorldcup data={myPlayedData} history={myHistory} />
+        )}
       </section>
     </div>
   ) : (

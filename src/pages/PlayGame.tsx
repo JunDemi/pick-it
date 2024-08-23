@@ -8,12 +8,7 @@ import "../assets/Contents/playGame.scss";
 import { AnimatePresence, motion } from "framer-motion";
 import Confetti from "react-confetti-boom";
 import GameHeader from "../components/WorldcupGame/GameHeader";
-
-interface GameImageType {
-  fileIndex: number;
-  fileName: string;
-  filePath: string;
-}
+import { WorldcupImage } from "../types/Worldcup";
 
 function PlayGame() {
   //네비게이터
@@ -48,7 +43,7 @@ function PlayGame() {
   const setGameData = (
     gameId: string,
     gameTitle: string,
-    gameImage: GameImageType[],
+    gameImage: WorldcupImage[],
     limit: number
   ) => {
     //1단계. 이미지 배열 랜덤 배치 후 limit만큼 slice
@@ -112,7 +107,7 @@ function PlayGame() {
   }, [gameId]);
 
   //카드 선택 후 다음 게임으로
-  const nextGame = (winCard: GameImageType) => {
+  const nextGame = (winCard: WorldcupImage) => {
     const parseData = JSON.parse(data);
     parseData.GameImage = parseData.GameImage.slice(2); //게임 엔트리에 올라와있던 두 개의 항목 제거
     parseData.WinImage = [...parseData.WinImage, winCard]; //다음 라운드에 진출할 카드를 배열에 추가
@@ -133,7 +128,7 @@ function PlayGame() {
   };
 
   //게임 마무리 후 랭킹보기 페이지 이동
-  const goResultPage = async (argData: GameImageType) => {
+  const goResultPage = async (argData: WorldcupImage) => {
     setEndLoading(true);
     //로컬스토리지의 유저 정보 불러오기
     const getUser = localStorage.getItem("pickit-user");
@@ -244,7 +239,7 @@ function PlayGame() {
           <div className="game-section">
             {JSON.parse(data)
               .GameImage.slice(0, 2)
-              .map((items: GameImageType) => (
+              .map((items: WorldcupImage) => (
                 <div className="game-card" key={items.fileIndex}>
                   <motion.img
                     src={items.filePath}
@@ -279,7 +274,7 @@ function PlayGame() {
                   <motion.img
                     src={
                       JSON.parse(data).GameImage.find(
-                        (m: GameImageType) => m.fileIndex === Number(selectCard)
+                        (m: WorldcupImage) => m.fileIndex === Number(selectCard)
                       ).filePath
                     }
                     alt=""
@@ -289,7 +284,7 @@ function PlayGame() {
                     <h1>
                       {
                         JSON.parse(data).GameImage.find(
-                          (m: GameImageType) =>
+                          (m: WorldcupImage) =>
                             m.fileIndex === Number(selectCard)
                         ).fileName
                       }{" "}
@@ -325,7 +320,7 @@ function PlayGame() {
                 <motion.img
                   src={
                     JSON.parse(data).GameImage.find(
-                      (m: GameImageType) => m.fileIndex === Number(selectCard)
+                      (m: WorldcupImage) => m.fileIndex === Number(selectCard)
                     ).filePath
                   }
                   alt=""
@@ -335,7 +330,7 @@ function PlayGame() {
                   <h1>
                     {
                       JSON.parse(data).GameImage.find(
-                        (m: GameImageType) => m.fileIndex === Number(selectCard)
+                        (m: WorldcupImage) => m.fileIndex === Number(selectCard)
                       ).fileName
                     }{" "}
                     {JSON.parse(data).GameRange / 2 === 2
@@ -351,7 +346,7 @@ function PlayGame() {
                 onClick={() =>
                   goResultPage(
                     JSON.parse(data).GameImage.find(
-                      (m: GameImageType) => m.fileIndex === Number(selectCard)
+                      (m: WorldcupImage) => m.fileIndex === Number(selectCard)
                     )
                   )
                 }
@@ -365,7 +360,7 @@ function PlayGame() {
                 onClick={() =>
                   nextGame(
                     JSON.parse(data).GameImage.find(
-                      (m: GameImageType) => m.fileIndex === Number(selectCard)
+                      (m: WorldcupImage) => m.fileIndex === Number(selectCard)
                     )
                   )
                 }

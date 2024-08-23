@@ -135,8 +135,8 @@
     }
 
     .mypage-section {
-        padding: 1rem 2rem;
-        margin-left: 20rem;
+        padding: 1rem 0;
+        margin-left: 25rem;
         .menu-filter {
             button {
                 cursor: pointer;
@@ -165,7 +165,7 @@
             .top-filter {
                 margin: 1rem 0;
                 display: flex;
-                justify-content: flex-end;
+                justify-content: flex-start;
                 gap: 1rem;
 
                 button {
@@ -194,7 +194,8 @@
 
             .mypage-card-container {
                 display: grid;
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns: repeat(3, fit-content(236px));
+                column-gap: 2rem;
                 row-gap: 2rem;
 
                 .card {
@@ -219,7 +220,6 @@
                     border-radius: 10px;
                     border: 2px solid #000;
                     border: 2px solid #000;
-                    margin: 0 auto;
 
                     .img-wrapper {
                         width: 100%;

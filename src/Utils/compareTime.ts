@@ -1,5 +1,6 @@
 import { getYYYYMMDD } from "./getYYYYMMDD";
 
+//상대 시간 포맷
 export const compareTime = (millisecond: number) => {
     const minute = Math.floor((Number(Date.now()) - Number(millisecond)) / 60000);
     const hour = Math.floor(minute / 60);

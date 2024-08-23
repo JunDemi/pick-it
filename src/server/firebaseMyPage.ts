@@ -12,6 +12,18 @@ import { deleteProfileImg } from "./deleteStorage";
 
 //파이어베이스 DB연동
 const authRef = collection(db, "users");
+//유저 ID를 통해 해당 문서를 불러오는 쿼리
+const getFindUserDocs = async (userId: string) => {
+  //users테이블의 유저ID 조회
+  const findRef = query(authRef, where("userId", "==", userId));
+  //docs값 할당
+  const findIdDocs = await getDocs(findRef).then((docRes) => {
+    return docRes.docs;
+  });
+  //promise반환이 완료된 후 최종 반환
+  return Promise.all(findIdDocs);
+};
+
 //내 월드컵, 참여 월드컵, (댓글) 불러오기
 export const getMyPlayAmount = async (userId: string) => {
   //내 월드컵 불러오는 쿼리
@@ -79,11 +91,8 @@ export const getPlayedWorldcup = (worldcupId: string[]) => {
 
 //유저별 월드컵 참여 기록 가져오기
 export const getUserWorldcupHistory = async (userId: string) => {
-  const findRef = query(authRef, where("userId", "==", userId));
-  const findIdDocs = await getDocs(findRef).then((docRes) => {
-    return docRes.docs;
-  });
-  
+  //유저 데이터 docs가져오기
+  const findIdDocs = await getFindUserDocs(userId);
   //월드컴 참여 기록 배열 컬럼만 추출
   const myWorldcupHisory = findIdDocs.map((doc) => {
     return doc.data()["worldcupHistory"];
@@ -93,14 +102,12 @@ export const getUserWorldcupHistory = async (userId: string) => {
 };
 
 //프로필 이미지 변경
-export const setMyProfileImage = async(userId: string, imgPath: string) => {
-  const findRef = query(authRef, where("userId", "==", userId));
-  const findIdDocs = await getDocs(findRef).then((docRes) => {
-    return docRes.docs;
-  });
+export const setMyProfileImage = async (userId: string, imgPath: string) => {
+  //유저 데이터 docs가져오기
+  const findIdDocs = await getFindUserDocs(userId);
   //해당 유저 데이터의 문서 전체 불러오기
   const findUser = findIdDocs.find((data) => data.data()["userId"] === userId);
-  if(findUser) {
+  if (findUser) {
     //기존 프로필 이미지 스토리지에 제거
     await deleteProfileImg(findUser.data()["userImg"]);
     //업데이트 쿼리
@@ -108,6 +115,25 @@ export const setMyProfileImage = async(userId: string, imgPath: string) => {
     await updateDoc(userRef, {
       userImg: imgPath === "default" ? "default" : imgPath,
     });
-
   }
-}
+};
+// 닉네임 변경
+export const setMyNickName = async (userId: string, nickName: string) => {
+  if (nickName === "already-exist") {
+    alert("중복된 닉네임 입니다.");
+    return "fail";
+  } else {
+    //유저 데이터 docs가져오기
+    const findIdDocs = await getFindUserDocs(userId);
+    //해당 유저 데이터의 문서 전체 불러오기
+    const findUser = findIdDocs.find((data) => data.data()["userId"] === userId);
+    if (findUser) {
+      //업데이트 쿼리
+      const userRef = doc(db, "users", findUser.id); //문서 ID
+      await updateDoc(userRef, {
+        userNickName: nickName,
+      });
+    }
+    return "success";
+  }
+};

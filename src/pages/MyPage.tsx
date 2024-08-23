@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../assets/MyPage/myPage.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { getUserData } from "../server/firebaseAuth";
-import { getMyPlayAmount, getPlayedWorldcup } from "../server/firebaseWorldcup";
+import { getMyPlayAmount, getPlayedWorldcup } from "../server/firebaseMyPage";
 import MyWorldcup from "../components/MyPage/MyWorldcup";
 import PlayedWorldcup from "../components/MyPage/PlayedWorldcup";
 import { MyPageDataType } from "../types/MyPage";

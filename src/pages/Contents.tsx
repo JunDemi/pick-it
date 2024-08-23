@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import "../assets/Contents/contents.scss";
 import { getWorldCupList } from "../server/firebaseWorldcup";
 import Skeleton from "../components/WorldcupSkeleton/Skeleton";
+import { getUserData } from "../server/firebaseAuth";
 
 function Contents() {
   //인기순, 최신순 필터 state
@@ -118,9 +119,6 @@ function Contents() {
                     <div className="worldcup-title">
                       <h3>{items.worldcupInfo.worldcupTitle}</h3>
                     </div>
-                    <p className="worldcup-creator-name">
-                      {items.worldcupInfo.nickName}님이 작성
-                    </p>
                     <div className="worldcup-description">
                       <p>{items.worldcupInfo.worldcupDescription}</p>
                     </div>

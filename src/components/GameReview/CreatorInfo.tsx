@@ -4,22 +4,21 @@ import { getUserData } from "../../server/firebaseAuth";
 
 function CreatorInfo(props: {
   creatorId: string;
-  creatorName: string;
   imgRankData: ImageRankData[];
 }) {
   //제작자 프로필 이미지 정보 상태
-  const [creatorImg, setCreatorImg] = useState<string>();
+  const [creatorImg, setCreatorImg] = useState<string[]>();
 
   //사용자 정보 불러오기
   useEffect(() => {
     getUserData(props.creatorId).then((res) => setCreatorImg(res));
   }, [props.creatorId]);
-  return (
+  return creatorImg ? (
     <div className="info-creator">
       <h1 className="aside-title">게임 제작자</h1>
       <div className="creator">
-        <img src={creatorImg} alt="" width={200} />
-        {props.creatorName}
+        <img src={creatorImg[0] === "default" ? "/images/user.png" : creatorImg[0]} alt="" width={200} />
+        {creatorImg[1]}
       </div>
       <div className="buttons">
         <button className="follow">팔로우</button>
@@ -27,7 +26,7 @@ function CreatorInfo(props: {
         <button className="report">신고하기</button>
       </div>
     </div>
-  );
+  ) : <div></div>;
 }
 
 export default CreatorInfo;

@@ -100,7 +100,6 @@ function GameReview() {
         )}
         <CreatorInfo
           creatorId={allData.gameInfo.userId}
-          creatorName={allData.gameInfo.nickName}
           imgRankData={imgRankData}
         />
         <Link className="restart-game" to={`/play-game/${gameId}`}>

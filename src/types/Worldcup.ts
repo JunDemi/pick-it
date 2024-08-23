@@ -19,11 +19,13 @@ export interface SendData {
   worldcupDescription: string;
   tournamentRange: number;
   category: string[];
-  worldcupImages: {
-    fileIndex: number;
-    filePath: string;
-    fileName: string;
-  }[];
+  worldcupImages: WorldcupImage[];
+}
+//월드컵 이미지
+export interface WorldcupImage {
+  fileIndex: number;
+  filePath: string;
+  fileName: string;
 }
 //content.tsx에 마운트 될 데이터
 export interface WorldcupList {

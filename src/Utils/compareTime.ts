@@ -8,7 +8,7 @@ export const compareTime = (millisecond: number) => {
     const month = Math.floor(day / 31);
     const year = Math.floor(month / 12);
     if(minute < 5){
-      return "방금";
+      return "방금 전";
     }else if(minute < 60){
       return minute + "분 전"
     }else if(hour < 24){

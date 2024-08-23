@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { v4 as uuid } from "uuid";
 import { storage } from "../../server/firebase";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { SendData } from "../../types/Worldcup";
+import { SendData, WorldcupImage } from "../../types/Worldcup";
 import { getCreateWorldCup } from "../../server/firebaseWorldcup";
 import { useNavigate } from "react-router-dom";
 import { getReset } from "../../store/worldcup/createWorldcup";
@@ -50,11 +50,7 @@ function Step3Modify(props: { imageList: File[] }) {
   const [modifyPage, setModifyPage] = useState<number>(0);
   //이미지 업로드 후 반환되는 객체 배열
   const [uploadedImageObject, setUploadedImageObject] = useState<
-    {
-      fileIndex: number;
-      filePath: string;
-      fileName: string;
-    }[]
+  WorldcupImage[]
   >([]);
   //버튼 클릭시 로딩 동작
   const [loading, setLoading] = useState<boolean>(false);

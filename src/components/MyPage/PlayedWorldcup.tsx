@@ -1,66 +1,87 @@
-import React, { useState } from "react";
+import React from "react";
 import { MyPageDataType } from "../../types/MyPage";
 import { compareTime } from "../../Utils/compareTime";
 import { Link } from "react-router-dom";
+import { WorldcupImage } from "../../types/Worldcup";
 
-function PlayedWorldcup(props: {data: MyPageDataType[]}) {
-    const [filter, setFilter] = useState<"new" | "pop">("new");
+function PlayedWorldcup(props: {
+  data: MyPageDataType[];
+  history: { gameId: string; playedAt: number }[];
+}) {
+  //Set()생성자를 이용하여 배열 내의 중복된 값을 찾아낸다
+  const uniqueNames = new Set();
+  const historyFilter = props.history
+    .sort((A, B) => B.playedAt - A.playedAt)
+    .filter((item) => {
+      if (uniqueNames.has(item.gameId)) {
+        return false; // 중복된 이름이면 제외
+      } else {
+        uniqueNames.add(item.gameId); // 고유한 이름은 추가
+        return true;
+      }
+    });
 
-    return props.data.length === 0 ? (
-      <div className="mypage-no-data">참여하신 월드컵이 없습니다.</div>
-    ) : (
-      <div className="mypage-worldcup-container">
-        <div className="top-filter">
-          <button
-            onClick={() => setFilter("new")}
-            className={filter === "new" ? "filter-selected" : "filter-disabled"}
-          >
-            최신순
-          </button>
-          <button
-            onClick={() => setFilter("pop")}
-            className={filter === "pop" ? "filter-selected" : "filter-disabled"}
-          >
-            인기순
-          </button>
-        </div>
-        <div className="mypage-card-container">
-          {props.data
-            .sort((dataA, dataB) =>
-              filter === "pop"
-                ? dataB.gameInfo.view - dataA.gameInfo.view
-                : dataB.gameInfo.createAt - dataA.gameInfo.createAt
-            )
-            .map((item) => (
-              <div className="card" key={item.gameId}>
-                <div className="img-wrapper">
-                  <img src={item.gameInfo.worldcupImages[3].filePath} alt="" />
-                  <img src={item.gameInfo.worldcupImages[6].filePath} alt="" />
+  //참여한 월드컵 전체 정보와 해당 유저의 참여 기록을 합친 배열 생성
+  const mergedData: {
+    gameId: string;
+    worldcupTitle: string;
+    worldcupDescription: string;
+    worldcupImages: WorldcupImage[];
+    category: string[];
+    view: number;
+    playedAt: number;
+  }[] = historyFilter.map((data) => {
+    //해당 루프의 아이디 값을 가진 월드컵 데이터 불러오기
+    const matchIndex = props.data.find(
+      (gameData) => gameData.gameId === data.gameId
+    );
+    return {
+      gameId: data.gameId,
+      worldcupTitle: matchIndex?.gameInfo.worldcupTitle,
+      worldcupDescription: matchIndex?.gameInfo.worldcupDescription,
+      worldcupImages: matchIndex?.gameInfo.worldcupImages,
+      category: matchIndex?.gameInfo.category,
+      view: matchIndex?.gameInfo.view,
+      playedAt: data.playedAt,
+    };
+  });
+
+  return mergedData.length === 0 ? (
+    <div className="mypage-no-data">참여하신 월드컵이 없습니다.</div>
+  ) : (
+    <div className="mypage-worldcup-container">
+      <div style={{ marginTop: "3rem" }}></div>
+      <div className="mypage-card-container">
+        {mergedData.map((item) => (
+          <div className="card" key={item.gameId}>
+            <div className="img-wrapper">
+              <img src={item.worldcupImages[3].filePath} alt="" />
+              <img src={item.worldcupImages[6].filePath} alt="" />
+            </div>
+            <div className="card-wrapper">
+              <div className="group-one">
+                <h2>{item.worldcupTitle}</h2>
+                <p>{item.worldcupDescription}</p>
+              </div>
+              <div className="group-two">
+                <h3>조회수: {item.view}회</h3>
+                <div className="category">
+                  {item.category.map((text: string, n: number) => (
+                    <span key={n}>#{text}</span>
+                  ))}
                 </div>
-                <div className="card-wrapper">
-                  <div className="group-one">
-                    <h2>{item.gameInfo.worldcupTitle}</h2>
-                    <p>{item.gameInfo.worldcupDescription}</p>
-                  </div>
-                  <div className="group-two">
-                    <h3>조회수: {item.gameInfo.view}회</h3>
-                    <div className="category">
-                      {item.gameInfo.category.map((text: string, n: number) => (
-                        <span key={n}>#{text}</span>
-                      ))}
-                    </div>
-                    <h4>{compareTime(item.gameInfo.createAt)}</h4>
-                    <div className="card-links">
-                        <Link to={`../play-game/${item.gameId}`}>시작하기</Link>
-                      <Link to={`../game-review/${item.gameId}`}>랭킹보기</Link>
-                    </div>
-                  </div>
+                <h4>{compareTime(item.playedAt)}에 플레이 했습니다.</h4>
+                <div className="card-links">
+                  <Link to={`../play-game/${item.gameId}`}>시작하기</Link>
+                  <Link to={`../game-review/${item.gameId}`}>랭킹보기</Link>
                 </div>
               </div>
-            ))}
-        </div>
+            </div>
+          </div>
+        ))}
       </div>
-    );
-}  
+    </div>
+  );
+}
 
 export default PlayedWorldcup;

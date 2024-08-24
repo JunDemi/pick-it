@@ -120,7 +120,6 @@ export const setMyProfileImage = async (userId: string, imgPath: string) => {
 // 닉네임 변경
 export const setMyNickName = async (userId: string, nickName: string) => {
   if (nickName === "already-exist") {
-    alert("중복된 닉네임 입니다.");
     return "fail";
   } else {
     //유저 데이터 docs가져오기

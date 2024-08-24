@@ -178,16 +178,19 @@
                     color: #fff;
                     padding: 0.7rem 0;
                     &:nth-child(1){
-                        background-color: #777;
-
+                        background-color: #203b98;
+                        opacity: 0.9;
                         &:hover {
-                            background-color: #000;
+                            background-color: #203b98;
+                            opacity: 1;
                         }
                     }
                     &:nth-child(2){
-                        background-color: rgb(68, 85, 148);
+                        background-color: #e99b00;
+                        opacity: 0.9;
                         &:hover {
-                            background-color: rgb(32, 59, 152);
+                            background-color: #e99b00;
+                            opacity: 1;
                         }
                     }
                 }

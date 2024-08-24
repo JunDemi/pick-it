@@ -23,7 +23,7 @@ const UserPopup = ({ userData }: PropsUserData) => {
   const { setUserPopupToggle }: ToggleContextType = PopupContext();
 
   //로그아웃 메소드
-  const logOut = () => {
+ const logOut = () => {
     //로그아웃 메소드
     signOut(auth);
     //로컬스토리지 로그인, 게임 데이터 정보 삭제

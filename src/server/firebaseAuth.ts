@@ -8,9 +8,12 @@ import {
 import { db } from "./firebase";
 import {
   browserLocalPersistence,
+  EmailAuthProvider,
   getAuth,
+  reauthenticateWithCredential,
   setPersistence,
   signInWithEmailAndPassword,
+  User,
 } from "firebase/auth";
 
 
@@ -98,3 +101,17 @@ export const findPassword = async (userId: string) => {
   
   return result.empty ? "empty" : String(result.docs[0].data()["userPw"]);
 };
+
+//사용자 재인증 메소드 (firebase는 사용자가 오래 전에 로그인하면 유저 데이터 업데이트 안 됨)
+export const userReAuthtication = async(user: User, email: string, password: string) => {
+  //이메일 로그인 방식이기 때문에 EmailAuthProvider 사용
+  const authCredential = EmailAuthProvider.credential(email, password);
+  //reauthenticateWithCredential: 사용자 재인증 메소드
+  const isAuthticSuccess = await reauthenticateWithCredential(user, authCredential).then(() => {
+    return true;
+  }).catch(() => {
+    return false;
+  });
+
+  return isAuthticSuccess;
+}

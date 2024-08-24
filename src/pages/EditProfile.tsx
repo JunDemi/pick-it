@@ -190,7 +190,7 @@ function EditProfile() {
             <div className="edit-popup-container">
                 <IoClose onClick={() => setEditPopUp(false)}/>
             {popUpType === "닉네임" && <EditNickName userId={JSON.parse(user).UserId} userName={myProfile[1]}/>}
-            {popUpType === "비밀번호" && <EditPassword/>}
+            {popUpType === "비밀번호" && <EditPassword userId={JSON.parse(user).UserId} loginToken={JSON.parse(user).LoginToken}/>}
             {popUpType === "회원탈퇴" && <DeleteUser/>}
             </div>
           </motion.div>

@@ -11,6 +11,8 @@ function EditNickName(props: { userId: string; userName: string }) {
   const textRef = useRef<HTMLInputElement>(null);
   //텍스트 온체인지에 할당할 상태
   const [newNickName, setNewNickName] = useState<string>();
+  //에러 문구 상태
+  const [errorMessage, setErrorMessage] = useState("");
   //변경할 닉네임 텍스트 온체인지 이벤트 상태 할당
   const nickNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewNickName(event.target.value);
@@ -22,15 +24,21 @@ function EditNickName(props: { userId: string; userName: string }) {
     setEditLoding(true);
     if (newNickName) {
       if (newNickName.match(specialLetters)) {
-        alert("특수문자는 사용할 수 없습니다.");
+        setErrorMessage("특수문자는 사용할 수 없습니다.");
+        setEditLoding(false);
+        return;
+      }
+      else if (newNickName.length < 2 || newNickName.length > 16) {
+        setErrorMessage("닉네임은 최소 2글자, 최대 16글자 입니다.");
         setEditLoding(false);
         return;
       }
       await nickNameCheck(newNickName).then((res) =>
         setMyNickName(props.userId, res).then(
-          (result) => result === "success" && navigate("/mypage")
+          (result) => result === "success" ? navigate("/mypage") : setErrorMessage("중복된 닉네임 입니다.")
         )
       );
+      setEditLoding(false);
     } else {
       //newNickName값이 비어있을 경우 자동 포커스
       textRef.current && textRef.current.focus();
@@ -66,6 +74,9 @@ function EditNickName(props: { userId: string; userName: string }) {
           </tr>
         </tbody>
       </table>
+      {errorMessage.length > 0 && 
+        <p>{errorMessage}</p>
+      }
       <button onClick={nickNameHandler} disabled={editLoading}>
         {editLoading ? "로딩중..." : "변경하기"}
       </button>

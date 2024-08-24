@@ -62,7 +62,7 @@ function App() {
   };
 
   useEffect(() => {
-    if (localUser) {
+    if (localUser && userPopupToggle) {
       getProfileData(localDataParse.UserId);
     }
   }, [localUser, userPopupToggle]);

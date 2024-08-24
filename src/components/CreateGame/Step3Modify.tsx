@@ -8,7 +8,6 @@ import { getCreateWorldCup } from "../../server/firebaseWorldcup";
 import { useNavigate } from "react-router-dom";
 import { getReset } from "../../store/worldcup/createWorldcup";
 import { AnimatePresence, motion } from "framer-motion";
-import { getUserData } from "../../server/firebaseAuth";
 
 function Step3Modify(props: { imageList: File[] }) {
   //네비게이터

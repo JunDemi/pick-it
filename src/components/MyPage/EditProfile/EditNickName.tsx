@@ -66,7 +66,9 @@ function EditNickName(props: { userId: string; userName: string }) {
           </tr>
         </tbody>
       </table>
-      <button onClick={nickNameHandler}>변경하기</button>
+      <button onClick={nickNameHandler} disabled={editLoading}>
+        {editLoading ? "로딩중..." : "변경하기"}
+      </button>
     </div>
   );
 }

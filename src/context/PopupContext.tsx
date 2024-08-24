@@ -3,7 +3,6 @@ import React, {
   createContext,
   useContext,
   SetStateAction,
-  useEffect,
 } from "react";
 
 export interface ToggleContextType {

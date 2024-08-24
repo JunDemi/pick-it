@@ -62,15 +62,15 @@ function App() {
   };
 
   useEffect(() => {
-    if (localUser !== null) {
+    if (localUser) {
       getProfileData(localDataParse.UserId);
     }
-  }, [localUser]);
+  }, [localUser, userPopupToggle]);
 
   return (
     <BrowserRouter>
       <HeaderDisplay/>
-      {localUser !== null && userPopupToggle ? (
+      {localUser && userPopupToggle ? (
         <UserPopup userData={userData} />
       ) : null}
       <Routes>

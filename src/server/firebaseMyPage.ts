@@ -136,3 +136,13 @@ export const setMyNickName = async (userId: string, nickName: string) => {
     return "success";
   }
 };
+
+//비밀번호 변경
+export const setMyPassword = async (argData: {
+  currentPw: string;
+  changePw: string;
+  userId: string;
+  loginToken: string;
+}) => {
+
+}

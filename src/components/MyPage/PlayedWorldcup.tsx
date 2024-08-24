@@ -47,31 +47,31 @@ function PlayedWorldcup(props: {
   });
 
   return mergedData.length === 0 ? (
-    <div className="mypage-no-data">참여하신 월드컵이 없습니다.</div>
+    <div className='mypage-no-data'>참여하신 월드컵이 없습니다.</div>
   ) : (
-    <div className="mypage-worldcup-container">
+    <div className='mypage-worldcup-container'>
       <div style={{ marginTop: "3rem" }}></div>
-      <div className="mypage-card-container">
+      <div className='mypage-card-container'>
         {mergedData.map((item) => (
-          <div className="card" key={item.gameId}>
-            <div className="img-wrapper">
-              <img src={item.worldcupImages[3].filePath} alt="" />
-              <img src={item.worldcupImages[6].filePath} alt="" />
+          <div className='card' key={item.gameId}>
+            <div className='img-wrapper'>
+              <img src={item.worldcupImages[3].filePath} alt='' />
+              <img src={item.worldcupImages[6].filePath} alt='' />
             </div>
-            <div className="card-wrapper">
-              <div className="group-one">
+            <div className='card-wrapper'>
+              <div className='group-one'>
                 <h2>{item.worldcupTitle}</h2>
                 <p>{item.worldcupDescription}</p>
               </div>
-              <div className="group-two">
-                <h3>조회수: {item.view}회</h3>
-                <div className="category">
+              <div className='group-two'>
+                <div className='category'>
                   {item.category.map((text: string, n: number) => (
                     <span key={n}>#{text}</span>
                   ))}
                 </div>
+                <h3>조회수: {item.view}회</h3>
                 <h4>{compareTime(item.playedAt)}에 플레이 했습니다.</h4>
-                <div className="card-links">
+                <div className='card-links'>
                   <Link to={`../play-game/${item.gameId}`}>시작하기</Link>
                   <Link to={`../game-review/${item.gameId}`}>랭킹보기</Link>
                 </div>

@@ -15,9 +15,9 @@
             align-items: flex-start;
 
             .aside-title {
-                font-size: 12px;
+                font-size: 15px;
+                padding: 10px 0;
                 font-family: 'p_bold';
-                color: #6d6d6d;
             }
 
             .info-name {
@@ -72,10 +72,10 @@
                     border-radius: 10px;
                 }
                 span {
-                    font-size: 12px;
+                    font-size: 14px;
                     font-family: 'p_bold';
-                    border: 2px solid #e99b00;
-                    color: #e99b00;
+                    background-color: #e99b00;
+                    color: #fff;
                     padding: 5px 0;
                     border-radius: 30px;
                     text-align: center;
@@ -123,16 +123,31 @@
                     .follow {
                         color: #0095F6;
                         border-color: #0095F6;
+
+                        &:hover {
+                            color: #fff;
+                            background-color: #0095F6;
+                        }
                     }
 
                     .quest {
                         color: #5BD03E;
                         border-color: #5BD03E;
+
+                        &:hover {
+                            color: #fff;
+                            background-color: #5BD03E;
+                        }
                     }
 
                     .report {
                         color: #F5889C;
                         border-color: #F5889C;
+
+                        &:hover {
+                            color: #fff;
+                            background-color: #F5889C;
+                        }
                     }
                 }
             }
@@ -142,12 +157,12 @@
                 justify-content: center;
                 align-items: center;
                 gap: 1rem;
-                background-color: #f5f5f5;
                 color: #000;
                 font-family: 'p_bold';
                 font-size: 15px;
                 padding: 8px 10px;
                 border: 2px solid #000;
+
                 svg {
                     stroke: #000;
                     stroke-width: 2px;
@@ -156,13 +171,19 @@
                 }
 
                 &:hover {
-                    background-color: #fff;
+                    background-color: #000;
+                    color: #fff;
+
+                    svg {
+                        stroke: #fff;
+                    }
                 }
             }
         }
     }
 
     .game-review-rank {
+        padding: 10px 0 0 0;
         flex-grow: 1;
 
         .review-rank-table {
@@ -189,7 +210,7 @@
             }
 
             thead {
-                background-color: #5f5f5f;
+                background-color: #000;
                 color: #fff;
                 font-size: 16px;
                 border-bottom: 2px solid #000;
@@ -211,7 +232,10 @@
                     td {
                         height: 7.5rem;
                         text-align: center;
-                        border-right: 2px solid #000;
+
+                        &:nth-child(3) {
+                            border-right: 2px solid #000;
+                        }
 
                         img {
                             display: block;
@@ -231,11 +255,11 @@
                             display: flex;
                             justify-content: center;
                             align-items: center;
-                            animation: entry .8s ease-in-out;
+                            animation: entry .5s ease-in-out;
                             border: 2px solid #000;
                             border-left: none;
                             color: #fff;
-                            background-color: #06b8d7;
+                            background-color: #203B98;
                         }
 
                         @keyframes entry {
@@ -266,10 +290,6 @@
                 svg {
                     width: 1rem;
                     height: 1rem;
-                }
-
-                &:hover {
-                    background-color: #3a3a3a;
                 }
             }
         }

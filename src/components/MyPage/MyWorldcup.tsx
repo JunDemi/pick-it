@@ -7,10 +7,10 @@ function MyWorldcup(props: { data: MyPageDataType[] }) {
   const [filter, setFilter] = useState<"new" | "pop">("new");
 
   return props.data.length === 0 ? (
-    <div className="mypage-no-data">생성하신 월드컵이 없습니다.</div>
+    <div className='mypage-no-data'>생성하신 월드컵이 없습니다.</div>
   ) : (
-    <div className="mypage-worldcup-container">
-      <div className="top-filter">
+    <div className='mypage-worldcup-container'>
+      <div className='top-filter'>
         <button
           onClick={() => setFilter("new")}
           className={filter === "new" ? "filter-selected" : "filter-disabled"}
@@ -24,7 +24,7 @@ function MyWorldcup(props: { data: MyPageDataType[] }) {
           인기순
         </button>
       </div>
-      <div className="mypage-card-container">
+      <div className='mypage-card-container'>
         {props.data
           .sort((dataA, dataB) =>
             filter === "pop"
@@ -32,26 +32,28 @@ function MyWorldcup(props: { data: MyPageDataType[] }) {
               : dataB.gameInfo.createAt - dataA.gameInfo.createAt
           )
           .map((item) => (
-            <div className="card" key={item.gameId}>
-              <div className="img-wrapper">
-                <img src={item.gameInfo.worldcupImages[3].filePath} alt="" />
-                <img src={item.gameInfo.worldcupImages[6].filePath} alt="" />
+            <div className='card' key={item.gameId}>
+              <div className='img-wrapper'>
+                <img src={item.gameInfo.worldcupImages[3].filePath} alt='' />
+                <img src={item.gameInfo.worldcupImages[6].filePath} alt='' />
               </div>
-              <div className="card-wrapper">
-                <div className="group-one">
+              <div className='card-wrapper'>
+                <div className='group-one'>
                   <h2>{item.gameInfo.worldcupTitle}</h2>
                   <p>{item.gameInfo.worldcupDescription}</p>
                 </div>
-                <div className="group-two">
-                  <h3>조회수: {item.gameInfo.view}회</h3>
-                  <div className="category">
+                <div className='group-two'>
+                  <div className='category'>
                     {item.gameInfo.category.map((text: string, n: number) => (
                       <span key={n}>#{text}</span>
                     ))}
                   </div>
-                  <h4>{compareTime(item.gameInfo.createAt)}에 제작되었습니다.</h4>
-                  <div className="card-links">
-                    <Link to="">수정하기</Link>
+                  <h3>조회수: {item.gameInfo.view}회</h3>
+                  <h4>
+                    {compareTime(item.gameInfo.createAt)}에 제작되었습니다.
+                  </h4>
+                  <div className='card-links'>
+                    <Link to=''>수정하기</Link>
                     <Link to={`../game-review/${item.gameId}`}>랭킹보기</Link>
                   </div>
                 </div>

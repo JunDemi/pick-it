@@ -4,12 +4,13 @@
 }
 .mypage-container {
     position: relative;
-    padding: 0 7rem;
+    display: flex;
+    padding: 3rem 7rem;
 
     .mypage-aside {
-        position: fixed;
-        left: 7rem;
-        top: 6rem;
+        position: sticky;
+        left: 0;
+        top: 8rem;
         max-width: 20rem;
         display: flex;
         flex-direction: column;
@@ -28,7 +29,6 @@
                 width: 8rem;
                 height: 8rem;
                 border-radius: 50%;
-                border: 2px solid #000;
                 object-fit: cover;
             }
 
@@ -40,12 +40,14 @@
             a {
 
                 background: #000;
+                opacity: 0.8;
                 color: #fff;
                 font-size: 14px;
                 padding: 8px 15px;
 
                 &:hover {
-                    background-color: #323232;
+                    background: #000;
+                    opacity: 1;
                 }
             }
 
@@ -97,7 +99,6 @@
                 gap: 8px;
 
                 .img-wrapper {
-                    border: 2px solid #000;
                     display: flex;
                     width: 4rem;
                     height: 3rem;
@@ -122,12 +123,14 @@
                     width: 100%;
                     border: none;
                     background: #000;
+                    opacity: 0.8;
                     color: #fff;
                     font-size: 14px;
                     padding: 5px 10px;
 
                     &:hover {
-                        background-color: #323232;
+                        background-color: #000;
+                        opacity: 1;
                     }
                 }
             }
@@ -135,29 +138,32 @@
     }
 
     .mypage-section {
-        padding: 1rem 0;
-        margin-left: 25rem;
+        margin-left: 5rem;
         .menu-filter {
             button {
                 cursor: pointer;
                 font-size: 14px;
                 font-family: "p_bold";
                 margin-right: 2rem;
-                width: 3.7rem;
-                padding: 7px 0;
+                padding: 7px 20px;
                 border: none;
+                border-radius: 5px;
                 background: none;
-                border-bottom: 2px solid #fff;
-                color: #6d6d6d;
+                color: #717171;
 
                 &:hover {
-                    color: #000;
+                    background-color: #e9e9e9;
                 }
             }
 
             .selected {
-                border-bottom: 2px solid #000;
-                color: #000;
+                border-radius: 5px;
+                background-color: #000;
+                color: #fff;
+
+                &:hover {
+                    background-color: #000;
+                }
             }
         }
 
@@ -169,7 +175,7 @@
                 gap: 1rem;
 
                 button {
-                    padding: 0.2rem 1rem;
+                    padding: 0.5rem 1rem;
                     font-family: 'p_bold';
                     font-size: 12px;
                     cursor: pointer;
@@ -178,8 +184,8 @@
                 }
 
                 .filter-selected {
-                    background-color: black;
-                    color: white;
+                    background-color: #0095F6;
+                    color: #fff;
                 }
 
                 .filter-disabled {
@@ -194,7 +200,7 @@
 
             .mypage-card-container {
                 display: grid;
-                grid-template-columns: repeat(3, fit-content(236px));
+                grid-template-columns: repeat(4, fit-content(236px));
                 column-gap: 2rem;
                 row-gap: 2rem;
 
@@ -276,7 +282,7 @@
                             }
 
                             .category {
-                            padding: 0 0.5rem;
+                            padding: 1rem 0.5rem 0 0.5rem;
                                 span {
                                     color: #203B98;
                                     margin-right: 5px;
@@ -305,7 +311,7 @@
                                     }
 
                                     &:nth-child(2) {
-                                        background-color: #f67d38;
+                                        background-color: #e99b00;
                                     }
                                 }
                             }

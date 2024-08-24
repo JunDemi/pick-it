@@ -14,7 +14,6 @@ export interface step1DataType {
 //백엔드에 월드컵 생성 데이터를 넘기기 위해 취합
 export interface SendData {
   userId: string;
-  nickName: string;
   worldcupTitle: string;
   worldcupDescription: string;
   tournamentRange: number;

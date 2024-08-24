@@ -27,7 +27,6 @@ export const getCreateWorldCup = async (argData: SendData) => {
   //addDoc
   await addDoc(collection(db, "worldcup"), {
     userId: argData.userId,
-    nickName: argData.nickName,
     worldcupTitle: argData.worldcupTitle,
     worldcupDescription: argData.worldcupDescription,
     tournamentRange: argData.tournamentRange,

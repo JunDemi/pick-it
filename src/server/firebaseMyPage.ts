@@ -9,7 +9,10 @@ import {
 } from "firebase/firestore";
 import { db } from "./firebase";
 import { deleteProfileImg } from "./deleteStorage";
-
+import { getAuth, updatePassword } from "firebase/auth";
+import { userReAuthtication } from "./firebaseAuth";
+//auth 세션불러오기
+const auth = getAuth();
 //파이어베이스 DB연동
 const authRef = collection(db, "users");
 //유저 ID를 통해 해당 문서를 불러오는 쿼리
@@ -125,7 +128,9 @@ export const setMyNickName = async (userId: string, nickName: string) => {
     //유저 데이터 docs가져오기
     const findIdDocs = await getFindUserDocs(userId);
     //해당 유저 데이터의 문서 전체 불러오기
-    const findUser = findIdDocs.find((data) => data.data()["userId"] === userId);
+    const findUser = findIdDocs.find(
+      (data) => data.data()["userId"] === userId
+    );
     if (findUser) {
       //업데이트 쿼리
       const userRef = doc(db, "users", findUser.id); //문서 ID
@@ -144,5 +149,47 @@ export const setMyPassword = async (argData: {
   userId: string;
   loginToken: string;
 }) => {
-
-}
+  //유저 데이터 docs가져오기
+  const findIdDocs = await getFindUserDocs(argData.userId);
+  //해당 유저 데이터의 비밀번호와 현재 비밀번호 입력이 일치하는지
+  const findPassword = findIdDocs.find(
+    (data) => data.data()["userPw"] === argData.currentPw
+  );
+  //비밀번호가 일치하면
+  if (findPassword) {
+    //현재 접속 중인 유저 로그인 정보
+    const me = auth.currentUser;
+    if (me) {
+      //firebase 어센틱의 업데이트를 위해선 사용자 재인증 필요
+      const reAutentic = await userReAuthtication(
+        me,
+        `${argData.userId}@pick.it`,
+        argData.currentPw
+      );
+      //재인증이 성공되었다면
+      if (reAutentic) {
+        const userRef = doc(db, "users", findPassword.id); //문서 ID
+        //firebase updatePassword매소드
+        await updatePassword(me, argData.changePw);
+        //firestore 유저 테이블 업데이트
+        await updateDoc(userRef, {
+          userPw: argData.changePw,
+        });
+        return true;
+      } 
+      //재인증 실패
+      else {
+        return false;
+      }
+    } 
+    //접속 중인 유저 정보가 없다면
+    else {
+      return false;
+    }
+  }
+  //비밀번호가 일치하지 않으면
+  else {
+    alert("현재 비밀번호가 일치하지 않습니다.");
+    return false;
+  }
+};

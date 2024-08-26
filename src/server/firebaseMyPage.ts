@@ -219,8 +219,8 @@ export const deleteWorldcup = async(userId: string) => {
     worldcupImages: WorldcupImage[];
   }) => {
     await deleteWorldcupImg(worldcupData.worldcupImages); //해당 월드컵 데이터에 있는 스토리지 이미지들 삭제
-    //await deleteImageRank(worldcupId); //월드컵의 이미지 랭킹 데이터 삭제
-    //await deleteDoc(doc(db, "worldcup", worldcupId)); //월드컵 삭제
+    await deleteImageRank(worldcupData.docId); //월드컵의 이미지 랭킹 데이터 삭제
+    await deleteDoc(doc(db, "worldcup", worldcupData.docId)); //월드컵 삭제
   })
 }
 

@@ -17,18 +17,21 @@
         display: flex;
         align-items: center;
         gap: 2em;
+
         .edit-img {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             gap: 2rem;
-            h1{
+
+            h1 {
                 font-family: 'p_bold';
                 width: 100%;
                 text-align: left;
                 font-size: 20px;
             }
+
             label {
                 cursor: pointer;
                 width: 23rem;
@@ -92,36 +95,43 @@
                 border-color: #000;
                 background-color: #000;
                 color: #fff;
-                &:hover{
+
+                &:hover {
                     background-color: #232323;
                 }
             }
         }
-        .nickname-password-table{
-            td{
+
+        .nickname-password-table {
+            td {
                 vertical-align: middle;
                 padding: 1rem 0 1rem 50px;
                 font-family: 'p_bold';
-                &:nth-child(1){
+
+                &:nth-child(1) {
                     font-size: 14px;
                     color: #6d6d6d;
                 }
-                &:nth-child(2){
+
+                &:nth-child(2) {
                     font-size: 28px;
                 }
-                button{
+
+                button {
                     border-color: #6d6d6d;
                     color: #6d6d6d;
                 }
             }
         }
     }
-    .delete-user-trigger{
+
+    .delete-user-trigger {
         border-color: #f0607b;
         color: #f0607b;
     }
 }
-.edit-popup{
+
+.edit-popup {
     z-index: 31;
     position: absolute;
     width: 100%;
@@ -133,7 +143,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    .edit-popup-container{
+
+    .edit-popup-container {
         padding: 10px;
         width: 30rem;
         background-color: #fff;
@@ -141,37 +152,47 @@
         display: flex;
         flex-direction: column;
         align-items: flex-end;
-        svg{
+
+        svg {
             cursor: pointer;
             width: 2rem;
             height: 2rem;
         }
-        .edit-section{
+
+        .edit-section {
             width: 100%;
             padding: 1rem;
             display: flex;
             flex-direction: column;
             gap: 2rem;
-            h1{
+
+            h1 {
                 font-family: 'p_bold';
                 font-size: 24px;
             }
-            table{
+
+            table {
                 width: 100%;
-                td{
+
+                td {
                     padding: 10px 0;
                     font-size: 15px;
-                    .readonly-text{
+
+                    .readonly-text {
                         background-color: #e1dfea;
-                        
+
                     }
-                    .change-text{
+
+                    .change-text {
                         background-color: #fff;
+
                         &:focus {
                             background-color: #f7f6fd;
                         }
                     }
-                    input[type=text], input[type=password]{
+
+                    input[type=text],
+                    input[type=password] {
                         font-family: 'p_normal';
                         width: 94%;
                         border: 2px solid #000;
@@ -180,7 +201,8 @@
                     }
                 }
             }
-            button{
+
+            button {
                 font-family: 'p_bold';
                 font-size: 16px;
                 padding: 1rem 0;
@@ -189,44 +211,70 @@
                 color: #fff;
             }
         }
-        .edit-info{
-            p{
+
+        .edit-info {
+            p {
                 font-size: 13px;
                 color: #f0607b;
             }
-            button{
+
+            button {
                 background-color: #000;
-                &:hover{
+
+                &:hover {
                     background-color: #232323;
                 }
             }
         }
-        .delete-user{
-            h1{
+
+        .delete-user {
+            h1 {
                 color: #f0607b;
             }
-            button{
+
+            button {
                 background-color: #f0607b;
-                &:hover{
+
+                &:hover {
                     background-color: #c53650;
+                }
+            }
+
+            .confirm-password {
+                color: #c53650;
+                display: flex;
+                align-items: center;
+                font-size: 15px;
+                gap: 3rem;
+
+                input[type=password] {
+                    flex-grow: 1;
+                    border: 2px solid #f0607b;
+                    font-size: 15px;
+                    padding: 0.5rem 0 0.5rem 10px;
+                    &:focus {
+                        background-color: #f7f6fd;
+                    }
                 }
             }
         }
     }
 }
-.password-change-success-popup{
+
+.password-change-success-popup {
     position: fixed;
     top: 0;
     left: 0;
     z-index: 40;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(255,255,255,0.5);
+    background-color: rgba(255, 255, 255, 0.5);
     display: grid;
     place-items: center;
     transition: all .3s;
     backdrop-filter: blur(10px);
-    div{
+
+    div {
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -234,20 +282,23 @@
         background-color: #fff;
         padding: 2rem 4rem;
         border: 2px solid #00ad74;
-        h2{
+
+        h2 {
             font-size: 18px;
             font-family: 'p_bold';
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 1rem;
-            svg{
+
+            svg {
                 width: 3rem;
                 height: 3rem;
                 stroke: #00ad74;
             }
         }
-        button{
+
+        button {
             cursor: pointer;
             background-color: #00ad74;
             color: #fff;

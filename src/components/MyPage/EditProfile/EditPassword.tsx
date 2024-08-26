@@ -36,10 +36,9 @@ function EditPassword(props: { userId: string; loginToken: string }) {
     //비밀번호 변경 메소드
     await setMyPassword({
       currentPw: input.currentPw,
-      changePw: input.changePw,
       userId: props.userId,
-      loginToken: props.loginToken,
-    }).then((result) =>
+      changePw: input.changePw,
+    }, "비밀번호변경").then((result) => //해당 인자값은 비밀번호 변경/회원탈퇴 구분을 위해 사용
       result ? setLogoutPopup(result) : setEditLoding(false)
     );
   };

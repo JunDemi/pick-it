@@ -192,7 +192,7 @@ function EditProfile() {
                 <IoClose onClick={() => setEditPopUp(false)}/>
             {popUpType === "닉네임" && <EditNickName userId={parseUser.UserId} userName={myProfile[1]}/>}
             {popUpType === "비밀번호" && <EditPassword userId={parseUser.UserId} loginToken={parseUser.LoginToken}/>}
-            {popUpType === "회원탈퇴" && <DeleteUser userId={parseUser.UserId}/>}
+            {popUpType === "회원탈퇴" && <DeleteUser userId={parseUser.UserId} />}
             </div>
           </motion.div>
         )}

@@ -147,13 +147,12 @@ export const setMyNickName = async (userId: string, nickName: string) => {
   }
 };
 
-//비밀번호 변경
+//비밀번호 확인 메소드
 export const setMyPassword = async (argData: {
   currentPw: string;
-  changePw: string;
   userId: string;
-  loginToken: string;
-}) => {
+  changePw?: string;
+}, editType: "비밀번호변경" | "회원탈퇴") => {
   //유저 데이터 docs가져오기
   const findIdDocs = await getFindUserDocs(argData.userId);
   //해당 유저 데이터의 비밀번호와 현재 비밀번호 입력이 일치하는지
@@ -173,13 +172,16 @@ export const setMyPassword = async (argData: {
       );
       //재인증이 성공되었다면
       if (reAutentic) {
-        const userRef = doc(db, "users", findPassword.id); //문서 ID
-        //firebase updatePassword매소드
-        await updatePassword(me, argData.changePw);
-        //firestore 유저 테이블 업데이트
-        await updateDoc(userRef, {
-          userPw: argData.changePw,
-        });
+        //비밀번호 변경
+        if(editType === "비밀번호변경" && argData.changePw){
+          const userRef = doc(db, "users", findPassword.id); //문서 ID
+          //firebase updatePassword매소드
+          await updatePassword(me, argData.changePw);
+          //firestore 유저 테이블 업데이트
+          await updateDoc(userRef, {
+            userPw: argData.changePw,
+          });
+        }
         return true;
       }
       //재인증 실패

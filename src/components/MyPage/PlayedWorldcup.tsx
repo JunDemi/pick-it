@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { WorldcupImage } from "../../types/Worldcup";
 
 function PlayedWorldcup(props: {
-  data: MyPageDataType[];
+  data: (MyPageDataType | null)[];
   history: { gameId: string; playedAt: number }[];
 }) {
   //Set()생성자를 이용하여 배열 내의 중복된 값을 찾아낸다
@@ -33,9 +33,10 @@ function PlayedWorldcup(props: {
   }[] = historyFilter.map((data) => {
     //해당 루프의 아이디 값을 가진 월드컵 데이터 불러오기
     const matchIndex = props.data.find(
-      (gameData) => gameData.gameId === data.gameId
+      (gameData) => gameData && gameData.gameId === data.gameId
     );
     return {
+      exist: matchIndex ? true : false,
       gameId: data.gameId,
       worldcupTitle: matchIndex?.gameInfo.worldcupTitle,
       worldcupDescription: matchIndex?.gameInfo.worldcupDescription,
@@ -44,8 +45,7 @@ function PlayedWorldcup(props: {
       view: matchIndex?.gameInfo.view,
       playedAt: data.playedAt,
     };
-  });
-
+  }).filter(items => items.exist !== false);
   return mergedData.length === 0 ? (
     <div className='mypage-no-data'>참여하신 월드컵이 없습니다.</div>
   ) : (

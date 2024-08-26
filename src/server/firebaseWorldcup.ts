@@ -78,7 +78,7 @@ export const getWorldCupList = async (
         currentPage: pageParam,
         nextPage: pageParam + LIMIT < result.length ? pageParam + LIMIT : null,
       });
-    }, 1000);
+    }, 700);
   });
 };
 

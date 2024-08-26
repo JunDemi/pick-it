@@ -41,7 +41,7 @@ function Contents() {
     refetch();
     setTimeout(() => {
       setFilterLoading(false);
-    }, 1000);
+    }, 700);
   }, [filter]);
 
   //게시물이 올라오고 3일까지는 'new'태그가 붙도록 설정

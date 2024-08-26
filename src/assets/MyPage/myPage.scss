@@ -200,9 +200,22 @@
 
             .mypage-card-container {
                 display: grid;
-                grid-template-columns: repeat(4, fit-content(236px));
                 column-gap: 2rem;
                 row-gap: 2rem;
+                 //뷰포트 1350이하
+                 @media screen and (max-width:1350px) {   
+                    grid-template-columns: repeat(3, fit-content(236px));
+                }
+
+                //뷰포트 1351이상 
+                @media screen and (min-width:1351px) {
+                    grid-template-columns: repeat(3, fit-content(236px));
+                }
+
+                //뷰포트 1440이상 
+                @media screen and (min-width:1440px) {
+                    width: 18rem;
+                }
 
                 .card {
                     display: flex;

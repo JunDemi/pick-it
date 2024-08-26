@@ -10,7 +10,7 @@
             position: sticky;
             display: flex;
             flex-direction: column;
-            gap: 2rem;
+            gap: 1rem;
             justify-content: flex-start;
             align-items: flex-start;
 
@@ -34,8 +34,8 @@
 
                     div {
                         border: 2px solid #000;
-                        width: 6rem;
-                        height: 5rem;
+                        width: 5rem;
+                        height: 4rem;
                         display: flex;
                         overflow: hidden;
 

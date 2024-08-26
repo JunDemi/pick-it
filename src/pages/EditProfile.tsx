@@ -13,6 +13,7 @@ import DeleteUser from "../components/MyPage/EditProfile/DeleteUser";
 function EditProfile() {
   //로컬스토리지에 존재하는 유저 데이터
   const user = localStorage.getItem("pickit-user");
+  const parseUser = user ? JSON.parse(user) : null;
   //네비게이션
   const navigate = useNavigate();
   // 내 프로필 정보 상태 ["이미지경로", "닉네임"]
@@ -45,7 +46,7 @@ function EditProfile() {
   useEffect(() => {
     if (user) {
       //회원 프로필 이미지 및 닉네임 불러오기
-      getUserData(String(JSON.parse(user).UserId)).then((res) =>
+      getUserData(String(parseUser.UserId)).then((res) =>
         setMyProfile(res)
       );
     }
@@ -58,8 +59,8 @@ function EditProfile() {
     if (user) {
       if (changeType === "change") {
         if (inputFile) {
-          await uploadProfile(JSON.parse(user).UserId, inputFile).then(
-            (imgPath) => setMyProfileImage(JSON.parse(user).UserId, imgPath)
+          await uploadProfile(parseUser.UserId, inputFile).then(
+            (imgPath) => setMyProfileImage(parseUser.UserId, imgPath)
           );
         } else {
           alert("변경할 이미지를 업로드 해주세요.");
@@ -67,7 +68,7 @@ function EditProfile() {
           return;
         }
       } else if (changeType === "default") {
-        await setMyProfileImage(JSON.parse(user).UserId, "default");
+        await setMyProfileImage(parseUser.UserId, "default");
       }
     }
     setInputFile(null);
@@ -189,9 +190,9 @@ function EditProfile() {
           >
             <div className="edit-popup-container">
                 <IoClose onClick={() => setEditPopUp(false)}/>
-            {popUpType === "닉네임" && <EditNickName userId={JSON.parse(user).UserId} userName={myProfile[1]}/>}
-            {popUpType === "비밀번호" && <EditPassword userId={JSON.parse(user).UserId} loginToken={JSON.parse(user).LoginToken}/>}
-            {popUpType === "회원탈퇴" && <DeleteUser/>}
+            {popUpType === "닉네임" && <EditNickName userId={parseUser.UserId} userName={myProfile[1]}/>}
+            {popUpType === "비밀번호" && <EditPassword userId={parseUser.UserId} loginToken={parseUser.LoginToken}/>}
+            {popUpType === "회원탈퇴" && <DeleteUser userId={parseUser.UserId}/>}
             </div>
           </motion.div>
         )}

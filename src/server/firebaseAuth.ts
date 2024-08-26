@@ -115,3 +115,7 @@ export const userReAuthtication = async(user: User, email: string, password: str
 
   return isAuthticSuccess;
 }
+// 계정 삭제(회원탈퇴) 
+export const deleteMyProfile = async(userId: string) => {
+
+}

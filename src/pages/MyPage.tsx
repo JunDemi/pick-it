@@ -16,7 +16,7 @@ function MyPage() {
   const remainData = localStorage.getItem("game-data");
   //로컬스토리지에 존재하는 유저 데이터
   const user = localStorage.getItem("pickit-user");
-
+  const parseUser = user ? JSON.parse(user) : null;
   //네비게이션
   const navigate = useNavigate();
 
@@ -35,7 +35,7 @@ function MyPage() {
   //내 월드컵
   const [myWorldcupData, setMyWorldcupData] = useState<MyPageDataType[]>();
   //참여 월드컵
-  const [myPlayedData, setMyPlayedData] = useState<MyPageDataType[]>();
+  const [myPlayedData, setMyPlayedData] = useState<(MyPageDataType | null)[]>();
   //유저별 월드컵 참여 기록
   const [myHistory, setMyHistory] = useState<
     {
@@ -46,11 +46,11 @@ function MyPage() {
   useEffect(() => {
     if (user) {
       //회원 프로필 이미지 및 닉네임 불러오기
-      getUserData(String(JSON.parse(user).UserId)).then((res) =>
+      getUserData(String(parseUser.UserId)).then((res) =>
         setMyProfile(res)
       );
       //내 월드컵, 참여, 댓글 불러오기
-      getMyPlayAmount(String(JSON.parse(user).UserId))
+      getMyPlayAmount(String(parseUser.UserId))
         .then((res) => {
           //1차 state할당
           setMyWorldcupData(res.myWorldcup);
@@ -62,7 +62,7 @@ function MyPage() {
           getPlayedWorldcup(playedData).then((res2) => setMyPlayedData(res2))
         );
       //유저별 월드컵 참여 기록 불러오기
-      getUserWorldcupHistory(String(JSON.parse(user).UserId)).then((res) =>
+      getUserWorldcupHistory(String(parseUser.UserId)).then((res) =>
         setMyHistory(res)
       );
     }

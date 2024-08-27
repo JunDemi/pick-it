@@ -218,7 +218,7 @@ export const deleteWorldcup = async (userId: string) => {
     });
   });
 
-  //추출된 ID를 가진 월드컵 삭제
+  //추출된 데이터를 가진 월드컵 삭제
   findWorldcupId.forEach(
     async (worldcupData: {
       docId: string;

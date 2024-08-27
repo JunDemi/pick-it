@@ -142,7 +142,15 @@ input:focus, textarea:focus, select:focus {
 
 textarea {
 	resize: none;
+	font-family: 'p_bold';
 }
+button {
+	cursor: pointer;
+	font-family: 'p_bold';
+}
+input{
+	font-family: 'p_bold';
+} 
 /*scroll bar*/
 ::-webkit-scrollbar {
 	width: 10px;

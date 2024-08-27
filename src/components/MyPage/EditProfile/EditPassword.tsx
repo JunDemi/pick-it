@@ -1,18 +1,12 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { setMyPassword } from "../../../server/firebaseMyPage";
-import { signOut } from "firebase/auth";
-import { auth } from "../../../server/firebase";
-import { useAppDispatch } from "../../../hooks/redux";
-import { useNavigate } from "react-router-dom";
-import { getReset } from "../../../store/worldcup/createWorldcup";
 import { AnimatePresence, motion } from "framer-motion";
+import useSignOut from "../../../hooks/useSignOut";
 
 function EditPassword(props: { userId: string; loginToken: string }) {
-  //redux dispatch 요청 메소드
-  const dispatch = useAppDispatch();
-  //네비게이터
-  const navigate = useNavigate();
+  //로그아웃 커스텀 훅
+  const logOut = useSignOut("/login");
   //핸들러 동작 시 로딩
   const [editLoading, setEditLoding] = useState<boolean>(false);
   //비밀번호 변경 완료 팝업
@@ -43,18 +37,6 @@ function EditPassword(props: { userId: string; loginToken: string }) {
     );
   };
 
-  //비밀번호 변경이 완료 되면 로그아웃
-  const logOut = () => {
-    //로그아웃 메소드
-    signOut(auth);
-    //로컬스토리지 로그인, 게임 데이터 정보 삭제
-    localStorage.removeItem("pickit-user");
-    localStorage.removeItem("game-data");
-    //전역 상태 초기화
-    dispatch(getReset()); //redux초기화
-    //메인으로 이동
-    navigate("/login");
-  };
   return (
     <>
       <form

@@ -113,7 +113,7 @@ export const deleteMyProfile = async (userId: string) => {
   const me = auth.currentUser;
   //users테이블의 유저ID 조회
   const findRef = query(authRef, where("userId", "==", userId));
-  //docs의 프로필 이미지 path 추출하기
+  //docs의 유저 데이터 추출하기
   const getProfile = await getDocs(findRef).then((docRes) => {
     return docRes.docs.find((data) => data.data()["userId"] === userId);
   });
@@ -121,9 +121,9 @@ export const deleteMyProfile = async (userId: string) => {
   if (getProfile) {
     //프로필 이미지 삭제
     await deleteProfileImg(getProfile.data()["userImg"]);
-    //firestore 유저 정보 삭제. userToken = user테이블의 docID -> firebase Authentic 유저 정보 삭제
+    //firestore 유저 정보 삭제
     await deleteDoc(doc(db, "users", getProfile.id)).then(
-      () => me && deleteUser(me)
+      () => me && deleteUser(me)  //-> firebase Authentic 유저 정보 삭제
     );
   }
 };

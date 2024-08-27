@@ -194,7 +194,7 @@ export const getImageRankList = async (
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(result);
-      }, 1000);
+      }, 700);
     });
   }
 };

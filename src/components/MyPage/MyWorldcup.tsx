@@ -53,7 +53,7 @@ function MyWorldcup(props: { data: MyPageDataType[] }) {
                     {compareTime(item.gameInfo.createAt)}에 제작되었습니다.
                   </h4>
                   <div className='card-links'>
-                    <Link to=''>수정하기</Link>
+                    <Link to={`../game-edit/${item.gameId}`}>수정하기</Link>
                     <Link to={`../game-review/${item.gameId}`}>랭킹보기</Link>
                   </div>
                 </div>

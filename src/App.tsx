@@ -18,6 +18,7 @@ import GameReview from "./pages/GameReview";
 import HeaderDisplay from "./components/Header/HeaderDisplay";
 import MyPage from "./pages/MyPage";
 import EditProfile from "./pages/EditProfile";
+import EditWorldcup from "./pages/EditWorldcup";
 
 function App() {
   const [userData, setUserData] = useState<PopupUserData>({
@@ -84,6 +85,7 @@ function App() {
         <Route path='/find-user' element={<FindUser />} />
         <Route path='/mypage' element={<MyPage />} />
         <Route path='/edit-profile' element={<EditProfile/>}/>
+        <Route path='/game-edit/:id' element={<EditWorldcup/>}/>
       </Routes>
     </BrowserRouter>
   );

@@ -1,0 +1,124 @@
+.edit-worldcup-container {
+    display: flex;
+    padding: 0 7rem;
+    margin: 1rem 0;
+
+    .update-section {
+        table {
+            width: 100%;
+            text-align: center;
+            font-size: 13px;
+            font-family: 'p_bold';
+            border: 2px solid #000;
+
+            thead {
+                background-color: #000;
+                color: #fff;
+
+                td {
+                    padding: 1rem 0;
+
+                    &:first-child {
+                        width: 5rem;
+                    }
+
+                    &:nth-child(2) {
+                        width: 12rem;
+                    }
+
+                    &:nth-child(3) {
+                        width: 25rem;
+                    }
+
+                    &:nth-child(4) {
+                        width: 8rem;
+                    }
+                }
+            }
+
+            tbody {
+                tr {
+                    &:nth-child(2n) {
+                        background-color: #f5f5f5;
+                    }
+                }
+
+                td {
+                    padding: 1rem 0;
+                    vertical-align: middle;
+
+                    label {
+                        display: grid;
+                        place-items: center;
+                        cursor: pointer;
+                        .img-wrapper {
+                            width: 10rem;
+                            height: 8.5rem;
+                            position: relative;
+                            border: 2px solid #000;
+                            .icon-wrapper {
+                                position: absolute;
+                                background-color: rgba(0, 0, 0, 0.4);
+                                width: 100%;
+                                height: 100%;   
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: center;
+                                align-items: center;
+                                gap: 10px;
+                                color: #fff;
+                                font-size: 13px;
+                                svg {
+                                    width: 2rem;
+                                    height: 2rem;
+                                    fill: rgba(255, 255, 255, 0.7)
+                                }
+                                &:hover{
+                                    background-color: rgba(0, 0, 0, 0.6);
+
+                                    svg {
+                                        fill: #fff;
+                                    }
+                                }
+                            }
+
+                            img {
+                                width: 100%;
+                                height: 100%;
+                                display: block;
+                                object-fit: cover;
+                            }
+                        }
+
+                        input[type=file] {
+                            width: 0;
+                            height: 0;
+                        }
+                    }
+
+                    input[type=text] {
+                        font-size: 13px;
+                        padding: 0.5rem;
+                        border: 2px solid #000;
+                        width: 80%;
+
+                        &:focus {
+                            background-color: #f7f6fd;
+                        }
+                    }
+
+                    button {
+                        padding: 0.5rem 2rem;
+                        border: none;
+                        background-color: #F15E5E;
+                        color: #fff;
+
+                        &:hover {
+                            background-color: #c84141;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

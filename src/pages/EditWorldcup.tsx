@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { findSelectWorldcup } from "../server/firebaseWorldcup";
 import { DocumentData } from "firebase/firestore";
 import "../assets/MyPage/editWorldcup.scss";
-import { WorldcupImage } from "../types/Worldcup";
 
 function EditWorldcup() {
   // 동적 라우팅으로 전송받은 월드컵 아이디 값 조회
@@ -86,6 +85,10 @@ function EditWorldcup() {
     gameData.gameInfo.userId === parseUser.UserId ? (
       <div className="edit-worldcup-container">
         <section className="update-section">
+          <h1>
+            월드컵 이미지 수정
+            <button>월드컵 삭제하기</button>
+          </h1>
           <table>
             <thead>
               <tr>
@@ -157,7 +160,34 @@ function EditWorldcup() {
             </tbody>
           </table>
         </section>
-        <aside></aside>
+        <aside>
+          <div className="wrapper">
+            <div className="info-name">
+              <h1 className="aside-title">
+                게임 정보 수정
+                <button>수정</button>
+              </h1>
+              <div className="thunbnail">
+                <div>
+                  <img src={inputData[3].filePath} alt="" />
+                  <img src={inputData[6].filePath} alt="" />
+                </div>
+                <p>{gameData.gameInfo.worldcupTitle}</p>
+              </div>
+              <div className="categories">
+                {gameData.gameInfo.category.map((item: string, n: number) => (
+                  <span key={n}>#{item}</span>
+                ))}
+              </div>
+            </div>
+            <div className="update-check">
+                <h1>{inputData.length} / {inputData.length}</h1>
+                <h2>이미지 / 라운드</h2>
+                <p>(* 이미지 개수는 라운드와 동일해야 합니다.)</p>
+                <button>변경내용 저장하기</button>
+            </div>
+          </div>
+        </aside>
       </div>
     ) : (
       <div className="before-game-message">

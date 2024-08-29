@@ -255,6 +255,7 @@ export const checkIsUpdateImage = async (
   currentData: WorldcupImage[],
   newData: UpdateWorldcupImages[]
 ) => {
+  console.log("1. 수정요소 확인")
   //배열 요소를 올바르게 정렬
   const sortCurrentData = currentData.map((currentItem) => {
     return {
@@ -287,6 +288,7 @@ export const uploadWorldcupImages = async (
   userId: string,
   newData: UpdateWorldcupImages[]
 ) => {
+  console.log("2. 수정이미지 스토리지 업로드");
   //현재 시간을 표시하는 폴더 안에 업로드
   const currenTime = Date.now();
   // 비동기 배열을 반환하고 Promise.all로 비동기 동작이 전부 완료된 값을 할당한다
@@ -308,6 +310,7 @@ export const uploadWorldcupImages = async (
   return sortData;
 };
 
+//월드컵 수정에 따른 이미지 랭킹 업데이트
 export const updateImageRank = async (
   gamdId: string,
   argData: {
@@ -316,6 +319,7 @@ export const updateImageRank = async (
     filePath: string | null;
   }[]
 ) => {
+  console.log("3. 이미지 랭킹 업데이트");
   //반복문 시작
   argData.forEach(async (data) => {
     //이미지 랭킹 불러오는 쿼리 -> 검색키 == 월드컵아이디 + 인덱스
@@ -348,6 +352,7 @@ export const updateImageRank = async (
   return argData;
 };
 
+//월드컵 이미지 수정. 변경된 데이터 덮어쓰기
 export const updateWorldcupImages = async (
   gameId: string,
   currentData: WorldcupImage[],
@@ -357,6 +362,7 @@ export const updateWorldcupImages = async (
     filePath: string | null;
   }[]
 ) => {
+  console.log("4. 월드컵 이미지 데이터 덮어쓰기");
   //파일인덱스 내림차순으로 재정렬
   const setCurrentData = currentData.map(data => {
     return {

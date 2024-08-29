@@ -1,4 +1,4 @@
-//월드컵 생성 리듀서 
+//월드컵 생성 리듀서
 export interface CreateWorldCup {
   worldcupTitle: string;
   worldcupDescription: string;
@@ -45,4 +45,11 @@ export interface ImageRankData {
   winRate: number;
   userId: string[];
   updateAt: number;
+}
+//월드컵 수정 데이터
+export interface UpdateWorldcupImages {
+  fileIndex: number;
+  filePath: string | null;
+  fileName: string;
+  previewImg: File | null;
 }

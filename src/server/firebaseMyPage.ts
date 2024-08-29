@@ -12,7 +12,8 @@ import { db } from "./firebase";
 import { deleteProfileImg, deleteWorldcupImg } from "./deleteStorage";
 import { getAuth, updatePassword } from "firebase/auth";
 import { userReAuthtication } from "./firebaseAuth";
-import { WorldcupImage } from "../types/Worldcup";
+import { UpdateWorldcupImages, WorldcupImage } from "../types/Worldcup";
+import { uploadNewWorldcupImages } from "./uploadStorage";
 //auth 세션불러오기
 const auth = getAuth();
 //파이어베이스 DB연동
@@ -148,11 +149,14 @@ export const setMyNickName = async (userId: string, nickName: string) => {
 };
 
 //비밀번호 확인 메소드
-export const setMyPassword = async (argData: {
-  currentPw: string;
-  userId: string;
-  changePw?: string;
-}, editType: "비밀번호변경" | "회원탈퇴") => {
+export const setMyPassword = async (
+  argData: {
+    currentPw: string;
+    userId: string;
+    changePw?: string;
+  },
+  editType: "비밀번호변경" | "회원탈퇴"
+) => {
   //유저 데이터 docs가져오기
   const findIdDocs = await getFindUserDocs(argData.userId);
   //해당 유저 데이터의 비밀번호와 현재 비밀번호 입력이 일치하는지
@@ -173,7 +177,7 @@ export const setMyPassword = async (argData: {
       //재인증이 성공되었다면
       if (reAutentic) {
         //비밀번호 변경
-        if(editType === "비밀번호변경" && argData.changePw){
+        if (editType === "비밀번호변경" && argData.changePw) {
           const userRef = doc(db, "users", findPassword.id); //문서 ID
           //firebase updatePassword매소드
           await updatePassword(me, argData.changePw);
@@ -245,3 +249,133 @@ const deleteImageRank = async (gamdId: string) => {
     });
   });
 };
+
+//월드컵 수정 (이미지 배열의 수정 요소가 있는지 확인)
+export const checkIsUpdateImage = async (
+  currentData: WorldcupImage[],
+  newData: UpdateWorldcupImages[]
+) => {
+  //배열 요소를 올바르게 정렬
+  const sortCurrentData = currentData.map((currentItem) => {
+    return {
+      fileIndex: currentItem.fileIndex,
+      fileName: currentItem.fileName,
+      filePath: currentItem.filePath,
+      previewImg: "empty", //기본 이미지 데이터는 없는 값
+    };
+  });
+  const sortNewData = newData.map((newItem) => {
+    return {
+      fileIndex: newItem.fileIndex,
+      fileName: newItem.fileName,
+      filePath: newItem.filePath,
+      previewImg: newItem.previewImg ? "exist" : "empty", //수정할 이미지 요소의 유무
+    };
+  });
+
+  //두 배열을 문자열 형태로 바꾸고 비교연산자 사용하여 수정 유무 확인
+  if (JSON.stringify(sortCurrentData) === JSON.stringify(sortNewData)) {
+    alert("수정할 요소가 없습니다.");
+    return false;
+  } else {
+    return true;
+  }
+};
+
+//월드컵 수정 (수정 이미지 스토리지 업로드 후 변경된 배열을 반환)
+export const uploadWorldcupImages = async (
+  userId: string,
+  newData: UpdateWorldcupImages[]
+) => {
+  //현재 시간을 표시하는 폴더 안에 업로드
+  const currenTime = Date.now();
+  // 비동기 배열을 반환하고 Promise.all로 비동기 동작이 전부 완료된 값을 할당한다
+  const sortData = await Promise.all(
+    newData.map(async (newItem) => {
+      const getUploadStorage = await uploadNewWorldcupImages(
+        userId,
+        newItem.previewImg,
+        currenTime
+      );
+      return {
+        fileIndex: newItem.fileIndex,
+        fileName: newItem.fileName,
+        filePath: getUploadStorage ? getUploadStorage : newItem.filePath,
+      };
+    })
+  );
+
+  return sortData;
+};
+
+export const updateImageRank = async (
+  gamdId: string,
+  argData: {
+    fileIndex: number;
+    fileName: string;
+    filePath: string | null;
+  }[]
+) => {
+  //반복문 시작
+  argData.forEach(async (data) => {
+    //이미지 랭킹 불러오는 쿼리 -> 검색키 == 월드컵아이디 + 인덱스
+    const imgRankQuery = query(
+      collection(db, "imageRank"),
+      where("findKey", "==", `${gamdId}-${data.fileIndex}`)
+    );
+    //getDocs
+    const isImgRankExist = await getDocs(imgRankQuery);
+    // 존재하지 않으면 아무 동작없음 && filepath가 null타입이 있기 때문에 필터링
+    if (!isImgRankExist.empty && data.filePath) {
+      //문서 ID를 불러오기 위한 find
+      const findImgRank = isImgRankExist.docs.find(
+        (doc) => doc.data()["findKey"] === `${gamdId}-${data.fileIndex}`
+      );
+      if (findImgRank) {
+        const imgRankRef = doc(db, "imageRank", findImgRank.id); //문서 ID
+        //이미지의 이름을 변경하지 않았으면 이미지 경로만 수정
+        if (findImgRank.data()["fileName"] === data.fileName) {
+          await updateDoc(imgRankRef, {
+            filePath: data.filePath,
+          });
+          //이미지의 이름을 변경했으면 해당 월드컵이미지 랭킹 기록은 삭제
+        } else {
+          await deleteDoc(imgRankRef);
+        }
+      }
+    }
+  });
+  return argData;
+};
+
+export const updateWorldcupImages = async (
+  gameId: string,
+  currentData: WorldcupImage[],
+  newData: {
+    fileIndex: number;
+    fileName: string;
+    filePath: string | null;
+  }[]
+) => {
+  //파일인덱스 내림차순으로 재정렬
+  const setCurrentData = currentData.map(data => {
+    return {
+      fileIndex: data.fileIndex,
+      fileName: data.fileName,
+      filePath: data.filePath
+    }
+  }).sort((a,b) => b.fileIndex - a.fileIndex);
+  const setNewData = newData.sort((a,b) => b.fileIndex - a.fileIndex);
+
+  //반복문 사용하여 기존 이미지와 새로 덮을 이미지의 주소가 다르면 기존 이미지는 스토리지에 제거
+  setNewData.forEach((newItem, index) => {
+    if(setCurrentData[index].filePath !== newItem.filePath){
+      deleteProfileImg(setCurrentData[index].filePath);
+    }
+  });
+  //월드컵 이미지 배열 새로 덮어쓰기
+  await updateDoc(doc(db, "worldcup", gameId), {
+    worldcupImages: newData
+  });
+
+}; 

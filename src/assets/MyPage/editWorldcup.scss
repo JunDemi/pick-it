@@ -144,6 +144,18 @@
                 }
             }
         }
+        .add-field-button{
+            width: 100%;
+            padding: 15px 0;
+            margin-bottom: 3rem;
+            font-size: 16px;
+            border: 2px solid #000;
+            background-color: #203B98;
+            color: #fff;
+            &:hover{
+                background-color: #3958c8;
+            }
+        }
     }
 
     aside {
@@ -211,14 +223,16 @@
                     gap: 5px;
 
                     span {
+                        border-radius: 30px;
+                        color: #203B98;
                         font-size: 12px;
                         padding: 5px 10px;
-                        border: 2px solid #000;
+                        border: 2px solid #203B98;
                     }
                 }
             }
             .update-check{
-                margin-top: 5rem;
+                margin-top: 12.5rem;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
@@ -237,7 +251,6 @@
                     font-size: 12px;
                 }
                 button{
-                    border: none;
                     background-color: #000;
                     color: #fff;
                     width: 100%;

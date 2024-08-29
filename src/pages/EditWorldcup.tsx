@@ -36,7 +36,10 @@ function EditWorldcup() {
   const [range, setRange] = useState<number>();
   // 데이터 불러오기 로딩 동작
   const [isLoading, setIsLoading] = useState<boolean>(true);
-
+  //이번트 핸들러 로딩 동작
+  const [updateLoading, setUpdateLoding] = useState<boolean>(false);
+    //필드 추가 및 삭제의 파일인덱스를 식별하기 위한 숫자 카운트 상태
+    const [fieldCounter, setFieldCounter] = useState<number>(0);
   //유저 체크
   useEffect(() => {
     if (!user) {
@@ -70,35 +73,11 @@ function EditWorldcup() {
           : input
       );
       setInputData(newInputs);
+      setFieldCounter(prev => prev + 1)
     }
   };
-  //이미지 변경 온체인지 이벤트 핸들러
-  const setOnChangeFile = (
-    index: number,
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    if (inputData) {
-      const newInputs = inputData.map((input) => {
-        //체인지를 준 파일의 인덱스와 배열 인덱스가 동일한 데이터의 프리뷰이미지 업데이트, 취소하면 null
-        return input.fileIndex === index
-          ? {
-              ...input,
-              previewImg: event.target.files ? event.target.files[0] : null,
-            }
-          : input;
-      });
-      setInputData(newInputs);
-    }
-  };
-  //필드 삭제 이벤트 핸들러
-  const fieldDelete = async (index: number) => {
-    if (inputData) {
-      const updateData = [...inputData];
-      updateData.splice(index, 1);
-      setInputData(updateData);
-    }
-  };
-  //필드 삭제할 시 현재 남은 이미지 개수에 따라 라운드 범위 지정
+
+  //필드 삭제/추가 할 시 현재 남은 이미지 개수에 따라 라운드 범위 지정
   useEffect(() => {
     if (inputData) {
       const rounds = inputData.length;
@@ -117,12 +96,20 @@ function EditWorldcup() {
       }
     }
   }, [inputData]);
-  //필드 추가 클릭 이벤트
-  const addField = () => {
+  //필드 삭제 이벤트 핸들러
+  const fieldDelete = async (index: number) => {
     if (inputData) {
       const updateData = [...inputData];
+      updateData.splice(index, 1);
+      setInputData(updateData);
+    }
+  };
+  //필드 추가 클릭 이벤트
+  const addField = () => {
+    if (inputData && gameData) {
+      const updateData = [...inputData];
       updateData.push({
-        fileIndex: inputData.length + 1,
+        fileIndex:  Date.now() + fieldCounter,
         filePath: "none",
         fileName: "",
         previewImg: null,
@@ -131,8 +118,28 @@ function EditWorldcup() {
     }
   };
 
+  //이미지 변경 온체인지 이벤트 핸들러
+  const setOnChangeFile = (
+    index: number,
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (inputData) {
+      const newInputs = inputData.map((input) => {
+        //체인지를 준 파일의 인덱스와 배열 인덱스가 동일한 데이터의 프리뷰이미지 업데이트, 취소하면 null
+        return input.fileIndex === index
+          ? {
+              ...input,
+              previewImg: event.target.files ? event.target.files[0] : null,
+            }
+          : input;
+      });
+      setInputData(newInputs);
+    }
+  };
+
   //변경사항 저장하기 핸들러
   const updateSaveHandler = async () => {
+    setUpdateLoding(true);
     if (gameData && inputData) {
       if (inputData.length === range) {
         const newSettingData = inputData.map((data) => {
@@ -148,6 +155,7 @@ function EditWorldcup() {
         );
         if (isEmptyField) {
           alert("비어있는 이미지가 존재합니다. 이미지를 업로드 해주세요.");
+          setUpdateLoding(false);
           return;
         }
         //핸들러 이벤트 시작
@@ -169,20 +177,22 @@ function EditWorldcup() {
                   )
                   .then((sortData) =>
                     updateWorldcupImages(
-                        gameData.gameId,
+                      gameData.gameId,
                       gameData.gameInfo.worldcupImages,
                       sortData
                     )
-                  )
-              : null
+                  ).then(() => navigate("/mypage"))
+              :  setUpdateLoding(false)
           );
         }
       } else {
         alert("이미지 개수와 라운드를 맞춰주세요.");
+        setUpdateLoding(false);
         return;
       }
     }
   };
+
   return !isLoading && gameData && inputData && range ? (
     gameData.gameInfo.userId === parseUser.UserId ? (
       <div className="edit-worldcup-container">
@@ -202,10 +212,12 @@ function EditWorldcup() {
             </thead>
             <tbody>
               {inputData
-                //.sort((indexA, indexB) => indexA.fileIndex - indexB.fileIndex)
+                .sort((indexA, indexB) => indexA.fileIndex - indexB.fileIndex)
                 .map((items, number) => (
                   <tr key={number}>
-                    <td>{number + 1}</td>
+                    <td>
+                      {number + 1}
+                    </td>
                     <td>
                       <label>
                         <div className="img-wrapper">
@@ -262,7 +274,10 @@ function EditWorldcup() {
                 ))}
             </tbody>
           </table>
-          <button className="add-field-button" onClick={() => addField()}>
+          <button className="add-field-button" onClick={() => {
+            setFieldCounter(prev => prev + 1);
+            addField();
+          }}>
             필드 추가
           </button>
         </section>
@@ -298,8 +313,8 @@ function EditWorldcup() {
               </h1>
               <h2>이미지 / 라운드</h2>
               <p>* 이미지 개수는 라운드와 동일해야 합니다.</p>
-              <button onClick={() => updateSaveHandler()}>
-                변경내용 저장하기
+              <button onClick={() => updateSaveHandler()} disabled={updateLoading}>
+               {updateLoading ? "로딩중..." : "변경내용 저장하기"}
               </button>
             </div>
           </div>

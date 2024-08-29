@@ -5,7 +5,9 @@ import { DocumentData } from "firebase/firestore";
 import "../assets/MyPage/editWorldcup.scss";
 import {
   checkIsUpdateImage,
+  updateImageRank,
   updateWorldcupImages,
+  uploadWorldcupImages,
 } from "../server/firebaseMyPage";
 
 function EditWorldcup() {
@@ -155,13 +157,23 @@ function EditWorldcup() {
             gameData.gameInfo.worldcupImages,
             newSettingData
           ).then((willUpdate) =>
-            //2. 변경할 요소가 없으면 리턴, 있으면 월드컵 이미지 업데이트 메소드 호출
+            //2. 변경할 요소가 없으면 리턴, 있으면 월드컵 스토리지 업로드 메소드 호출
             willUpdate
-              ? updateWorldcupImages(
+              ? uploadWorldcupImages(
                   parseUser.UserId,
-                  gameData.gameInfo.worldcupImages,
                   newSettingData
+                  //3. 스토리지 업로드 후 변경된 배열을 통해 이미지 랭킹 변경 및 기존 이미지 스토리지에서 제거
                 )
+                  .then((sortData) =>
+                    updateImageRank(gameData.gameId, sortData)
+                  )
+                  .then((sortData) =>
+                    updateWorldcupImages(
+                        gameData.gameId,
+                      gameData.gameInfo.worldcupImages,
+                      sortData
+                    )
+                  )
               : null
           );
         }
@@ -192,7 +204,7 @@ function EditWorldcup() {
               {inputData
                 //.sort((indexA, indexB) => indexA.fileIndex - indexB.fileIndex)
                 .map((items, number) => (
-                  <tr key={items.fileIndex}>
+                  <tr key={number}>
                     <td>{number + 1}</td>
                     <td>
                       <label>

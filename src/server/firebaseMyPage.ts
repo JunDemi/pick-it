@@ -12,7 +12,7 @@ import { db } from "./firebase";
 import { deleteProfileImg, deleteWorldcupImg } from "./deleteStorage";
 import { getAuth, updatePassword } from "firebase/auth";
 import { userReAuthtication } from "./firebaseAuth";
-import { WorldcupImage } from "../types/Worldcup";
+import { UpdateWorldcupImages, WorldcupImage } from "../types/Worldcup";
 //auth 세션불러오기
 const auth = getAuth();
 //파이어베이스 DB연동
@@ -148,11 +148,14 @@ export const setMyNickName = async (userId: string, nickName: string) => {
 };
 
 //비밀번호 확인 메소드
-export const setMyPassword = async (argData: {
-  currentPw: string;
-  userId: string;
-  changePw?: string;
-}, editType: "비밀번호변경" | "회원탈퇴") => {
+export const setMyPassword = async (
+  argData: {
+    currentPw: string;
+    userId: string;
+    changePw?: string;
+  },
+  editType: "비밀번호변경" | "회원탈퇴"
+) => {
   //유저 데이터 docs가져오기
   const findIdDocs = await getFindUserDocs(argData.userId);
   //해당 유저 데이터의 비밀번호와 현재 비밀번호 입력이 일치하는지
@@ -173,7 +176,7 @@ export const setMyPassword = async (argData: {
       //재인증이 성공되었다면
       if (reAutentic) {
         //비밀번호 변경
-        if(editType === "비밀번호변경" && argData.changePw){
+        if (editType === "비밀번호변경" && argData.changePw) {
           const userRef = doc(db, "users", findPassword.id); //문서 ID
           //firebase updatePassword매소드
           await updatePassword(me, argData.changePw);
@@ -244,4 +247,44 @@ const deleteImageRank = async (gamdId: string) => {
       deleteDoc(doc(db, "imageRank", data.id));
     });
   });
+};
+
+//월드컵 수정 (이미지 배열의 수정 요소가 있는지 확인)
+export const checkIsUpdateImage = async(currentData: WorldcupImage[], newData: UpdateWorldcupImages[]) => {
+  //배열 요소를 올바르게 정렬
+  const sortCurrentData = currentData.map((currentItem) => {
+    return {
+      fileIndex: currentItem.fileIndex,
+      fileName: currentItem.fileName,
+      filePath: currentItem.filePath
+    }
+  });
+  const sortNewData = newData.map((newItem) => {
+    return {
+      fileIndex: newItem.fileIndex,
+      fileName: newItem.fileName,
+      filePath: newItem.filePath
+    }
+  });
+  
+  //두 배열을 문자열 형태로 바꾸고 비교연산자 사용하여 수정 유무 확인
+  if(JSON.stringify(sortCurrentData) === JSON.stringify(sortNewData)) {
+    alert('수정할 요소가 없습니다.');
+    return false;
+  }else{
+    return true;
+  }
+}
+
+//월드컵 수정 (이미지)
+export const updateWorldcupImages = async (userId: string, currentData: WorldcupImage[], newData: UpdateWorldcupImages[]) => {
+  const sortData = newData.map((newItem) => {
+    return {
+      fileIndex: newItem.fileIndex,
+      fileName: newItem.fileName,
+      filePath: newItem.previewImg ? newItem.previewImg : newItem.filePath,
+    }
+  });
+
+  console.log(sortData);
 };

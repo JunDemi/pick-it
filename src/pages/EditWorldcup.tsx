@@ -3,6 +3,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import { findSelectWorldcup } from "../server/firebaseWorldcup";
 import { DocumentData } from "firebase/firestore";
 import "../assets/MyPage/editWorldcup.scss";
+import {
+  checkIsUpdateImage,
+  updateWorldcupImages,
+} from "../server/firebaseMyPage";
 
 function EditWorldcup() {
   // 동적 라우팅으로 전송받은 월드컵 아이디 값 조회
@@ -17,7 +21,7 @@ function EditWorldcup() {
     gameId: string;
     gameInfo: DocumentData;
   } | null>(null);
-
+  //이미지 목록만 저장하는 상태
   const [inputData, setInputData] = useState<
     {
       fileIndex: number;
@@ -26,6 +30,8 @@ function EditWorldcup() {
       previewImg: File | null;
     }[]
   >();
+  //라운드 범위를 저장하는 상태
+  const [range, setRange] = useState<number>();
   // 데이터 불러오기 로딩 동작
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -43,6 +49,7 @@ function EditWorldcup() {
         .then((result) => {
           setGameData(result); //전체 데이터 저장
           setInputData(result?.gameInfo.worldcupImages); //이미지 목록 데이터만 저장
+          setRange(result?.gameInfo.tournamentRange); //라운드 범위만 저장
         })
         .then(() => setIsLoading(false));
     }
@@ -63,7 +70,7 @@ function EditWorldcup() {
       setInputData(newInputs);
     }
   };
-
+  //이미지 변경 온체인지 이벤트 핸들러
   const setOnChangeFile = (
     index: number,
     event: React.ChangeEvent<HTMLInputElement>
@@ -81,7 +88,90 @@ function EditWorldcup() {
       setInputData(newInputs);
     }
   };
-  return !isLoading && gameData && inputData ? (
+  //필드 삭제 이벤트 핸들러
+  const fieldDelete = async (index: number) => {
+    if (inputData) {
+      const updateData = [...inputData];
+      updateData.splice(index, 1);
+      setInputData(updateData);
+    }
+  };
+  //필드 삭제할 시 현재 남은 이미지 개수에 따라 라운드 범위 지정
+  useEffect(() => {
+    if (inputData) {
+      const rounds = inputData.length;
+      //   if (rounds > 32 && rounds <= 64) {
+      //     setRange(64);
+      //   }
+      //   else if (rounds > 16 && rounds <= 32) {
+      //     setRange(32);
+      //   }
+      if (rounds > 8 && rounds <= 16) {
+        setRange(16);
+      } else if (rounds <= 8) {
+        setRange(8);
+      } else {
+        setRange(16);
+      }
+    }
+  }, [inputData]);
+  //필드 추가 클릭 이벤트
+  const addField = () => {
+    if (inputData) {
+      const updateData = [...inputData];
+      updateData.push({
+        fileIndex: inputData.length + 1,
+        filePath: "none",
+        fileName: "",
+        previewImg: null,
+      });
+      setInputData(updateData);
+    }
+  };
+
+  //변경사항 저장하기 핸들러
+  const updateSaveHandler = async () => {
+    if (gameData && inputData) {
+      if (inputData.length === range) {
+        const newSettingData = inputData.map((data) => {
+          return {
+            fileIndex: data.fileIndex,
+            filePath: data.filePath === "none" ? null : data.filePath,
+            fileName: data.fileName,
+            previewImg: data.previewImg ? data.previewImg : null,
+          };
+        });
+        const isEmptyField = newSettingData.find(
+          (data) => data.filePath === null && data.previewImg === null
+        );
+        if (isEmptyField) {
+          alert("비어있는 이미지가 존재합니다. 이미지를 업로드 해주세요.");
+          return;
+        }
+        //핸들러 이벤트 시작
+        else {
+          //1. 변경할 요소가 있는지 확인
+          await checkIsUpdateImage(
+            gameData.gameInfo.worldcupImages,
+            newSettingData
+          ).then((willUpdate) =>
+            //2. 변경할 요소가 없으면 리턴, 있으면 월드컵 이미지 업데이트 메소드 호출
+            willUpdate
+              ? updateWorldcupImages(
+                  parseUser.UserId,
+                  gameData.gameInfo.worldcupImages,
+                  newSettingData
+                )
+              : null
+          );
+        }
+      } else {
+        alert("이미지 개수와 라운드를 맞춰주세요.");
+        return;
+      }
+    }
+  };
+  return !isLoading && gameData && inputData && range ? (
     gameData.gameInfo.userId === parseUser.UserId ? (
       <div className="edit-worldcup-container">
         <section className="update-section">
@@ -121,13 +211,14 @@ function EditWorldcup() {
                             </svg>
                             이미지 변경하기
                           </div>
-
                           <img
                             src={
                               items.previewImg
                                 ? (URL.createObjectURL(
                                     items.previewImg
                                   ) as string)
+                                : items.filePath === "none"
+                                ? "/images/none.png"
                                 : items.filePath
                             }
                             alt=""
@@ -153,12 +244,15 @@ function EditWorldcup() {
                       />
                     </td>
                     <td>
-                      <button>삭제</button>
+                      <button onClick={() => fieldDelete(number)}>삭제</button>
                     </td>
                   </tr>
                 ))}
             </tbody>
           </table>
+          <button className="add-field-button" onClick={() => addField()}>
+            필드 추가
+          </button>
         </section>
         <aside>
           <div className="wrapper">
@@ -169,8 +263,14 @@ function EditWorldcup() {
               </h1>
               <div className="thunbnail">
                 <div>
-                  <img src={inputData[3].filePath} alt="" />
-                  <img src={inputData[6].filePath} alt="" />
+                  <img
+                    src={gameData.gameInfo.worldcupImages[3].filePath}
+                    alt=""
+                  />
+                  <img
+                    src={gameData.gameInfo.worldcupImages[6].filePath}
+                    alt=""
+                  />
                 </div>
                 <p>{gameData.gameInfo.worldcupTitle}</p>
               </div>
@@ -181,10 +281,14 @@ function EditWorldcup() {
               </div>
             </div>
             <div className="update-check">
-                <h1>{inputData.length} / {inputData.length}</h1>
-                <h2>이미지 / 라운드</h2>
-                <p>(* 이미지 개수는 라운드와 동일해야 합니다.)</p>
-                <button>변경내용 저장하기</button>
+              <h1>
+                {inputData.length} / {range}
+              </h1>
+              <h2>이미지 / 라운드</h2>
+              <p>* 이미지 개수는 라운드와 동일해야 합니다.</p>
+              <button onClick={() => updateSaveHandler()}>
+                변경내용 저장하기
+              </button>
             </div>
           </div>
         </aside>

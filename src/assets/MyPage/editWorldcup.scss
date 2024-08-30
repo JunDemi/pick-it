@@ -11,13 +11,15 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+
             button {
                 padding: 5px 15px;
                 font-size: 13px;
                 border: none;
                 background-color: #c84141;
                 color: #fff;
-                &:hover{
+
+                &:hover {
                     background-color: #b11d1d;
                 }
             }
@@ -144,7 +146,8 @@
                 }
             }
         }
-        .add-field-button{
+
+        .add-field-button {
             width: 100%;
             padding: 15px 0;
             margin-bottom: 3rem;
@@ -152,7 +155,8 @@
             border: 2px solid #000;
             background-color: #203B98;
             color: #fff;
-            &:hover{
+
+            &:hover {
                 background-color: #3958c8;
             }
         }
@@ -170,6 +174,7 @@
             position: sticky;
             top: 6rem;
             width: 15rem;
+
             .info-name {
                 display: flex;
                 flex-direction: column;
@@ -187,7 +192,8 @@
                         border: none;
                         background-color: #000;
                         color: #fff;
-                        &:hover{
+
+                        &:hover {
                             background-color: #2b2b2b;
                         }
                     }
@@ -213,9 +219,19 @@
                     }
 
                     p {
-                        font-size: 13px;
-                        margin: 0.3rem 0;
+                        font-size: 14px;
+                        margin: 0.5rem 0;
                     }
+                }
+
+                .desc {
+                    font-family: 'p_normal';
+                    border-radius: 10px;
+                    font-size: 12px;
+                    height: 100px;
+                    padding: 5px 10px;
+                    color: #646464;
+                    background-color: #f1f1f1;
                 }
 
                 .categories {
@@ -231,35 +247,234 @@
                     }
                 }
             }
-            .update-check{
-                margin-top: 12.5rem;
+
+            .update-check {
+                margin-top: 5.5rem;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
-                h1{
+
+                h1 {
                     font-family: 'p_bold';
                     font-size: 32px;
                 }
-                h2{
+
+                h2 {
                     font-size: 14px;
                     color: #6d6d6d;
                 }
-                p{  
+
+                p {
                     margin: 0.5rem 0;
                     color: #6d6d6d;
                     font-size: 12px;
                 }
-                button{
+
+                button {
                     border: none;
                     background-color: #000;
                     color: #fff;
                     width: 100%;
                     font-size: 16px;
                     padding: 15px 0;
-                    &:hover{
+
+                    &:hover {
                         background-color: #2b2b2b;
                     }
+                }
+            }
+        }
+    }
+}
+
+.edit-info-popup {
+    z-index: 31;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .edit-popup-container {
+        padding: 10px;
+        min-width: 30rem;
+        background-color: #fff;
+        border: 2px solid #000;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+
+        svg {
+            cursor: pointer;
+            width: 2rem;
+            height: 2rem;
+        }
+
+        .edit-section {
+            width: 100%;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+
+            h1 {
+                margin-top: 1rem;
+                font-family: 'p_bold';
+                font-size: 14px;
+                &:first-child{
+                    margin-top: 0;
+                }
+            }
+
+            .img-wrapper {
+                position: relative;
+                width: 30rem;
+                display: flex;
+                border: 2px solid #000;
+
+                img {
+                    width: 50%;
+                    object-fit: cover;
+                }
+
+                .click-img-wrapper {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+
+                    div {
+                        background-color: rgba(0, 0, 0, 0.4);
+                        cursor: pointer;
+                        color: #fff;
+                        width: 50%;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                        gap: 10px;
+
+                        svg {
+                            fill: rgba(255, 255, 255, 0.7);
+                            width: 2rem;
+                            height: 2rem;
+                        }
+
+                        &:hover {
+                            background-color: rgba(0, 0, 0, 0.6);
+
+                            svg {
+                                fill: #fff;
+                            }
+                        }
+                    }
+                }
+            }
+
+            input[type=text], textarea {
+                border: 2px solid #000;
+                padding: 10px;
+                font-size: 15px;
+
+                &:focus {
+                    background-color: #f7f6fd;
+                }
+            }
+
+            textarea {
+                height: 100px;
+            }
+            .category-input{
+                display: flex;
+                align-items: center;
+                gap: 1.5rem;
+                input[type=text]{
+                    width: 10rem;
+                }
+                div{
+                    display: flex;
+                    align-items: center;
+                    gap: 5px;
+                    font-size: 15px;
+                    span{
+                        border: 2px solid #000;
+                        display: flex;
+                        align-items: center;
+                        padding: 9.5px 8px;
+                        gap: 5px;
+                        svg{
+                            width: 1.2rem;
+                            height: 1.2rem;
+                        }
+                    }
+                }
+            }
+            .save-button{
+                margin-top: 2rem;
+                background-color: #000;
+                border: none;
+                color: #fff;
+                font-size: 16px;
+                padding: 10px 0;
+                &:hover{
+                    background-color: #2b2b2b;
+                }
+            }
+        }
+        .edit-thumbnail-popup {
+            z-index: 32;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .thumbnail-container{
+                overflow-y: scroll;
+                max-height: 20rem;
+                border: 2px solid #000;
+                background-color: #fff;
+                padding: 0.5rem 1rem 1rem 1rem;
+                svg{
+                    width: 1.5rem;
+                    height: 1.5rem;
+                }
+                h1{
+                    width: 100%;
+                    text-align: center;
+                    margin: 10px 0;
+                    font-size: 15px;
+                    font-family: 'p_bold';
+                }
+                .img-wrapper{
+                    display: grid;
+                    grid-template-columns: repeat(4, 1fr);
+                    gap: 8px;
+                    img{
+                        border: 2px solid #000;
+                        cursor: pointer;
+                        width: 8rem;
+                        height: 6.5rem;
+                        object-fit: cover;
+                        display: block;
+                        &:hover{
+                            border-color: #e8e8e8;
+                        }
+                    }
+                }
+            }
+            .scroll-hide {
+                &::-webkit-scrollbar {
+                    display: none;
                 }
             }
         }

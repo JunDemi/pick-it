@@ -9,7 +9,7 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "./firebase";
-import { deleteProfileImg, deleteWorldcupImg } from "./deleteStorage";
+import { deleteProfileImg, deleteRemainImg, deleteWorldcupImg } from "./deleteStorage";
 import { getAuth, updatePassword } from "firebase/auth";
 import { userReAuthtication } from "./firebaseAuth";
 import { UpdateWorldcupImages, WorldcupImage } from "../types/Worldcup";
@@ -255,7 +255,7 @@ export const checkIsUpdateImage = async (
   currentData: WorldcupImage[],
   newData: UpdateWorldcupImages[]
 ) => {
-  console.log("1. 수정요소 확인")
+  console.log("1. 수정요소 확인");
   //배열 요소를 올바르게 정렬
   const sortCurrentData = currentData.map((currentItem) => {
     return {
@@ -360,28 +360,49 @@ export const updateWorldcupImages = async (
     fileIndex: number;
     fileName: string;
     filePath: string | null;
-  }[]
+  }[],
+  range: number
 ) => {
   console.log("4. 월드컵 이미지 데이터 덮어쓰기");
   //파일인덱스 내림차순으로 재정렬
-  const setCurrentData = currentData.map(data => {
-    return {
-      fileIndex: data.fileIndex,
-      fileName: data.fileName,
-      filePath: data.filePath
-    }
-  }).sort((a,b) => b.fileIndex - a.fileIndex);
-  const setNewData = newData.sort((a,b) => b.fileIndex - a.fileIndex);
+  const setCurrentData = currentData
+    .map((data) => {
+      return {
+        fileIndex: data.fileIndex,
+        fileName: data.fileName,
+        filePath: data.filePath,
+      };
+    })
+    .sort((a, b) => b.fileIndex - a.fileIndex);
+  const setNewData = newData.sort((a, b) => b.fileIndex - a.fileIndex);
 
-  //반복문 사용하여 기존 이미지와 새로 덮을 이미지의 주소가 다르면 기존 이미지는 스토리지에 제거
-  setNewData.forEach((newItem, index) => {
-    if(setCurrentData[index].filePath !== newItem.filePath){
-      deleteProfileImg(setCurrentData[index].filePath);
+  //반복문 사용하여 기존 이미지와 새로 덮을 이미지의 주소가 같은 값의 인덱스를 추출
+  const findSameArray = setNewData.map((newItem) => {
+      //find메소드를 사용하여 같은 값은 값의 인덱스를 찾음
+      const isRemainImage = setCurrentData.find(
+        (currentItem) => currentItem.filePath === newItem.filePath
+      );
+      //파일 인덱스값 반환
+      return isRemainImage?.fileIndex;
+    //undefined로 반환된 값은 제거
+  }).filter(item => item !== undefined);
+  
+  //기존 데이터를 map하여 방금 추출한 인덱스값과 비교. 같은 값이 있는 루프는 null을 반환하고, 다른 값(변경되어 더미가 된 이미지)은 반환
+  const willDeleteArray = setCurrentData.map((data) => {
+    if(findSameArray.length > 0){
+      const sameData = findSameArray.find(index => index === data.fileIndex);
+      return sameData ? null :  data.filePath;
+    }else{
+      return null;
     }
-  });
+  }).filter(item => item !== null);
+
+  //최종적으로 삭제할 이미지들을 스토리지 삭제 함수에 전달
+  await deleteRemainImg(willDeleteArray);
+
   //월드컵 이미지 배열 새로 덮어쓰기
   await updateDoc(doc(db, "worldcup", gameId), {
-    worldcupImages: newData
+    worldcupImages: newData,
+    tournamentRange: range,
   });
-
-}; 
+};

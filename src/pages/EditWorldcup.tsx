@@ -179,7 +179,8 @@ function EditWorldcup() {
                     updateWorldcupImages(
                       gameData.gameId,
                       gameData.gameInfo.worldcupImages,
-                      sortData
+                      sortData,
+                      range
                     )
                   ).then(() => navigate("/mypage"))
               :  setUpdateLoding(false)

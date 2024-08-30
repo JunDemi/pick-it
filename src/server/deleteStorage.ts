@@ -13,6 +13,17 @@ export const deleteProfileImg = async (imgPath: string) => {
     deleteObject(profileImgRef);
   }
 };
+//월드컵 수정: 기존 월드컵의 이미지가 변경되어 더미가 되어버린 이미지 삭제
+export const deleteRemainImg = async (imageArray: (string | null)[]) => {
+  //스토리지 제거 함수: deleteObject
+  imageArray.forEach((worldcupImage) => {
+    if (worldcupImage) {
+      const wolrdcupImgRef = ref(storage, worldcupImage);
+      deleteObject(wolrdcupImgRef);
+    }
+  });
+};
+
 //월드컵 삭제: 해당 월드컵의 이미지 모두 삭제
 export const deleteWorldcupImg = async (imageArray: WorldcupImage[]) => {
   //스토리지 제거 함수: deleteObject

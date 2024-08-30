@@ -9,6 +9,9 @@ import {
   updateWorldcupImages,
   uploadWorldcupImages,
 } from "../server/firebaseMyPage";
+import { AnimatePresence, motion } from "framer-motion";
+import { IoClose } from "react-icons/io5";
+import EditGameInfo from "../components/MyPage/EditWorldcup/EditGameInfo";
 
 function EditWorldcup() {
   // 동적 라우팅으로 전송받은 월드컵 아이디 값 조회
@@ -193,9 +196,12 @@ function EditWorldcup() {
       }
     }
   };
+  //게임 정보 수정 팝업
+  const [infoPopup, setInfoPopup] = useState<boolean>(false);
 
   return !isLoading && gameData && inputData && range ? (
     gameData.gameInfo.userId === parseUser.UserId ? (
+      <>
       <div className="edit-worldcup-container">
         <section className="update-section">
           <h1>
@@ -287,7 +293,7 @@ function EditWorldcup() {
             <div className="info-name">
               <h1 className="aside-title">
                 게임 정보 수정
-                <button>수정</button>
+                <button onClick={() => setInfoPopup(true)}>수정</button>
               </h1>
               <div className="thunbnail">
                 <div>
@@ -301,6 +307,7 @@ function EditWorldcup() {
                   />
                 </div>
                 <p>{gameData.gameInfo.worldcupTitle}</p>
+                <p className="desc">{gameData.gameInfo.worldcupDescription}</p>
               </div>
               <div className="categories">
                 {gameData.gameInfo.category.map((item: string, n: number) => (
@@ -321,6 +328,22 @@ function EditWorldcup() {
           </div>
         </aside>
       </div>
+      <AnimatePresence>
+      {infoPopup && (
+          <motion.div
+            className="edit-popup"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <div className="edit-popup-container">
+                <IoClose onClick={() => setInfoPopup(false)}/>
+                <EditGameInfo gameData={gameData}/>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      </>
     ) : (
       <div className="before-game-message">
         <h2>잘못된 접근입니다.</h2>

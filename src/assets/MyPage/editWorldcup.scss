@@ -391,23 +391,31 @@
             textarea {
                 height: 100px;
             }
+            p{
+                font-size: 13px;
+                color: #F15E5E;
+            }
             .category-input{
                 display: flex;
                 align-items: center;
-                gap: 1.5rem;
+                gap: 1rem;
                 input[type=text]{
                     width: 10rem;
+                    &::placeholder{
+                        font-size: 13px;
+                    }
                 }
                 div{
                     display: flex;
                     align-items: center;
                     gap: 5px;
-                    font-size: 15px;
+                    font-size: 13px;
+                    font-family: 'p_bold';
                     span{
                         border: 2px solid #000;
                         display: flex;
                         align-items: center;
-                        padding: 9.5px 8px;
+                        padding: 5px 5px;
                         gap: 5px;
                         svg{
                             width: 1.2rem;

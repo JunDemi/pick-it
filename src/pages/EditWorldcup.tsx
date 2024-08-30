@@ -197,7 +197,7 @@ function EditWorldcup() {
     }
   };
   //게임 정보 수정 팝업
-  const [infoPopup, setInfoPopup] = useState<boolean>(false);
+  const [editPopup, setEditPopup] = useState<boolean>(false);
 
   return !isLoading && gameData && inputData && range ? (
     gameData.gameInfo.userId === parseUser.UserId ? (
@@ -293,7 +293,7 @@ function EditWorldcup() {
             <div className="info-name">
               <h1 className="aside-title">
                 게임 정보 수정
-                <button onClick={() => setInfoPopup(true)}>수정</button>
+                <button onClick={() => setEditPopup(true)}>수정</button>
               </h1>
               <div className="thunbnail">
                 <div>
@@ -329,15 +329,15 @@ function EditWorldcup() {
         </aside>
       </div>
       <AnimatePresence>
-      {infoPopup && (
+      {editPopup && (
           <motion.div
-            className="edit-popup"
+            className="edit-info-popup"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
             <div className="edit-popup-container">
-                <IoClose onClick={() => setInfoPopup(false)}/>
+                <IoClose onClick={() => setEditPopup(false)}/>
                 <EditGameInfo gameData={gameData}/>
             </div>
           </motion.div>

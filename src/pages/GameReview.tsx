@@ -141,7 +141,9 @@ function GameReview() {
           imgRankData={imgRankData}
         />
       </div>
-      <Comments />
+      {gameId && (
+        <Comments gameId={gameId} userId={isUser ? JSON.parse(isUser).UserId : ""} />
+      )}
     </>
   ) : (
     <div className="before-game-message">랭킹 정보를 불러오지 못했습니다.</div>

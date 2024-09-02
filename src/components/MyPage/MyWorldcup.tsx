@@ -34,8 +34,8 @@ function MyWorldcup(props: { data: MyPageDataType[] }) {
           .map((item) => (
             <div className='card' key={item.gameId}>
               <div className='img-wrapper'>
-                <img src={item.gameInfo.worldcupImages[3].filePath} alt='' />
-                <img src={item.gameInfo.worldcupImages[6].filePath} alt='' />
+                <img src={item.gameInfo.worldcupImages[0].filePath} alt='' />
+                <img src={item.gameInfo.worldcupImages[1].filePath} alt='' />
               </div>
               <div className='card-wrapper'>
                 <div className='group-one'>

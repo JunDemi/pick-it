@@ -55,8 +55,8 @@ function PlayedWorldcup(props: {
         {mergedData.map((item) => (
           <div className='card' key={item.gameId}>
             <div className='img-wrapper'>
-              <img src={item.worldcupImages[3].filePath} alt='' />
-              <img src={item.worldcupImages[6].filePath} alt='' />
+              <img src={item.worldcupImages[0].filePath} alt='' />
+              <img src={item.worldcupImages[1].filePath} alt='' />
             </div>
             <div className='card-wrapper'>
               <div className='group-one'>

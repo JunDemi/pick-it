@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import "../assets/Contents/contents.scss";
 import { getWorldCupList } from "../server/firebaseWorldcup";
 import Skeleton from "../components/WorldcupSkeleton/Skeleton";
-import { getUserData } from "../server/firebaseAuth";
 
 function Contents() {
   //인기순, 최신순 필터 state
@@ -108,11 +107,11 @@ function Contents() {
                   <div>
                     <div className="card-thumbnail">
                       <img
-                        src={items.worldcupInfo.worldcupImages[3].filePath}
+                        src={items.worldcupInfo.worldcupImages[0].filePath}
                         alt=""
                       />
                       <img
-                        src={items.worldcupInfo.worldcupImages[6].filePath}
+                        src={items.worldcupInfo.worldcupImages[1].filePath}
                         alt=""
                       />
                     </div>

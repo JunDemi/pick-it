@@ -74,8 +74,8 @@ function GameReview() {
           <h1 className="aside-title">게임 정보</h1>
           <div className="thunbnail">
             <div>
-              <img src={allData.gameInfo.worldcupImages[3].filePath} alt="" />
-              <img src={allData.gameInfo.worldcupImages[6].filePath} alt="" />
+              <img src={allData.gameInfo.worldcupImages[0].filePath} alt="" />
+              <img src={allData.gameInfo.worldcupImages[1].filePath} alt="" />
             </div>
             {allData.gameInfo.worldcupTitle}
           </div>

@@ -9,7 +9,11 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "./firebase";
-import { deleteProfileImg, deleteRemainImg, deleteWorldcupImg } from "./deleteStorage";
+import {
+  deleteProfileImg,
+  deleteRemainImg,
+  deleteWorldcupImg,
+} from "./deleteStorage";
 import { getAuth, updatePassword } from "firebase/auth";
 import { userReAuthtication } from "./firebaseAuth";
 import { UpdateWorldcupImages, WorldcupImage } from "../types/Worldcup";
@@ -205,7 +209,7 @@ export const setMyPassword = async (
   }
 };
 
-//월드컵 삭제
+//회원 탈퇴로 인한 월드컵 삭제
 export const deleteWorldcup = async (userId: string) => {
   //내 월드컵 불러오는 쿼리
   const findWorldcupQuery = query(
@@ -377,25 +381,31 @@ export const updateWorldcupImages = async (
   const setNewData = newData.sort((a, b) => b.fileIndex - a.fileIndex);
 
   //반복문 사용하여 기존 이미지와 새로 덮을 이미지의 주소가 같은 값의 인덱스를 추출
-  const findSameArray = setNewData.map((newItem) => {
+  const findSameArray = setNewData
+    .map((newItem) => {
       //find메소드를 사용하여 같은 값은 값의 인덱스를 찾음
       const isRemainImage = setCurrentData.find(
         (currentItem) => currentItem.filePath === newItem.filePath
       );
       //파일 인덱스값 반환
       return isRemainImage?.fileIndex;
-    //undefined로 반환된 값은 제거
-  }).filter(item => item !== undefined);
-  
+      //undefined로 반환된 값은 제거
+    })
+    .filter((item) => item !== undefined);
+
   //기존 데이터를 map하여 방금 추출한 인덱스값과 비교. 같은 값이 있는 루프는 null을 반환하고, 다른 값(변경되어 더미가 된 이미지)은 반환
-  const willDeleteArray = setCurrentData.map((data) => {
-    if(findSameArray.length > 0){
-      const sameData = findSameArray.find(index => index === data.fileIndex);
-      return sameData ? null :  data.filePath;
-    }else{
-      return null;
-    }
-  }).filter(item => item !== null);
+  const willDeleteArray = setCurrentData
+    .map((data) => {
+      if (findSameArray.length > 0) {
+        const sameData = findSameArray.find(
+          (index) => index === data.fileIndex
+        );
+        return sameData ? null : data.filePath;
+      } else {
+        return null;
+      }
+    })
+    .filter((item) => item !== null);
 
   //최종적으로 삭제할 이미지들을 스토리지 삭제 함수에 전달
   await deleteRemainImg(willDeleteArray);
@@ -404,5 +414,48 @@ export const updateWorldcupImages = async (
   await updateDoc(doc(db, "worldcup", gameId), {
     worldcupImages: newData,
     tournamentRange: range,
+    thumbnail: [0, 1],
   });
+};
+//월드컵 정보 수정 팝업
+export const editWorldcupInformation = async (argData: {
+  gameId: string;
+  title: string;
+  description: string;
+  category: string[];
+  thumbnail: number[];
+}) => {
+  //업데이트 쿼리
+  const worldcupRef = doc(db, "worldcup", argData.gameId); //문서 ID
+  await updateDoc(worldcupRef, {
+    worldcupTitle: argData.title,
+    worldcupDescription: argData.description,
+    category: argData.category,
+    thumbnail: argData.thumbnail,
+  });
+};
+
+//월드컵 수정페이지 월드컵 삭제
+export const deleteMyWorldcup = async (
+  gameId: string,
+  imgArray: WorldcupImage[]
+) => {
+  //이미지 랭킹 불러오는 쿼리
+  const imgRankQuery = query(
+    collection(db, "imageRank"),
+    where("gameId", "==", gameId)
+  );
+  //1. 이미지 랭킹 삭제
+  const findImgRank = await getDocs(imgRankQuery);
+  if (!findImgRank.empty) {
+    findImgRank.docs.forEach(async (data) => {
+      const imgRankRef = doc(db, "imageRank", data.id); //이미지랭킹 DB
+      await deleteDoc(imgRankRef); //데이터베이스 삭제
+    });
+  }
+  //2. 월드컵 삭제
+  const worldcupRef = doc(db, "worldcup", gameId); //월드컵 DB
+  await deleteDoc(worldcupRef); //데이터베이스 삭제
+  //3. 이미지 스토리지 삭제
+  await deleteWorldcupImg(imgArray); //스토리지 삭제
 };

@@ -1,9 +1,11 @@
 import { DocumentData } from "firebase/firestore";
 import { AnimatePresence, motion } from "framer-motion";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { WorldcupImage } from "../../../types/Worldcup";
 import { IoClose } from "react-icons/io5";
 import { useForm } from "react-hook-form";
+import { editWorldcupInformation } from "../../../server/firebaseMyPage";
+import { useNavigate } from "react-router-dom";
 
 function EditGameInfo(prop: {
   gameData: {
@@ -11,28 +13,29 @@ function EditGameInfo(prop: {
     gameInfo: DocumentData;
   };
 }) {
+  //네비게이터
+  const navigate = useNavigate();
+  //props게임정보
   const gameInfo = prop.gameData.gameInfo;
+  //핸들러 로딩 동작
+  const [updateLoading, setUpdateLoading] = useState<boolean>(false);
+  //이미지 배열을 오름차순 정렬
+  const gameImages = gameInfo.worldcupImages.sort(
+    (a: WorldcupImage, b: WorldcupImage) => a.fileIndex - b.fileIndex
+  );
   //월드컵 제목, 월드컵 설명 텍스트 저장 상태
-  const [title, setTitle] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
+  const [title, setTitle] = useState<string>(gameInfo.worldcupTitle);
+  const [description, setDescription] = useState<string>(
+    gameInfo.worldcupDescription
+  );
   //카테고리 배열 저장 상태
-  const [categoryArray, setCategoryArray] = useState<string[]>([]);
+  const [categoryArray, setCategoryArray] = useState<string[]>(
+    gameInfo.category
+  );
   //이미지 썸네일 2개 저장 상태
-  const [thumbnailImages, setThumbnailImages] = useState<string[]>([]);
-  //props값을 상태에 할당
-  useEffect(() => {
-    setTitle(gameInfo.worldcupTitle);
-    setDescription(gameInfo.worldcupDescription);
-    setCategoryArray(gameInfo.category);
-    setThumbnailImages([
-      gameInfo.worldcupImages.sort(
-        (a: WorldcupImage, b: WorldcupImage) => a.fileIndex - b.fileIndex
-      )[gameInfo.thumbnail[0]].filePath,
-      gameInfo.worldcupImages.sort(
-        (a: WorldcupImage, b: WorldcupImage) => a.fileIndex - b.fileIndex
-      )[gameInfo.thumbnail[1]].filePath,
-    ]);
-  }, []);
+  const [thumbnailImages, setThumbnailImages] = useState<number[]>(
+    gameInfo.thumbnail
+  );
   //값이 비어있을 경우 자동 focus를 위한 ref
   const textRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -40,6 +43,17 @@ function EditGameInfo(prop: {
   const [thumbnailPopup, setThumbnailPopup] = useState<"좌측" | "우측" | null>(
     null
   );
+  //변경할 썸네일 클릭 이벤트
+  const newThumbnail = (thumbnailIndex: number) => {
+    const setArray = [...thumbnailImages];
+    if (thumbnailPopup === "좌측") {
+      setArray[0] = thumbnailIndex;
+    } else if (thumbnailPopup === "우측") {
+      setArray[1] = thumbnailIndex;
+    }
+    setThumbnailImages(setArray);
+    setThumbnailPopup(null);
+  };
   //리액트 훅 폼
   const {
     handleSubmit,
@@ -50,41 +64,47 @@ function EditGameInfo(prop: {
   //에러 문구 상태
   const [errorMessage1, setErrorMessage1] = useState<string>();
   const [errorMessage2, setErrorMessage2] = useState<string>();
-  //변경할 닉네임 텍스트 온체인지 이벤트 상태 할당
+  //변경할 제목 텍스트 온체인지 이벤트 상태 할당
   const titleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
   };
-  //변경할 닉네임 텍스트 온체인지 이벤트 상태 할당
+  //변경할 설명 텍스트 온체인지 이벤트 상태 할당
   const descriptionChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setDescription(event.target.value);
   };
-
   //월드컵 제목, 설명 유효성 검사
   const onValid = async () => {
+    setUpdateLoading(true);
     if (title.length === 0) {
       textRef.current && textRef.current.focus();
+      setUpdateLoading(false);
       return;
     } else if (description.length === 0) {
       textareaRef.current && textareaRef.current.focus();
+      setUpdateLoading(false);
       return;
     }
 
     if (title.length < 6 || title.length > 25) {
       setErrorMessage1("월드컵 제목은 6글자 이상, 25글자 이하입니다.");
+      setUpdateLoading(false);
       return;
     } else if (description.length > 50) {
       setErrorMessage2("월드컵 설명은 50글자 이하입니다.");
+      setUpdateLoading(false);
       return;
     }
 
     if (categoryArray.length === 0) {
       alert("카테고리를 추가하세요.");
+      setUpdateLoading(false);
       return;
     }
     setErrorMessage1(undefined);
     setErrorMessage2(undefined);
     updateInfoHandler();
   };
+  //카테고리 폼 엔터 입력 핸들러
   const categoryHandler = (text: { category: string }) => {
     if (categoryArray.length >= 3) {
       alert("카테고리는 최대 4개까지 가능합니다.");
@@ -95,17 +115,22 @@ function EditGameInfo(prop: {
   };
   //유효성 검사를 마친 백엔드 전송 핸들러
   const updateInfoHandler = async () => {
-    console.log(title);
-    console.log(description);
-    console.log(categoryArray);
+    const sendData = {
+      gameId: prop.gameData.gameId,
+      title: title,
+      description: description,
+      category: categoryArray,
+      thumbnail: thumbnailImages,
+    };
+    await editWorldcupInformation(sendData).then(() => navigate('/mypage'));
   };
   return (
     <>
       <div className="edit-section">
         <h1>썸네일</h1>
         <div className="img-wrapper">
-          <img src={thumbnailImages[0]} alt="" />
-          <img src={thumbnailImages[1]} alt="" />
+          <img src={gameImages[thumbnailImages[0]].filePath} alt="" />
+          <img src={gameImages[thumbnailImages[1]].filePath} alt="" />
           <div className="click-img-wrapper">
             <div onClick={() => setThumbnailPopup("좌측")}>
               <svg
@@ -191,16 +216,15 @@ function EditGameInfo(prop: {
           </div>
         </form>
         {errors.category && <p>{errors.category.message}</p>}
-        <button className="save-button" onClick={onValid}>
-          변경내용 저장하기
+        <button className="save-button" onClick={onValid} disabled={updateLoading}>
+          {updateLoading ? "로딩중..." : "변경내용 저장하기"}
         </button>
       </div>
       <AnimatePresence>
         {thumbnailPopup && (
           <motion.div
             className={
-              (gameInfo.worldcupImages.length > 8 && "scroll-hide") +
-              " edit-thumbnail-popup"
+              (gameImages.length > 8 && "scroll-hide") + " edit-thumbnail-popup"
             }
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -210,11 +234,14 @@ function EditGameInfo(prop: {
               <IoClose onClick={() => setThumbnailPopup(null)} />
               <h1>사진을 선택해주세요 ( {thumbnailPopup} )</h1>
               <div className="img-wrapper">
-                {gameInfo.worldcupImages.map(
-                  (img: WorldcupImage, index: number) => (
-                    <img src={img.filePath} alt="" key={img.fileIndex} />
-                  )
-                )}
+                {gameImages.map((img: WorldcupImage, index: number) => (
+                  <img
+                    src={img.filePath}
+                    alt=""
+                    key={img.fileIndex}
+                    onClick={() => newThumbnail(index)}
+                  />
+                ))}
               </div>
             </div>
           </motion.div>

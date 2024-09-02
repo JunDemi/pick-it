@@ -209,7 +209,7 @@ export const setMyPassword = async (
   }
 };
 
-//월드컵 삭제
+//회원 탈퇴로 인한 월드컵 삭제
 export const deleteWorldcup = async (userId: string) => {
   //내 월드컵 불러오는 쿼리
   const findWorldcupQuery = query(
@@ -418,15 +418,13 @@ export const updateWorldcupImages = async (
   });
 };
 //월드컵 정보 수정 팝업
-export const editWorldcupInformation = async (
-  argData: {
-    gameId: string,
-    title: string,
-    description: string,
-    category: string[],
-    thumbnail: number[]
-  }
-) => {
+export const editWorldcupInformation = async (argData: {
+  gameId: string;
+  title: string;
+  description: string;
+  category: string[];
+  thumbnail: number[];
+}) => {
   //업데이트 쿼리
   const worldcupRef = doc(db, "worldcup", argData.gameId); //문서 ID
   await updateDoc(worldcupRef, {
@@ -435,4 +433,29 @@ export const editWorldcupInformation = async (
     category: argData.category,
     thumbnail: argData.thumbnail,
   });
+};
+
+//월드컵 수정페이지 월드컵 삭제
+export const deleteMyWorldcup = async (
+  gameId: string,
+  imgArray: WorldcupImage[]
+) => {
+  //이미지 랭킹 불러오는 쿼리
+  const imgRankQuery = query(
+    collection(db, "imageRank"),
+    where("gameId", "==", gameId)
+  );
+  //1. 이미지 랭킹 삭제
+  const findImgRank = await getDocs(imgRankQuery);
+  if (!findImgRank.empty) {
+    findImgRank.docs.forEach(async (data) => {
+      const imgRankRef = doc(db, "imageRank", data.id); //이미지랭킹 DB
+      await deleteDoc(imgRankRef); //데이터베이스 삭제
+    });
+  }
+  //2. 월드컵 삭제
+  const worldcupRef = doc(db, "worldcup", gameId); //월드컵 DB
+  await deleteDoc(worldcupRef); //데이터베이스 삭제
+  //3. 이미지 스토리지 삭제
+  await deleteWorldcupImg(imgArray); //스토리지 삭제
 };

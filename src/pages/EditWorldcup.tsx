@@ -5,6 +5,7 @@ import { DocumentData } from "firebase/firestore";
 import "../assets/MyPage/editWorldcup.scss";
 import {
   checkIsUpdateImage,
+  deleteMyWorldcup,
   updateImageRank,
   updateWorldcupImages,
   uploadWorldcupImages,
@@ -199,8 +200,16 @@ function EditWorldcup() {
     }
   };
   //게임 정보 수정 팝업
-  const [editPopup, setEditPopup] = useState<boolean>(false);
+  const [editPopup, setEditPopup] = useState<"edit" | "delete" | null>(null);
 
+  //월드컵 삭제 버튼 클릭
+  const deleteWolrdcupHandler = async() => {
+    setUpdateLoding(true);
+    if(gameData){
+      await deleteMyWorldcup(gameData.gameId, gameData.gameInfo.worldcupImages)
+      .then(() => navigate('/mypage'));
+    }
+  }
   return !isLoading && gameData && inputData && range ? (
     gameData.gameInfo.userId === parseUser.UserId ? (
       <>
@@ -208,7 +217,7 @@ function EditWorldcup() {
           <section className="update-section">
             <h1>
               월드컵 이미지 수정
-              <button>월드컵 삭제하기</button>
+              <button onClick={() => setEditPopup("delete")}>월드컵 삭제하기</button>
             </h1>
             <table>
               <thead>
@@ -298,7 +307,7 @@ function EditWorldcup() {
               <div className="info-name">
                 <h1 className="aside-title">
                   게임 정보 수정
-                  <button onClick={() => setEditPopup(true)}>수정</button>
+                  <button onClick={() => setEditPopup("edit")}>수정</button>
                 </h1>
                 <div className="thunbnail">
                   <div>
@@ -351,7 +360,7 @@ function EditWorldcup() {
           </aside>
         </div>
         <AnimatePresence>
-          {editPopup && (
+          {editPopup !== null && (
             <motion.div
               className="edit-info-popup"
               initial={{ opacity: 0 }}
@@ -359,8 +368,14 @@ function EditWorldcup() {
               exit={{ opacity: 0 }}
             >
               <div className="edit-popup-container">
-                <IoClose onClick={() => setEditPopup(false)} />
-                <EditGameInfo gameData={gameData} />
+                <IoClose onClick={() => setEditPopup(null)} />
+                {editPopup === "edit" && <EditGameInfo gameData={gameData} />}
+                {editPopup === "delete" && 
+                <div className="delete-section">
+                  <h1>월드컵 삭제</h1>
+                  <p>월드컵을 삭제하시면 관련된 정보 및 댓글이 전부 삭제됩니다. <br/><br/>월드컵을 삭제하시겠습니까?</p>
+                  <button onClick={deleteWolrdcupHandler}> {updateLoading ? "로딩중..." : "네. 삭제하겠습니다."}</button>
+                </div>}
               </div>
             </motion.div>
           )}

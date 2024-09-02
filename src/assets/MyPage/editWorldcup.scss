@@ -326,7 +326,8 @@
                 margin-top: 1rem;
                 font-family: 'p_bold';
                 font-size: 14px;
-                &:first-child{
+
+                &:first-child {
                     margin-top: 0;
                 }
             }
@@ -379,7 +380,8 @@
                 }
             }
 
-            input[type=text], textarea {
+            input[type=text],
+            textarea {
                 border: 2px solid #000;
                 padding: 10px;
                 font-size: 15px;
@@ -392,51 +394,61 @@
             textarea {
                 height: 100px;
             }
-            p{
+
+            p {
                 font-size: 13px;
                 color: #F15E5E;
             }
-            .category-input{
+
+            .category-input {
                 display: flex;
                 align-items: center;
                 gap: 1rem;
-                input[type=text]{
+
+                input[type=text] {
                     width: 10rem;
-                    &::placeholder{
+
+                    &::placeholder {
                         font-size: 13px;
                     }
                 }
-                div{
+
+                div {
                     display: flex;
                     align-items: center;
                     gap: 5px;
                     font-size: 13px;
                     font-family: 'p_bold';
-                    span{
+
+                    span {
                         border: 2px solid #000;
                         display: flex;
                         align-items: center;
                         padding: 5px 5px;
                         gap: 5px;
-                        svg{
+
+                        svg {
                             width: 1.2rem;
                             height: 1.2rem;
                         }
                     }
                 }
             }
-            .save-button{
+
+            .save-button {
                 margin-top: 2rem;
                 background-color: #000;
                 border: none;
                 color: #fff;
                 font-size: 16px;
                 padding: 10px 0;
-                &:hover{
+
+                &:hover {
                     background-color: #2b2b2b;
                 }
             }
         }
+
         .edit-thumbnail-popup {
             z-index: 32;
             position: fixed;
@@ -447,43 +459,82 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            .thumbnail-container{
+
+            .thumbnail-container {
                 overflow-y: scroll;
                 max-height: 20rem;
                 border: 2px solid #000;
                 background-color: #fff;
                 padding: 0.5rem 1rem 1rem 1rem;
-                svg{
+
+                svg {
                     width: 1.5rem;
                     height: 1.5rem;
                 }
-                h1{
+
+                h1 {
                     width: 100%;
                     text-align: center;
                     margin: 10px 0;
                     font-size: 15px;
                     font-family: 'p_bold';
                 }
-                .img-wrapper{
+
+                .img-wrapper {
                     display: grid;
                     grid-template-columns: repeat(4, 1fr);
                     gap: 8px;
-                    img{
+
+                    img {
                         border: 2px solid #000;
                         cursor: pointer;
                         width: 8rem;
                         height: 6.5rem;
                         object-fit: cover;
                         display: block;
-                        &:hover{
+
+                        &:hover {
                             border-color: #e8e8e8;
                         }
                     }
                 }
             }
+
             .scroll-hide {
                 &::-webkit-scrollbar {
                     display: none;
+                }
+            }
+        }
+
+        .delete-section {
+            width: 100%;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+
+            h1 {
+                font-family: 'p_bold';
+                font-size: 24px;
+                color: #f0607b;
+            }
+
+            p {
+                font-size: 16px;
+            }
+
+            button {
+                font-size: 16px;
+                padding: 1rem 0;
+                border: none;
+                color: #fff;
+                border: none;
+                color: #fff;
+                background-color: #f0607b;
+
+                &:hover {
+                    background-color: #c53650;
                 }
             }
         }

@@ -4,7 +4,7 @@ import {
   getImageRankList,
 } from "../server/firebaseWorldcup";
 import { Link, useParams } from "react-router-dom";
-import { ImageRankData } from "../types/Worldcup";
+import { ImageRankData, WorldcupImage } from "../types/Worldcup";
 import { DocumentData } from "firebase/firestore";
 import "../assets/Contents/gameReview.scss";
 import CreatorInfo from "../components/GameReview/CreatorInfo";
@@ -36,7 +36,7 @@ function GameReview() {
           return data.userId.indexOf(userId) === -1 ? null : data;
         })
         .filter((data) => data !== null); //null값으로 리턴 되는 배열은 제거
-      
+
       return list[0];
     }
   };
@@ -67,60 +67,81 @@ function GameReview() {
     </div>
   ) : allData && imgRankData ? (
     <>
-    <div className="game-review-container">
-      <aside className="game-review-info">
-        <div className="wrapper">
-        <div className="info-name">
-          <h1 className="aside-title">게임 정보</h1>
-          <div className="thunbnail">
-            <div>
-              <img src={allData.gameInfo.worldcupImages[3].filePath} alt="" />
-              <img src={allData.gameInfo.worldcupImages[6].filePath} alt="" />
+      <div className="game-review-container">
+        <aside className="game-review-info">
+          <div className="wrapper">
+            <div className="info-name">
+              <h1 className="aside-title">게임 정보</h1>
+              <div className="thunbnail">
+                <div>
+                  <img
+                    src={
+                      allData.gameInfo.worldcupImages.sort(
+                        //파일인덱스 오름차순 정렬
+                        (a: WorldcupImage, b: WorldcupImage) =>
+                          a.fileIndex - b.fileIndex
+                      )[allData.gameInfo.thumbnail[0]].filePath //썸네일 인덱스에 지정된 파일경로
+                    }
+                    alt=""
+                  />
+                  <img
+                    src={
+                      allData.gameInfo.worldcupImages.sort(
+                        //파일인덱스 오름차순 정렬
+                        (a: WorldcupImage, b: WorldcupImage) =>
+                          a.fileIndex - b.fileIndex
+                      )[allData.gameInfo.thumbnail[1]].filePath //썸네일 인덱스에 지정된 파일경로
+                    }
+                    alt=""
+                  />
+                </div>
+                {allData.gameInfo.worldcupTitle}
+              </div>
+              <div className="categories">
+                {allData.gameInfo.category.map((item: string, n: number) => (
+                  <span key={n}>#{item}</span>
+                ))}
+              </div>
             </div>
-            {allData.gameInfo.worldcupTitle}
-          </div>
-          <div className="categories">
-            {allData.gameInfo.category.map((item: string, n: number) => (
-              <span key={n}>#{item}</span>
-            ))}
-          </div>
-        </div>
-        {isUser && (
-          <div className="info-my-pick">
-            <h1 className="aside-title">회원님이 최근에 선택한 이미지</h1>
-            {getMyRecentPick() ? (
-              <>
-                <img src={getMyRecentPick()?.filePath} alt="" />
-                <span>{getMyRecentPick()?.fileName}</span>
-              </>
-            ) : (
-              <h3>* 아직 참여하지 않은 월드컵입니다.</h3>
+            {isUser && (
+              <div className="info-my-pick">
+                <h1 className="aside-title">회원님이 최근에 선택한 이미지</h1>
+                {getMyRecentPick() ? (
+                  <>
+                    <img src={getMyRecentPick()?.filePath} alt="" />
+                    <span>{getMyRecentPick()?.fileName}</span>
+                  </>
+                ) : (
+                  <h3>* 아직 참여하지 않은 월드컵입니다.</h3>
+                )}
+              </div>
             )}
+            <CreatorInfo
+              creatorId={allData.gameInfo.userId}
+              imgRankData={imgRankData}
+            />
+            <Link className="restart-game" to={`/play-game/${gameId}`}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z"
+                />
+              </svg>
+              월드컵 시작하기
+            </Link>
           </div>
-        )}
-        <CreatorInfo
-          creatorId={allData.gameInfo.userId}
+        </aside>
+        <ImageRankTable
+          allImg={allData.gameInfo.worldcupImages}
           imgRankData={imgRankData}
         />
-        <Link className="restart-game" to={`/play-game/${gameId}`}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z"
-            />
-          </svg>
-          월드컵 시작하기
-        </Link>
-        </div>
-      </aside>
-      <ImageRankTable allImg={allData.gameInfo.worldcupImages} imgRankData={imgRankData}/>
-    </div>
-    <Comments/>
+      </div>
+      <Comments />
     </>
   ) : (
     <div className="before-game-message">랭킹 정보를 불러오지 못했습니다.</div>

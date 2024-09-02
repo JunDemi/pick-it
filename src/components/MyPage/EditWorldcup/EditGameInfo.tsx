@@ -1,9 +1,11 @@
 import { DocumentData } from "firebase/firestore";
 import { AnimatePresence, motion } from "framer-motion";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { WorldcupImage } from "../../../types/Worldcup";
 import { IoClose } from "react-icons/io5";
 import { useForm } from "react-hook-form";
+import { editWorldcupInformation } from "../../../server/firebaseMyPage";
+import { useNavigate } from "react-router-dom";
 
 function EditGameInfo(prop: {
   gameData: {
@@ -11,18 +13,29 @@ function EditGameInfo(prop: {
     gameInfo: DocumentData;
   };
 }) {
+  //네비게이터
+  const navigate = useNavigate();
+  //props게임정보
   const gameInfo = prop.gameData.gameInfo;
+  //핸들러 로딩 동작
+  const [updateLoading, setUpdateLoading] = useState<boolean>(false);
   //이미지 배열을 오름차순 정렬
   const gameImages = gameInfo.worldcupImages.sort(
     (a: WorldcupImage, b: WorldcupImage) => a.fileIndex - b.fileIndex
   );
   //월드컵 제목, 월드컵 설명 텍스트 저장 상태
   const [title, setTitle] = useState<string>(gameInfo.worldcupTitle);
-  const [description, setDescription] = useState<string>(gameInfo.worldcupDescription);
+  const [description, setDescription] = useState<string>(
+    gameInfo.worldcupDescription
+  );
   //카테고리 배열 저장 상태
-  const [categoryArray, setCategoryArray] = useState<string[]>(gameInfo.category);
+  const [categoryArray, setCategoryArray] = useState<string[]>(
+    gameInfo.category
+  );
   //이미지 썸네일 2개 저장 상태
-  const [thumbnailImages, setThumbnailImages] = useState<number[]>(gameInfo.thumbnail);
+  const [thumbnailImages, setThumbnailImages] = useState<number[]>(
+    gameInfo.thumbnail
+  );
   //값이 비어있을 경우 자동 focus를 위한 ref
   const textRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -61,24 +74,30 @@ function EditGameInfo(prop: {
   };
   //월드컵 제목, 설명 유효성 검사
   const onValid = async () => {
+    setUpdateLoading(true);
     if (title.length === 0) {
       textRef.current && textRef.current.focus();
+      setUpdateLoading(false);
       return;
     } else if (description.length === 0) {
       textareaRef.current && textareaRef.current.focus();
+      setUpdateLoading(false);
       return;
     }
 
     if (title.length < 6 || title.length > 25) {
       setErrorMessage1("월드컵 제목은 6글자 이상, 25글자 이하입니다.");
+      setUpdateLoading(false);
       return;
     } else if (description.length > 50) {
       setErrorMessage2("월드컵 설명은 50글자 이하입니다.");
+      setUpdateLoading(false);
       return;
     }
 
     if (categoryArray.length === 0) {
       alert("카테고리를 추가하세요.");
+      setUpdateLoading(false);
       return;
     }
     setErrorMessage1(undefined);
@@ -96,9 +115,14 @@ function EditGameInfo(prop: {
   };
   //유효성 검사를 마친 백엔드 전송 핸들러
   const updateInfoHandler = async () => {
-    console.log(title);
-    console.log(description);
-    console.log(categoryArray);
+    const sendData = {
+      gameId: prop.gameData.gameId,
+      title: title,
+      description: description,
+      category: categoryArray,
+      thumbnail: thumbnailImages,
+    };
+    await editWorldcupInformation(sendData).then(() => navigate('/mypage'));
   };
   return (
     <>
@@ -192,8 +216,8 @@ function EditGameInfo(prop: {
           </div>
         </form>
         {errors.category && <p>{errors.category.message}</p>}
-        <button className="save-button" onClick={onValid}>
-          변경내용 저장하기
+        <button className="save-button" onClick={onValid} disabled={updateLoading}>
+          {updateLoading ? "로딩중..." : "변경내용 저장하기"}
         </button>
       </div>
       <AnimatePresence>

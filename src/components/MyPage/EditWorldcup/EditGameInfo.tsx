@@ -25,8 +25,12 @@ function EditGameInfo(prop: {
     setDescription(gameInfo.worldcupDescription);
     setCategoryArray(gameInfo.category);
     setThumbnailImages([
-      gameInfo.worldcupImages[3].filePath,
-      gameInfo.worldcupImages[6].filePath,
+      gameInfo.worldcupImages.sort(
+        (a: WorldcupImage, b: WorldcupImage) => a.fileIndex - b.fileIndex
+      )[gameInfo.thumbnail[0]].filePath,
+      gameInfo.worldcupImages.sort(
+        (a: WorldcupImage, b: WorldcupImage) => a.fileIndex - b.fileIndex
+      )[gameInfo.thumbnail[1]].filePath,
     ]);
   }, []);
   //값이 비어있을 경우 자동 focus를 위한 ref

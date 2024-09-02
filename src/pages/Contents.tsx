@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import "../assets/Contents/contents.scss";
 import { getWorldCupList } from "../server/firebaseWorldcup";
 import Skeleton from "../components/WorldcupSkeleton/Skeleton";
+import { WorldcupImage } from "../types/Worldcup";
 
 function Contents() {
   //인기순, 최신순 필터 state
@@ -107,11 +108,21 @@ function Contents() {
                   <div>
                     <div className="card-thumbnail">
                       <img
-                        src={items.worldcupInfo.worldcupImages[0].filePath}
+                        src={
+                          items.worldcupInfo.worldcupImages.sort( //파일인덱스 오름차순 정렬
+                            (a: WorldcupImage, b: WorldcupImage) =>
+                              a.fileIndex - b.fileIndex
+                          )[items.worldcupInfo.thumbnail[0]].filePath //썸네일 인덱스에 지정된 파일경로
+                        }
                         alt=""
                       />
                       <img
-                        src={items.worldcupInfo.worldcupImages[1].filePath}
+                        src={
+                          items.worldcupInfo.worldcupImages.sort(
+                            (a: WorldcupImage, b: WorldcupImage) =>
+                              a.fileIndex - b.fileIndex
+                          )[items.worldcupInfo.thumbnail[1]].filePath
+                        }
                         alt=""
                       />
                     </div>

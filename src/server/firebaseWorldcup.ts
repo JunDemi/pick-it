@@ -35,6 +35,7 @@ export const getCreateWorldCup = async (argData: SendData) => {
     createAt: currentTime,
     updateAt: currentTime,
     view: 0,
+    thumbnail: [0, 1],
   });
 };
 

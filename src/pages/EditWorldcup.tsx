@@ -12,6 +12,7 @@ import {
 import { AnimatePresence, motion } from "framer-motion";
 import { IoClose } from "react-icons/io5";
 import EditGameInfo from "../components/MyPage/EditWorldcup/EditGameInfo";
+import { WorldcupImage } from "../types/Worldcup";
 
 function EditWorldcup() {
   // 동적 라우팅으로 전송받은 월드컵 아이디 값 조회
@@ -41,8 +42,8 @@ function EditWorldcup() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   //이번트 핸들러 로딩 동작
   const [updateLoading, setUpdateLoding] = useState<boolean>(false);
-    //필드 추가 및 삭제의 파일인덱스를 식별하기 위한 숫자 카운트 상태
-    const [fieldCounter, setFieldCounter] = useState<number>(0);
+  //필드 추가 및 삭제의 파일인덱스를 식별하기 위한 숫자 카운트 상태
+  const [fieldCounter, setFieldCounter] = useState<number>(0);
   //유저 체크
   useEffect(() => {
     if (!user) {
@@ -76,7 +77,7 @@ function EditWorldcup() {
           : input
       );
       setInputData(newInputs);
-      setFieldCounter(prev => prev + 1)
+      setFieldCounter((prev) => prev + 1);
     }
   };
 
@@ -112,7 +113,7 @@ function EditWorldcup() {
     if (inputData && gameData) {
       const updateData = [...inputData];
       updateData.push({
-        fileIndex:  Date.now() + fieldCounter,
+        fileIndex: Date.now() + fieldCounter,
         filePath: "none",
         fileName: "",
         previewImg: null,
@@ -185,8 +186,9 @@ function EditWorldcup() {
                       sortData,
                       range
                     )
-                  ).then(() => navigate("/mypage"))
-              :  setUpdateLoding(false)
+                  )
+                  .then(() => navigate("/mypage"))
+              : setUpdateLoding(false)
           );
         }
       } else {
@@ -202,147 +204,167 @@ function EditWorldcup() {
   return !isLoading && gameData && inputData && range ? (
     gameData.gameInfo.userId === parseUser.UserId ? (
       <>
-      <div className="edit-worldcup-container">
-        <section className="update-section">
-          <h1>
-            월드컵 이미지 수정
-            <button>월드컵 삭제하기</button>
-          </h1>
-          <table>
-            <thead>
-              <tr>
-                <td>순번</td>
-                <td>이미지</td>
-                <td>이름</td>
-                <td>필드 삭제</td>
-              </tr>
-            </thead>
-            <tbody>
-              {inputData
-                .sort((indexA, indexB) => indexA.fileIndex - indexB.fileIndex)
-                .map((items, number) => (
-                  <tr key={number}>
-                    <td>
-                      {number + 1}
-                    </td>
-                    <td>
-                      <label>
-                        <div className="img-wrapper">
-                          <div className="icon-wrapper">
-                            <svg
-                              viewBox="0 0 80 80"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                clipRule="evenodd"
-                                d="M75 70C75 72.76 72.76 75 70 75H57.08L38.66 56.3375L60 34.9975L75 49.9975V70ZM10 75C7.24 75 5 72.76 5 70V67.6525L24.8625 49.8625L50.0025 75H10ZM20 10C25.5225 10 30 14.4775 30 20C30 25.5225 25.5225 30 20 30C14.4775 30 10 25.5225 10 20C10 14.4775 14.4775 10 20 10ZM70 0H10C4.4775 0 0 4.4775 0 10V70C0 75.5225 4.4775 80 10 80H70C75.5225 80 80 75.5225 80 70V10C80 4.4775 75.5225 0 70 0ZM20 25C22.76 25 25 22.76 25 20C25 17.24 22.76 15 20 15C17.24 15 15 17.24 15 20C15 22.76 17.24 25 20 25Z"
-                              />
-                            </svg>
-                            이미지 변경하기
+        <div className="edit-worldcup-container">
+          <section className="update-section">
+            <h1>
+              월드컵 이미지 수정
+              <button>월드컵 삭제하기</button>
+            </h1>
+            <table>
+              <thead>
+                <tr>
+                  <td>순번</td>
+                  <td>이미지</td>
+                  <td>이름</td>
+                  <td>필드 삭제</td>
+                </tr>
+              </thead>
+              <tbody>
+                {inputData
+                  .sort((indexA, indexB) => indexA.fileIndex - indexB.fileIndex)
+                  .map((items, number) => (
+                    <tr key={number}>
+                      <td>{number + 1}</td>
+                      <td>
+                        <label>
+                          <div className="img-wrapper">
+                            <div className="icon-wrapper">
+                              <svg
+                                viewBox="0 0 80 80"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  clipRule="evenodd"
+                                  d="M75 70C75 72.76 72.76 75 70 75H57.08L38.66 56.3375L60 34.9975L75 49.9975V70ZM10 75C7.24 75 5 72.76 5 70V67.6525L24.8625 49.8625L50.0025 75H10ZM20 10C25.5225 10 30 14.4775 30 20C30 25.5225 25.5225 30 20 30C14.4775 30 10 25.5225 10 20C10 14.4775 14.4775 10 20 10ZM70 0H10C4.4775 0 0 4.4775 0 10V70C0 75.5225 4.4775 80 10 80H70C75.5225 80 80 75.5225 80 70V10C80 4.4775 75.5225 0 70 0ZM20 25C22.76 25 25 22.76 25 20C25 17.24 22.76 15 20 15C17.24 15 15 17.24 15 20C15 22.76 17.24 25 20 25Z"
+                                />
+                              </svg>
+                              이미지 변경하기
+                            </div>
+                            <img
+                              src={
+                                items.previewImg
+                                  ? (URL.createObjectURL(
+                                      items.previewImg
+                                    ) as string)
+                                  : items.filePath === "none"
+                                  ? "/images/none.png"
+                                  : items.filePath
+                              }
+                              alt=""
+                            />
                           </div>
-                          <img
-                            src={
-                              items.previewImg
-                                ? (URL.createObjectURL(
-                                    items.previewImg
-                                  ) as string)
-                                : items.filePath === "none"
-                                ? "/images/none.png"
-                                : items.filePath
-                            }
-                            alt=""
-                          />
-                        </div>
 
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(event) =>
+                              setOnChangeFile(items.fileIndex, event)
+                            }
+                          />
+                        </label>
+                      </td>
+                      <td>
                         <input
-                          type="file"
-                          accept="image/*"
+                          type="text"
+                          value={items.fileName}
                           onChange={(event) =>
-                            setOnChangeFile(items.fileIndex, event)
+                            handleInputChange(items.fileIndex, event)
                           }
                         />
-                      </label>
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        value={items.fileName}
-                        onChange={(event) =>
-                          handleInputChange(items.fileIndex, event)
-                        }
-                      />
-                    </td>
-                    <td>
-                      <button onClick={() => fieldDelete(number)}>삭제</button>
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
-          <button className="add-field-button" onClick={() => {
-            setFieldCounter(prev => prev + 1);
-            addField();
-          }}>
-            필드 추가
-          </button>
-        </section>
-        <aside>
-          <div className="wrapper">
-            <div className="info-name">
-              <h1 className="aside-title">
-                게임 정보 수정
-                <button onClick={() => setEditPopup(true)}>수정</button>
-              </h1>
-              <div className="thunbnail">
-                <div>
-                  <img
-                    src={gameData.gameInfo.worldcupImages[3].filePath}
-                    alt=""
-                  />
-                  <img
-                    src={gameData.gameInfo.worldcupImages[6].filePath}
-                    alt=""
-                  />
+                      </td>
+                      <td>
+                        <button onClick={() => fieldDelete(number)}>
+                          삭제
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+            <button
+              className="add-field-button"
+              onClick={() => {
+                setFieldCounter((prev) => prev + 1);
+                addField();
+              }}
+            >
+              필드 추가
+            </button>
+          </section>
+          <aside>
+            <div className="wrapper">
+              <div className="info-name">
+                <h1 className="aside-title">
+                  게임 정보 수정
+                  <button onClick={() => setEditPopup(true)}>수정</button>
+                </h1>
+                <div className="thunbnail">
+                  <div>
+                    <img
+                      src={
+                        gameData.gameInfo.worldcupImages.sort(
+                          //파일인덱스 오름차순 정렬
+                          (a: WorldcupImage, b: WorldcupImage) =>
+                            a.fileIndex - b.fileIndex
+                        )[gameData.gameInfo.thumbnail[0]].filePath //썸네일 인덱스에 지정된 파일경로
+                      }
+                      alt=""
+                    />
+                    <img
+                      src={
+                        gameData.gameInfo.worldcupImages.sort(
+                          //파일인덱스 오름차순 정렬
+                          (a: WorldcupImage, b: WorldcupImage) =>
+                            a.fileIndex - b.fileIndex
+                        )[gameData.gameInfo.thumbnail[1]].filePath //썸네일 인덱스에 지정된 파일경로
+                      }
+                      alt=""
+                    />
+                  </div>
+                  <p>{gameData.gameInfo.worldcupTitle}</p>
+                  <p className="desc">
+                    {gameData.gameInfo.worldcupDescription}
+                  </p>
                 </div>
-                <p>{gameData.gameInfo.worldcupTitle}</p>
-                <p className="desc">{gameData.gameInfo.worldcupDescription}</p>
+                <div className="categories">
+                  {gameData.gameInfo.category.map((item: string, n: number) => (
+                    <span key={n}>#{item}</span>
+                  ))}
+                </div>
               </div>
-              <div className="categories">
-                {gameData.gameInfo.category.map((item: string, n: number) => (
-                  <span key={n}>#{item}</span>
-                ))}
+              <div className="update-check">
+                <h1>
+                  {inputData.length} / {range}
+                </h1>
+                <h2>이미지 / 라운드</h2>
+                <p>* 이미지 개수는 라운드와 동일해야 합니다.</p>
+                <button
+                  onClick={() => updateSaveHandler()}
+                  disabled={updateLoading}
+                >
+                  {updateLoading ? "로딩중..." : "변경내용 저장하기"}
+                </button>
               </div>
             </div>
-            <div className="update-check">
-              <h1>
-                {inputData.length} / {range}
-              </h1>
-              <h2>이미지 / 라운드</h2>
-              <p>* 이미지 개수는 라운드와 동일해야 합니다.</p>
-              <button onClick={() => updateSaveHandler()} disabled={updateLoading}>
-               {updateLoading ? "로딩중..." : "변경내용 저장하기"}
-              </button>
-            </div>
-          </div>
-        </aside>
-      </div>
-      <AnimatePresence>
-      {editPopup && (
-          <motion.div
-            className="edit-info-popup"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <div className="edit-popup-container">
-                <IoClose onClick={() => setEditPopup(false)}/>
-                <EditGameInfo gameData={gameData}/>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </aside>
+        </div>
+        <AnimatePresence>
+          {editPopup && (
+            <motion.div
+              className="edit-info-popup"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <div className="edit-popup-container">
+                <IoClose onClick={() => setEditPopup(false)} />
+                <EditGameInfo gameData={gameData} />
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </>
     ) : (
       <div className="before-game-message">

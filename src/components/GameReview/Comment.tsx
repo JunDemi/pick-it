@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
   addWorldcupComment,
+  deleteWorldcupComment,
   getCommentUser,
   getWorldcupCommentList,
 } from "../../server/firebaseComment";
@@ -12,6 +13,7 @@ function Comments(props: { gameId: string; userId: string }) {
   //댓글 목록 저장 상태
   const [commentArray, setCommentArray] = useState<
     {
+      commentId: string;
       userId: string;
       commentText: string;
       createAt: number;
@@ -64,7 +66,10 @@ function Comments(props: { gameId: string; userId: string }) {
       if (isExist) {
         return {
           nickName: isExist.nickName,
-          profileImg: isExist.profileImg,
+          profileImg:
+            isExist.profileImg === "default"
+              ? "/images/user.png"
+              : isExist.profileImg,
         };
       }
     } else {
@@ -78,6 +83,12 @@ function Comments(props: { gameId: string; userId: string }) {
   const [isDesc, setIsDesc] = useState<boolean>(true);
   //댓글 페이지네이션(더보기)
   const [commentLimit, setCommentLimit] = useState<number>(5);
+
+  //댓글 삭제 아이콘 클릭
+  const deleteComment = async(commentId: string) => {
+    await deleteWorldcupComment(commentId);
+    setRefetch((prev) => !prev);
+  };
   return (
     <div className="game-comment-container">
       <h1>댓글 ({commentArray.length}개)</h1>
@@ -85,7 +96,7 @@ function Comments(props: { gameId: string; userId: string }) {
         <thead>
           <tr>
             <td colSpan={4}>
-              <button onClick={() => setIsDesc(prev => !prev)}>
+              <button onClick={() => setIsDesc((prev) => !prev)}>
                 날짜
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -106,16 +117,42 @@ function Comments(props: { gameId: string; userId: string }) {
           </tr>
         </thead>
         <tbody>
-          {commentArray.sort((a,b) => isDesc ? b.createAt - a.createAt : a.createAt - b.createAt).slice(0, commentLimit).map((data, index) => (
-            <tr key={index}>
-              <td>
-                <img src={findUserProfile(data.userId)?.profileImg} alt="" />
-              </td>
-              <td>{findUserProfile(data.userId)?.nickName}</td>
-              <td>{data.commentText}</td>
-              <td>{compareTime(data.createAt)}</td>
-            </tr>
-          ))}
+          {commentArray
+            .sort((a, b) =>
+              isDesc ? b.createAt - a.createAt : a.createAt - b.createAt
+            )
+            .slice(0, commentLimit)
+            .map((data) => (
+              <tr key={data.commentId}>
+                <td>
+                  <img src={findUserProfile(data.userId)?.profileImg} alt="" />
+                </td>
+                <td>{findUserProfile(data.userId)?.nickName}</td>
+                <td>
+                  <div>
+                    {data.commentText}
+                    {props.userId === data.userId && (
+                      <span className="delete-comment">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth="1.5"
+                          onClick={() => deleteComment(data.commentId)}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                          />
+                        </svg>
+                      </span>
+                    )}
+                  </div>
+                </td>
+                <td>{compareTime(data.createAt)}</td>
+              </tr>
+            ))}
         </tbody>
       </table>
       {commentArray.length > commentLimit && (

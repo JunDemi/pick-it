@@ -22,6 +22,7 @@ import { uploadNewWorldcupImages } from "./uploadStorage";
 const auth = getAuth();
 //파이어베이스 DB연동
 const authRef = collection(db, "users");
+const worldcupCommentRef = collection(db, "worldcupComment");
 //유저 ID를 통해 해당 문서를 불러오는 쿼리
 const getFindUserDocs = async (userId: string) => {
   //users테이블의 유저ID 조회
@@ -458,4 +459,25 @@ export const deleteMyWorldcup = async (
   await deleteDoc(worldcupRef); //데이터베이스 삭제
   //3. 이미지 스토리지 삭제
   await deleteWorldcupImg(imgArray); //스토리지 삭제
+};
+
+//내 월드컵 댓글 불러오기
+export const getMyWorldcupComment = async (userId: string) => {
+  //댓글 쿼리
+  const commentQuery = query(worldcupCommentRef, where("userId", "==", userId));
+  //getDocs후 docs객체 할당
+  const getData = await getDocs(commentQuery).then((res) => {
+    return res.docs;
+  });
+
+  const resultData = getData.map((doc) => {
+    return {
+      commentId: doc.id,
+      gameId: doc.data()["gameId"],
+      userId: doc.data()["userId"],
+      commentText: doc.data()["commentText"],
+      createAt: doc.data()["createAt"],
+    };
+  });
+  return resultData;
 };

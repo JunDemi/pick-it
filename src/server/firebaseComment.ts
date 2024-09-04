@@ -1,4 +1,4 @@
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDocs, query, where } from "firebase/firestore";
 import { db } from "./firebase";
 
 //파이어베이스 DB연동
@@ -15,6 +15,7 @@ export const getWorldcupCommentList = async (gameId: string) => {
 
   const resultData = getData.map((doc) => {
     return {
+      commentId: doc.id,
       userId: doc.data()["userId"],
       commentText: doc.data()["commentText"],
       createAt: doc.data()["createAt"],
@@ -26,6 +27,7 @@ export const getWorldcupCommentList = async (gameId: string) => {
 //댓글 목록의 유저 ID값을 통해 닉네임 및 이미지 불러오기
 export const getCommentUser = async (
   commentData: {
+    commentId: string;
     userId: string;
     commentText: string;
     createAt: number;
@@ -76,3 +78,9 @@ export const addWorldcupComment = async (
     createAt: Date.now(),
   });
 };
+
+//월드컵 댓글 삭제
+export const deleteWorldcupComment = async (commentId: string) => {
+  const commentRef = doc(db, "worldcupComment", commentId);
+  await deleteDoc(commentRef);
+}

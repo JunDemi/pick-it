@@ -9,5 +9,5 @@ export interface MyWorldcupCommentType {
   gameId: string;
   userId: string;
   commentText: string;
-  createAt: string;
+  createAt: number;
 }

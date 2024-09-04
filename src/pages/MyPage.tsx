@@ -5,6 +5,7 @@ import { getUserData } from "../server/firebaseAuth";
 import {
   getMyPlayAmount,
   getMyWorldcupComment,
+  getMyWorldcupCommentWorldcup,
   getPlayedWorldcup,
   getUserWorldcupHistory,
 } from "../server/firebaseMyPage";
@@ -46,14 +47,17 @@ function MyPage() {
     }[]
   >();
   //내 댓글
-    const [myCommentData, setMyCommentData] = useState<MyWorldcupCommentType[]>([]);
+  const [myCommentData, setMyCommentData] = useState<MyWorldcupCommentType[]>(
+    []
+  );
+  //내 댓글의 월드컵 정보
+  const [myCommentWorldcup, setMyCommentWorldcup] =
+    useState<(MyPageDataType | null)[]>();
   //데이터 불러온 후 상태에 할당
   useEffect(() => {
     if (user) {
       //회원 프로필 이미지 및 닉네임 불러오기
-      getUserData(String(parseUser.UserId)).then((res) =>
-        setMyProfile(res)
-      );
+      getUserData(String(parseUser.UserId)).then((res) => setMyProfile(res));
       //내 월드컵, 참여 월드컵 불러오기
       getMyPlayAmount(String(parseUser.UserId))
         .then((res) => {
@@ -71,11 +75,21 @@ function MyPage() {
         setMyHistory(res)
       );
       //내 댓글 불러오기
-      getMyWorldcupComment(JSON.parse(user).UserId).then((res3) => setMyCommentData(res3));
+      getMyWorldcupComment(JSON.parse(user).UserId).then((res3) => {
+        setMyCommentData(res3);
+        getMyWorldcupCommentWorldcup(res3).then((res4) =>
+          setMyCommentWorldcup(res4)
+        );
+      });
     }
   }, []);
-
-  return myProfile && myWorldcupData && myPlayedData && myHistory && user ? (
+  return myProfile &&
+    myWorldcupData &&
+    myPlayedData &&
+    myHistory &&
+    myCommentData &&
+    myCommentWorldcup &&
+    user ? (
     <div className="mypage-container">
       <aside className="mypage-aside">
         <div className="aside-profile">
@@ -95,7 +109,7 @@ function MyPage() {
               <p>참여</p>
             </div>
             <div onClick={() => setFilterMenu("댓글")}>
-              <h3>6</h3>
+              <h3>{myCommentData.length}</h3>
               <p>댓글</p>
             </div>
           </div>
@@ -150,7 +164,10 @@ function MyPage() {
           <PlayedWorldcup data={myPlayedData} history={myHistory} />
         )}
         {filterMenu === "댓글" && (
-          <MyComment commentData={myCommentData}/>
+          <MyComment
+            commentData={myCommentData}
+            commentWolrdcup={myCommentWorldcup}
+          />
         )}
       </section>
     </div>

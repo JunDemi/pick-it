@@ -4,12 +4,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { getUserData } from "../server/firebaseAuth";
 import {
   getMyPlayAmount,
+  getMyWorldcupComment,
   getPlayedWorldcup,
   getUserWorldcupHistory,
 } from "../server/firebaseMyPage";
 import MyWorldcup from "../components/MyPage/MyWorldcup";
 import PlayedWorldcup from "../components/MyPage/PlayedWorldcup";
-import { MyPageDataType } from "../types/MyPage";
+import { MyPageDataType, MyWorldcupCommentType } from "../types/MyPage";
+import MyComment from "../components/MyPage/MyComment";
 
 function MyPage() {
   //로컬스토리지에 존재하는 게임 데이터(중간에 나온 게임일 경우 남음)
@@ -43,13 +45,16 @@ function MyPage() {
       playedAt: number;
     }[]
   >();
+  //내 댓글
+    const [myCommentData, setMyCommentData] = useState<MyWorldcupCommentType[]>([]);
+  //데이터 불러온 후 상태에 할당
   useEffect(() => {
     if (user) {
       //회원 프로필 이미지 및 닉네임 불러오기
       getUserData(String(parseUser.UserId)).then((res) =>
         setMyProfile(res)
       );
-      //내 월드컵, 참여, 댓글 불러오기
+      //내 월드컵, 참여 월드컵 불러오기
       getMyPlayAmount(String(parseUser.UserId))
         .then((res) => {
           //1차 state할당
@@ -65,10 +70,12 @@ function MyPage() {
       getUserWorldcupHistory(String(parseUser.UserId)).then((res) =>
         setMyHistory(res)
       );
+      //내 댓글 불러오기
+      getMyWorldcupComment(JSON.parse(user).UserId).then((res3) => setMyCommentData(res3));
     }
   }, []);
 
-  return myProfile && myWorldcupData && myPlayedData && myHistory ? (
+  return myProfile && myWorldcupData && myPlayedData && myHistory && user ? (
     <div className="mypage-container">
       <aside className="mypage-aside">
         <div className="aside-profile">
@@ -141,6 +148,9 @@ function MyPage() {
         {filterMenu === "내 월드컵" && <MyWorldcup data={myWorldcupData} />}
         {filterMenu === "참여" && (
           <PlayedWorldcup data={myPlayedData} history={myHistory} />
+        )}
+        {filterMenu === "댓글" && (
+          <MyComment commentData={myCommentData}/>
         )}
       </section>
     </div>

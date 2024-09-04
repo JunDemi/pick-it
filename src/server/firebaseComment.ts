@@ -79,7 +79,7 @@ export const addWorldcupComment = async (
   });
 };
 
-//댓글 삭제
+//월드컵 댓글 삭제
 export const deleteWorldcupComment = async (commentId: string) => {
   const commentRef = doc(db, "worldcupComment", commentId);
   await deleteDoc(commentRef);

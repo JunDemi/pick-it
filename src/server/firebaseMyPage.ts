@@ -18,10 +18,12 @@ import { getAuth, updatePassword } from "firebase/auth";
 import { userReAuthtication } from "./firebaseAuth";
 import { UpdateWorldcupImages, WorldcupImage } from "../types/Worldcup";
 import { uploadNewWorldcupImages } from "./uploadStorage";
+import { MyWorldcupCommentType } from "../types/MyPage";
 //auth 세션불러오기
 const auth = getAuth();
 //파이어베이스 DB연동
 const authRef = collection(db, "users");
+const worldcupRefference = collection(db, "worldcup");
 const worldcupCommentRef = collection(db, "worldcupComment");
 //유저 ID를 통해 해당 문서를 불러오는 쿼리
 const getFindUserDocs = async (userId: string) => {
@@ -462,7 +464,9 @@ export const deleteMyWorldcup = async (
 };
 
 //내 월드컵 댓글 불러오기
-export const getMyWorldcupComment = async (userId: string) => {
+export const getMyWorldcupComment = async (
+  userId: string
+): Promise<MyWorldcupCommentType[]> => {
   //댓글 쿼리
   const commentQuery = query(worldcupCommentRef, where("userId", "==", userId));
   //getDocs후 docs객체 할당
@@ -479,5 +483,30 @@ export const getMyWorldcupComment = async (userId: string) => {
       createAt: doc.data()["createAt"],
     };
   });
-  return resultData;
+  return resultData.sort((a, b) => b.createAt - a.createAt);
+};
+//내 월드컵 댓글의 월드컵 정보 불러오기
+export const getMyWorldcupCommentWorldcup = async (
+  commentData: MyWorldcupCommentType[]
+) => {
+  const commentWolrdcupInfo = commentData.map(async (data) => {
+    // 문서 필드값 gameId 비교하여 월드컵 조회
+    const findRef = query(
+      worldcupRefference,
+      where(documentId(), "==", data.gameId)
+    );
+    const findIdDocs = await getDocs(findRef);
+    const findData = findIdDocs.docs.find((doc) => doc.id === data.gameId);
+    if (findData) {
+      return {
+        gameId: findData.id,
+        gameInfo: findData.data(),
+      };
+    }
+    else{
+      return null;
+    }
+  });
+
+  return Promise.all(commentWolrdcupInfo);
 };

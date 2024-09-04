@@ -334,6 +334,61 @@
 
                 }
             }
+            .mypage-comment-container{
+                margin-top: 3rem;
+                 //뷰포트 1350이하
+                 @media screen and (max-width:1350px) {
+                    width: 40rem;
+                }
+
+                //뷰포트 1351이상 
+                @media screen and (min-width:1351px) {
+                    width: 50rem;
+                }
+
+                //뷰포트 1800이상 
+                @media screen and (min-width:1800px) {
+                    width: 60rem;
+                }
+                .comment-row{
+                    cursor: pointer;
+                    margin-bottom: 1rem;
+                    border-radius: 15px;
+                    border: 2px solid #000;
+                    padding: 10px;
+                    display: flex;
+                    flex-direction: column;
+                    &:hover{
+                        background-color: #f5f5f5;
+                    }
+                    .worldcup-info{
+                        display: flex;
+                        align-items: center;
+                        font-size: 13px;
+                        font-family: 'p_bold';
+                        gap: 1rem;
+                        .img-wrapper{
+                            width: 4rem;
+                            height: 2rem;;
+                            display: flex;
+                            border: 2px solid #000;
+                            img{
+                                width: 50%;
+                                object-fit: cover;
+                                display: block;
+                            }
+                        }
+                    }
+                    p{
+                        font-size: 15px;
+                        margin: 1rem 0 0.3rem 0;
+                    }
+                    span{
+                        font-size: 13px;
+                        color: #777777;
+                    }
+                }
+            }
         }
     }
 }

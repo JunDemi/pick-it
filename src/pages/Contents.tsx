@@ -45,7 +45,7 @@ function Contents() {
     isFetchingNextPage, //다음 페이지 불러오는 중
     refetch,
   } = useInfiniteQuery({
-    queryKey: ["worldcup_list", queryParam.get("keyword"), queryParam.get("category")],
+    queryKey: ["worldcup_list", location.search],
     queryFn: ({ pageParam }) =>
       getWorldCupList(filter, queryOption, searchOption, { pageParam }), //getNextPageParam작성할 경우 pageParam값이 인자값으로 전달,
     initialPageParam: 0,

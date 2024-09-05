@@ -120,6 +120,10 @@
                 button {
                     border-color: #6d6d6d;
                     color: #6d6d6d;
+                    &:hover{
+                        border-color: #000;
+                        color: #000;
+                    }
                 }
             }
         }
@@ -128,6 +132,10 @@
     .delete-user-trigger {
         border-color: #f0607b;
         color: #f0607b;
+        &:hover{
+            border-color: #c3425a;
+            color: #c3425a;
+        }
     }
 }
 

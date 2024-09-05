@@ -321,10 +321,16 @@
 
                                     &:nth-child(1) {
                                         background-color: #203B98;
+                                        &:hover{
+                                            background-color: #172d7f;
+                                        }
                                     }
 
                                     &:nth-child(2) {
                                         background-color: #e99b00;
+                                        &:hover{
+                                            background-color: #c28100;
+                                        }
                                     }
                                 }
                             }

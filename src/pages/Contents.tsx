@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../assets/Contents/contents.scss";
 import { getWorldCupList } from "../server/firebaseWorldcup";
 import Skeleton from "../components/WorldcupSkeleton/Skeleton";
 import { WorldcupImage } from "../types/Worldcup";
+import { useForm } from "react-hook-form";
 
 function Contents() {
+  //현재 페이지 쿼리 파라미터
+  const location = useLocation();
+  const queryParam = new URLSearchParams(location.search);
+  //네비게이터
+  const navigate = useNavigate();
   //인기순, 최신순 필터 state
   const [filter, setFilter] = useState<"pop" | "new">("pop");
   // 필터 이동 시 로딩 동작
@@ -23,8 +29,8 @@ function Contents() {
     isFetchingNextPage, //다음 페이지 불러오는 중
     refetch,
   } = useInfiniteQuery({
-    queryKey: ["worldcup_list"],
-    queryFn: ({ pageParam }) => getWorldCupList(filter, { pageParam }), //getNextPageParam작성할 경우 pageParam값이 인자값으로 전달,
+    queryKey: ["worldcup_list", queryParam.get("keyword")],
+    queryFn: ({ pageParam }) => getWorldCupList(filter, queryParam.get("keyword"), { pageParam }), //getNextPageParam작성할 경우 pageParam값이 인자값으로 전달,
     initialPageParam: 0,
     getNextPageParam: (lastPage) => lastPage.nextPage, //fetchNextPage가 작동하면 nextPage로 pageParam값 증가
   });
@@ -50,7 +56,14 @@ function Contents() {
     //259200000 = 밀리초로 3일
     return currentDate - createAt < 259200000 ? true : false;
   };
-
+  //리액트 훅 폼
+  const {handleSubmit, register} = useForm<{
+    keyword: string;
+  }>({mode: "onSubmit"});
+  //검색 핸들러
+  const searchHandler = (search: {keyword: string}) => {
+    navigate(`/contents?keyword=${search.keyword}`);
+  }
   return (
     <section className="contents-container">
       <div className="contents-top">
@@ -69,11 +82,14 @@ function Contents() {
           </button>
         </div>
 
-        <form className="contents-top-search">
+        <form className="contents-top-search" onSubmit={handleSubmit(searchHandler)}>
           <input
             type="text"
             autoComplete="off"
             placeholder="월드컵 키워드 혹은 태그를 입력하여 검색하세요."
+            {...register("keyword", {
+              required: true
+            })}
           />
           <button type="submit">
             <svg
@@ -98,9 +114,9 @@ function Contents() {
         ) : status === "error" ? (
           error.message
         ) : (
-          worldcupList.pages.map((page) => (
+          worldcupList.pages.map((page, index) => (
             <div key={page.currentPage} className="contents-section">
-              {page.data.map((items) => (
+              {page.data.map((items) => items ? (
                 <div className="contents-worldcup-card" key={items.worldcupId}>
                   {isNewCard(items.worldcupInfo.createAt) && (
                     <span className="new-tag">NEW</span>
@@ -155,7 +171,7 @@ function Contents() {
                     </div>
                   </div>
                 </div>
-              ))}
+              ) : (<div className="search-nothing" key={index}>검색결과가 없습니다.</div>) )}
             </div>
           ))
         )}

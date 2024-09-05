@@ -43,6 +43,7 @@ export const getCreateWorldCup = async (argData: SendData) => {
 export const getWorldCupList = async (
   filter: "pop" | "new",
   keyword: string | null,
+  searchOption: "키워드" | "카테고리",
   {
     pageParam,
   }: {
@@ -82,35 +83,43 @@ export const getWorldCupList = async (
         description: result.worldcupInfo.worldcupDescription,
         category: result.worldcupInfo.category,
       };
-      //각각의 대상을 includes메소드를 사용하여 탐색 + keyword가 존재할 경우
-      if (
-        keyword &&
-        searchFor.title.toLowerCase().includes(keyword.toLowerCase())
-      ) {
-        return {
-          worldcupId: result.worldcupId,
-          worldcupInfo: result.worldcupInfo,
-        };
-      } else if (
-        keyword &&
-        searchFor.description.toLowerCase().includes(keyword.toLowerCase())
-      ) {
-        return {
-          worldcupId: result.worldcupId,
-          worldcupInfo: result.worldcupInfo,
-        };
-      } else if (
-        keyword &&
-        searchFor.category.find(
-          (text: string) => text.toLowerCase() === keyword.toLowerCase()
-        )
-      ) {
-        return {
-          worldcupId: result.worldcupId,
-          worldcupInfo: result.worldcupInfo,
-        };
+      //검색 필터가 키워드일 경우
+      if (searchOption === "키워드") {
+        //각각의 대상을 includes메소드를 사용하여 탐색
+        if (
+          keyword &&
+          searchFor.title.toLowerCase().includes(keyword.toLowerCase())
+        ) {
+          return {
+            worldcupId: result.worldcupId,
+            worldcupInfo: result.worldcupInfo,
+          };
+        } else if (
+          keyword &&
+          searchFor.description.toLowerCase().includes(keyword.toLowerCase())
+        ) {
+          return {
+            worldcupId: result.worldcupId,
+            worldcupInfo: result.worldcupInfo,
+          };
+        } else {
+          return null;
+        }
+       //검색 필터가 카테고리일 경우
       } else {
-        return null;
+        if (
+          keyword &&
+          searchFor.category.find((text: string) =>
+            text.toLowerCase().includes(keyword.toLowerCase())
+          )
+        ) {
+          return {
+            worldcupId: result.worldcupId,
+            worldcupInfo: result.worldcupInfo,
+          };
+        } else {
+          return null;
+        }
       }
     })
     .filter((result) => result !== null);
@@ -142,9 +151,8 @@ export const getWorldCupList = async (
       else {
         resolve({
           data: [null],
-          currentPage: pageParam,
-          nextPage:
-            pageParam + LIMIT < results.length ? pageParam + LIMIT : null,
+          currentPage: 0,
+          nextPage: null,
         });
       }
     }, 700);

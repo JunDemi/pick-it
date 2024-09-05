@@ -42,16 +42,17 @@ export const getCreateWorldCup = async (argData: SendData) => {
 //월드컵 리스트 불러오기(최신순)
 export const getWorldCupList = async (
   filter: "pop" | "new",
+  keyword: string | null,
   {
     pageParam,
   }: {
     pageParam: number;
   }
 ): Promise<{
-  data: {
+  data: ({
     worldcupId: string;
     worldcupInfo: DocumentData;
-  }[];
+  } | null)[];
   currentPage: number;
   nextPage: number | null;
 }> => {
@@ -67,18 +68,85 @@ export const getWorldCupList = async (
   const getData = await getDocs(worldcupQuery).then((res) => {
     return res.docs;
   });
-  const result = getData.map((data) => {
+  //클라이언트에 반환시킬 전체 결과값
+  const results = getData.map((data) => {
     return { worldcupId: data.id, worldcupInfo: data.data() };
   });
+
+  //검색을 했을 경우의 클라이언트 반환 전체 결과값
+  const keywordResults = results
+    .map((result) => {
+      //검색어를 찾을 대상 = 제목, 설명, 카테고리 (모두 영문소문자로 변환시켜 대소문자 구분 없게)
+      const searchFor = {
+        title: result.worldcupInfo.worldcupTitle,
+        description: result.worldcupInfo.worldcupDescription,
+        category: result.worldcupInfo.category,
+      };
+      //각각의 대상을 includes메소드를 사용하여 탐색 + keyword가 존재할 경우
+      if (
+        keyword &&
+        searchFor.title.toLowerCase().includes(keyword.toLowerCase())
+      ) {
+        return {
+          worldcupId: result.worldcupId,
+          worldcupInfo: result.worldcupInfo,
+        };
+      } else if (
+        keyword &&
+        searchFor.description.toLowerCase().includes(keyword.toLowerCase())
+      ) {
+        return {
+          worldcupId: result.worldcupId,
+          worldcupInfo: result.worldcupInfo,
+        };
+      } else if (
+        keyword &&
+        searchFor.category.find(
+          (text: string) => text.toLowerCase() === keyword.toLowerCase()
+        )
+      ) {
+        return {
+          worldcupId: result.worldcupId,
+          worldcupInfo: result.worldcupInfo,
+        };
+      } else {
+        return null;
+      }
+    })
+    .filter((result) => result !== null);
 
   //1초의 지연시간을 적용하고 promise값으로 리턴
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve({
-        data: result.slice(pageParam, pageParam + LIMIT),
-        currentPage: pageParam,
-        nextPage: pageParam + LIMIT < result.length ? pageParam + LIMIT : null,
-      });
+      //1. 검색을 하지 않은 기본 페이지 = 전체 데이터
+      if (!keyword) {
+        resolve({
+          data: results.slice(pageParam, pageParam + LIMIT),
+          currentPage: pageParam,
+          nextPage:
+            pageParam + LIMIT < results.length ? pageParam + LIMIT : null,
+        });
+      }
+      //2. 검색된 결과가 있을 경우
+      else if (keywordResults.length > 0) {
+        resolve({
+          data: keywordResults.slice(pageParam, pageParam + LIMIT),
+          currentPage: pageParam,
+          nextPage:
+            pageParam + LIMIT < keywordResults.length
+              ? pageParam + LIMIT
+              : null,
+        });
+      }
+      //3. 검색을 했으나 결과가 없을 경우
+      else {
+        resolve({
+          data: [null],
+          currentPage: pageParam,
+          nextPage:
+            pageParam + LIMIT < results.length ? pageParam + LIMIT : null,
+        });
+      }
     }, 700);
   });
 };
@@ -149,7 +217,7 @@ export const getCreateRankAndUpdateView = async (payloadData: {
     }
   }
   //로그인 중일 경우 해당 회원의 월드컵 참여 기록 업데이트
-  if(payloadData.userId){
+  if (payloadData.userId) {
     //firebaseAuth.ts 함수: 해당 유저의 문서 ID를 불러옴
     const myDocId = await getUserDocumentId(payloadData.userId);
     //해당 문서 ID를 가진 테이블 매칭 후 업데이트
@@ -158,7 +226,7 @@ export const getCreateRankAndUpdateView = async (payloadData: {
       //worldcupHistory배열 컬럼 추가. { 게임아이디, 참여일 }
       worldcupHistory: arrayUnion({
         gameId: payloadData.gameId,
-        playedAt: Date.now()
+        playedAt: Date.now(),
       }),
     });
   }

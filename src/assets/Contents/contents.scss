@@ -76,7 +76,12 @@
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         row-gap: 3rem;
-
+        .search-nothing{
+            font-size: 18px;
+            padding-top: 7rem;
+            grid-column: span 4;
+            text-align: center;
+        }
         .contents-worldcup-card{
             position: relative;
             overflow: hidden;

@@ -38,11 +38,42 @@
             border: 2px solid #000;
             display: flex;
             justify-content: center;
-            width: 25rem;
-            padding: 5px 0 5px 10px;
-
+            .search-select{
+                position: relative;
+                border-right: 2px solid #000;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 6rem;
+                font-size: 13px;
+                gap: 3px;
+                svg{
+                    cursor: pointer;
+                    width: 1.2rem;
+                    height: 1.2rem;
+                }
+                .dropdown-option{
+                    z-index: 10;
+                    position: absolute;
+                    width: 100%;
+                    left: 0;
+                    top: calc( 100% + 3px);
+                    div{
+                        text-align: center;
+                        padding: 10px 2px;
+                        background-color: #000;
+                        outline: 2px solid #000;
+                        color: #fff;
+                        cursor: pointer;
+                        &:hover{
+                            background-color: #202020;
+                        }
+                    }
+                }
+            }
             input[type=text] {
-                width: 100%;
+                margin: 10px 5px;
+                width: 22rem;
                 border: none;
                 font-size: 14px;
                 font-family: 'p_bold';
@@ -53,7 +84,6 @@
                 cursor: pointer;
                 background: none;
                 border: none;
-
                 svg {
                     width: 1.5rem;
                     height: 1.5rem;

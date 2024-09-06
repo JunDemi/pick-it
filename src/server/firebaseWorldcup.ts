@@ -159,6 +159,16 @@ export const getWorldCupList = async (
   });
 };
 
+//검색어 입력하면 DB에 추가
+export const addSearchWordList = async(text: string) => {
+  //단일 문서 내 배열에 검색어를 전부 저장할 거기 때문에 문서 ID값을 직접 입력
+  const wordRef = doc(db, "searchWord", "jHQEvoE65ejj42d6fBpZ");
+  await updateDoc(wordRef, {
+    //firebase 배열 push: 
+    wordList: arrayUnion(text + `_${Date.now()}`),
+  })
+}
+
 // 게임화면: 선택 월드컵 데이터 불러오기
 export const findSelectWorldcup = async (id: string) => {
   const currentWorldcupRef = doc(worldcupRef, id);

@@ -3,7 +3,7 @@ import { useInView } from "react-intersection-observer";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../assets/Contents/contents.scss";
-import { getWorldCupList } from "../server/firebaseWorldcup";
+import { addSearchWordList, getWorldCupList } from "../server/firebaseWorldcup";
 import Skeleton from "../components/WorldcupSkeleton/Skeleton";
 import { WorldcupImage } from "../types/Worldcup";
 import { useForm } from "react-hook-form";
@@ -25,7 +25,8 @@ function Contents() {
     keyword: string;
   }>({ mode: "onSubmit" });
   //검색 핸들러
-  const searchHandler = (search: { keyword: string }) => {
+  const searchHandler = async(search: { keyword: string }) => {
+    await addSearchWordList(search.keyword);
     if(searchOption === "키워드"){
       navigate(`/contents?keyword=${search.keyword}`);
     }else{

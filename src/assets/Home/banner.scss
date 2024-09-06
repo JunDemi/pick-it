@@ -2,27 +2,39 @@
     display: flex;
     padding-top: 2rem;
 
+    .chart-loading {
+        height: 370px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        justify-content: center;
+        align-items: center;
+    }
+
     .banner-pop {
         width: 18rem;
+
+        h1 {
+            font-family: 'p_bold';
+        }
 
         .banner-pop-title {
             font-size: 14px;
             display: flex;
-            justify-content: space-between;
-            margin-bottom: 2.5rem;
-
+            justify-content: flex-end;
+            margin: 1rem 0;
             span {
+                width: 80px;
                 font-family: 'p_bold';
                 padding-bottom: 3px;
+                text-align: center;
+                border-bottom: 2px solid;
+                cursor: pointer;
 
-                &:nth-child(2) {
-                    width: 80px;
-                    text-align: center;
-                    border-bottom: 2px solid;
-                    cursor: pointer;
-                    &:hover{
-                        color: #adadad;
-                    }
+                &:hover {
+                    color: #adadad;
+
                 }
             }
         }
@@ -39,7 +51,8 @@
                 align-items: center;
                 gap: 1rem;
                 padding: 0.3rem 0;
-                &:hover{
+
+                &:hover {
                     background-color: #f1f1f1;
                 }
 
@@ -62,7 +75,7 @@
 
     .banner-dashboard {
         flex-grow: 1;
-        padding: 0 3rem;
+        padding-left: 3rem;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -71,31 +84,37 @@
             font-size: 20px;
             font-family: 'p_bold';
         }
-        .banner-dashboard-charts{
+
+        .banner-dashboard-charts {
             display: flex;
             justify-content: space-between;
         }
-        .banner-dashboard-notice{
+
+        .banner-dashboard-notice {
             font-size: 14px;
             display: grid;
             grid-template-columns: 1fr 7fr 1.5fr 1fr;
             place-items: center;
-            div{
+
+            div {
                 display: flex;
                 align-items: center;
                 gap: 0.5rem;
                 font-family: "p_bold";
-                svg{
+
+                svg {
                     width: 1.7rem;
                     height: 1.7rem;
                 }
             }
-            h3{
+
+            h3 {
                 width: 100%;
                 padding-left: 2rem;
                 color: #727272;
             }
-            a{
+
+            a {
                 font-size: 12px;
                 color: #545454;
             }

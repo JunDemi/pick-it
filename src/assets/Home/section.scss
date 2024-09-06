@@ -1,0 +1,73 @@
+.home-section-container {
+    h1 {
+        margin: 2rem 0 1rem 0;
+        font-size: 16px;
+        font-family: 'p_bold';
+    }
+
+    .now-playing-game {
+        border: 2px solid #000;
+        position: relative;
+        width: 18rem;
+        height: 10rem;
+
+        .cover {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            &:hover {
+                background-color: rgba(0, 0, 0, 0.5);
+            }
+
+            h2 {
+                padding: 0 1rem;
+                font-size: 14px;
+                color: #fff;
+                text-align: center;
+            }
+        }
+
+        .img-wrapper {
+            display: flex;
+            width: 100%;
+            height: 100%;
+
+            img {
+                width: 50%;
+                display: block;
+                object-fit: cover;
+            }
+        }
+    }
+
+    .pop-worldcup-slide-container {
+        position: relative;
+        display: flex;
+        height: 14rem;
+        margin-bottom: 3rem;
+        .slide-wrapper {
+            top: 0;
+            left: 50%;
+            width: 100%;
+            transform: translateX(-50%);
+            position: absolute;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            .item{
+                display: grid;
+                place-items: center;
+                width: 14rem;
+                height: 14rem;
+                background-color: #7070f3;
+            }
+        }
+    }
+}

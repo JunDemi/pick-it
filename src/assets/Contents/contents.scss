@@ -150,15 +150,15 @@
                 border-bottom: 2px solid #000;
                 width: 100%;
                 @media screen and (max-width:1350px) {
-                    height: 13rem;
+                    height: 8rem;
                 }
                 //뷰포트 1351이상 
                 @media screen and (min-width:1351px) { 
-                    height: 15rem;
+                    height: 11rem;
                 }
                  //뷰포트 1800이상 
                  @media screen and (min-width:1800px) {
-                    height: 17rem;
+                    height: 14rem;
                 }
                 display: flex;
                 overflow: hidden;

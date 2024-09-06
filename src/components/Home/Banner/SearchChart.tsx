@@ -38,7 +38,6 @@ function SearchChart() {
       .slice(0, 10)
       .sort((a, b) => a.count - b.count);
 
-
     //ApexChart옵션 및 시리즈 상수 선언
     const option: ApexOptions = {
       chart: {
@@ -74,7 +73,7 @@ function SearchChart() {
       xaxis: {
         //카테고리: wordCount데이터의 검색어
         categories: wordCounts.map((word) => {
-          return word.name
+          return word.name;
         }),
         labels: {
           formatter: function (val: string) {
@@ -108,8 +107,8 @@ function SearchChart() {
       //차트: wordCount데이터의 검색 횟수
       {
         name: "검색 횟수",
-        data: wordCounts.map(data => {
-          return data.count
+        data: wordCounts.map((data) => {
+          return data.count;
         }),
       },
     ];
@@ -124,7 +123,15 @@ function SearchChart() {
       />
     );
   } else {
-    return null;
+    return (
+      <div className="chart-loading">
+        <h2>데이터를 불러오는 중입니다...</h2>
+        <div className="loading-spiner">
+          <hr />
+          <div />
+        </div>
+      </div>
+    );
   }
 }
 

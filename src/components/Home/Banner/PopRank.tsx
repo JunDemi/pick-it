@@ -18,10 +18,10 @@ function PopRank() {
 
   return (
     <div className="banner-pop">
-      {status === "success" && !error && (
+      <h1>인기 월드컵 순위</h1>
+      {status === "success" && !error ? (
         <>
           <div className="banner-pop-title">
-            <span>인기 월드컵 순위</span>
             {popRankData.length >= 11 && (
               <span onClick={() => setRankPage((prev) => !prev)}>
                 {rankPage ? "11 ~ 20위" : "1 ~ 10위"}
@@ -41,6 +41,14 @@ function PopRank() {
               ))}
           </div>
         </>
+      ) : (
+        <div className="chart-loading">
+          <h2>데이터를 불러오는 중입니다...</h2>
+          <div className="loading-spiner">
+            <hr />
+            <div />
+          </div>
+        </div>
       )}
     </div>
   );

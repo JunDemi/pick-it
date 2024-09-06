@@ -17,7 +17,6 @@ function CategoryChart() {
   });
   //리액트 쿼리 요청이 완료되면 컴포넌트를 리턴
   if (status === "success" && !error && categoryData) {
-
     //reduce메소드를 사용하여 배열 순회하여 새로운 배열을 반환
     const categoryCounts: ICharts[] = categoryData
       .reduce<ICharts[]>((acc, word) => {
@@ -74,8 +73,8 @@ function CategoryChart() {
       },
       xaxis: {
         //카테고리: categoryCounts데이터의 검색어
-        categories: categoryCounts.map(data => {
-          return data.name;
+        categories: categoryCounts.map((data) => {
+          return "#" + data.name;
         }),
         labels: {
           formatter: function (val: string) {
@@ -108,12 +107,12 @@ function CategoryChart() {
         },
       },
     };
-    
+
     const series = [
       //차트: categoryCounts데이터의 검색 횟수
       {
-        name: "게임 개수",
-        data: categoryCounts.map(data => {
+        name: "태그 개수",
+        data: categoryCounts.map((data) => {
           return data.count;
         }),
       },
@@ -133,5 +132,3 @@ function CategoryChart() {
   }
 }
 export default CategoryChart;
-
-

@@ -3,10 +3,7 @@ import ReactApexChart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
 import { useQuery } from "@tanstack/react-query";
 import { dashboardPopSearch } from "../../../server/firebaseDashBoard";
-type searchCount = {
-  name: string;
-  count: number;
-};
+import { ICharts } from "../../../types/Banner";
 
 function SearchChart() {
   //리액트 쿼리
@@ -22,8 +19,8 @@ function SearchChart() {
   //리액트 쿼리 요청이 완료되면 컴포넌트를 리턴
   if (status === "success" && !error && searchData) {
     //reduce메소드를 사용하여 배열 순회하여 새로운 배열을 반환
-    const wordCounts: searchCount[] = searchData
-      .reduce<searchCount[]>((acc, word) => {
+    const wordCounts: ICharts[] = searchData
+      .reduce<ICharts[]>((acc, word) => {
         // 이미 해당 단어가 존재하는지 확인
         //slice(0, -14)의 의미: 검색어를 저장한 데이터값은 '단어_밀리초'로 구성되어 있기 때문, '_밀리초'의 길이를 뺀 값
         const existWord = acc.find((item) => item.name === word.slice(0, -14));

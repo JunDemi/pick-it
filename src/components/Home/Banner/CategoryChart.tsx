@@ -128,15 +128,7 @@ function CategoryChart() {
       />
     );
   } else {
-    return (
-      <div className="chart-loading">
-        <h2>데이터를 불러오는 중입니다...</h2>
-        <div className="loading-spiner">
-          <hr />
-          <div />
-        </div>
-      </div>
-    );
+    return null;
   }
 }
 export default CategoryChart;

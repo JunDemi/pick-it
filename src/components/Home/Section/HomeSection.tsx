@@ -8,6 +8,8 @@ function HomeSection() {
   const localGame = localStorage.getItem("game-data");
   const parseGameData = localGame ? JSON.parse(localGame) : null;
 
+
+
   return (
     <div className="home-section-container">
       {parseGameData && (
@@ -27,7 +29,7 @@ function HomeSection() {
         </>
       )}
 
-      <h1>인기 카테고리 월드컵</h1>
+      <h1>인기 월드컵</h1>
       <PCWorldcup />
     </div>
   );

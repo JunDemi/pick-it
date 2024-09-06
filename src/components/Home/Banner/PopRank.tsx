@@ -18,7 +18,7 @@ function PopRank() {
 
   return (
     <div className="banner-pop">
-      {status !== "pending" && !error && (
+      {status === "success" && !error && (
         <>
           <div className="banner-pop-title">
             <span>인기 월드컵 순위</span>

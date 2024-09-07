@@ -2,6 +2,7 @@ import { DocumentData } from "firebase/firestore";
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useState } from "react";
 import { WorldcupImage } from "../../../types/Worldcup";
+import ModalInfo from "./ModalInfo";
 
 //Framer Motion 슬라이더 Variant
 const boxVar = {
@@ -26,7 +27,21 @@ const boxVar = {
     },
   }),
 };
-
+const itemVar = {
+  normal: {
+    scale: 1,
+  },
+  hover: {
+    zIndex: 10,
+    scale: 1.2,
+    y: -18,
+    transition: {
+      delay: 0.5,
+      duration: 0.3,
+      type: "tween",
+    },
+  },
+};
 function PCWorldcup(prop: {
   popData: {
     worldcupId: string;
@@ -63,6 +78,13 @@ function PCWorldcup(prop: {
       );
     }
   };
+  //슬라이드 아이템 클릭 시 모달 팝업
+  const [itemModal, setItemModal] = useState<string | null>(null);
+  const [modalData, setModalData] = useState<{
+    worldcupId: string;
+    worldcupInfo: DocumentData;
+  } | null>(null);
+  console.log(modalData);
   return (
     <>
       <div className="pop-worldcup-slide-container">
@@ -82,7 +104,18 @@ function PCWorldcup(prop: {
                   {prop.popData
                     .slice(currentPage * 5, currentPage * 5 + 5)
                     .map((data, d) => (
-                      <div key={d} className="item">
+                      <motion.div
+                        variants={itemVar}
+                        initial="normal"
+                        whileHover="hover"
+                        transition={{ type: "tween" }}
+                        key={d}
+                        className="item"
+                        onClick={() => {
+                          setItemModal(data.worldcupId);
+                          setModalData(data);
+                        }}
+                      >
                         <div className="img-wrapper">
                           <img
                             src={
@@ -106,7 +139,7 @@ function PCWorldcup(prop: {
                         <div className="item-title">
                           {data.worldcupInfo.worldcupTitle}
                         </div>
-                      </div>
+                      </motion.div>
                     ))}
                 </motion.div>
               )
@@ -160,6 +193,33 @@ function PCWorldcup(prop: {
           </svg>
         </button>
       </div>
+      <AnimatePresence>
+        {itemModal !== null && (
+          <div className="item-modal">
+            <motion.div
+              className="modal-overlay"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => {
+                setItemModal(null);
+                setModalData(null);
+              }}
+            />
+            <motion.div
+              initial={{ opacity: 0, y: 100 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 100 }}
+              transition={{ type: "tween" }}
+              className="modal-container"
+            >
+              {modalData && 
+              <ModalInfo data={modalData}/>
+              }
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

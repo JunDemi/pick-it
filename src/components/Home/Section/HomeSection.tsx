@@ -44,7 +44,7 @@ function HomeSection() {
           </div>
         </>
       )}
-      <h1>인기 월드컵 top20</h1>
+      <h1>인기 카테고리 월드컵 top20</h1>
       {status === "success" && !error && popData && <PCWorldcup popData={popData}/>}
     </div>
   );

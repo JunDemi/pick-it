@@ -41,12 +41,10 @@ function PCWorldcup(prop: {
   const [btnDisable, setBtnDisable] = useState<boolean>(false);
   //슬라이드 버튼 클릭 이벤트
   const clickSlide = (direction: "prev" | "next") => {
-    //버튼 로딩
-    setBtnDisable(true);
-    //0.6초 후 버튼 활성화
+    //0.65초 후 버튼 활성화
     setTimeout(() => {
       setBtnDisable(false);
-    }, 600);
+    }, 650);
     //이전 버튼 클릭
     if (direction === "prev") {
       //뒤로 가는 것을 framer에게 전달
@@ -117,7 +115,11 @@ function PCWorldcup(prop: {
 
         <button
           className="prev"
-          onClick={() => clickSlide("prev")}
+          onClick={() => {
+            //버튼 로딩
+            setBtnDisable(true);
+            clickSlide("prev");
+          }}
           disabled={btnDisable}
         >
           <svg
@@ -136,7 +138,11 @@ function PCWorldcup(prop: {
         </button>
         <button
           className="next"
-          onClick={() => clickSlide("next")}
+          onClick={() => {
+            //버튼 로딩
+            setBtnDisable(true);
+            clickSlide("next");
+          }}
           disabled={btnDisable}
         >
           <svg

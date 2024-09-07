@@ -65,8 +65,8 @@ const UserPopup = ({ userData }: PropsUserData) => {
         <motion.div className='user-profile' variants={itemMotion}>
           <div className='profile-img'>
               <img
-                src={userData.imgUrl === "default" ? "images/user.png" : userData.imgUrl}
-                alt={`${userData.nickName} 님의 프로필 이미지`}
+                src={userData.imgUrl === "default" ? "/images/user.png" : userData.imgUrl}
+                alt=""
               />
           </div>
 

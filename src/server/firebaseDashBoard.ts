@@ -12,7 +12,7 @@ import { db } from "./firebase";
 const worldcupRef = collection(db, "worldcup");
 const searchRef = collection(db, "searchWord");
 
-//인기 월드컵 순위
+//인기 월드컵 순위 (상단 랭킹)
 export const dashboardPopRank = async () => {
   //view내림차순
   const worldcupQuery = query(worldcupRef, orderBy("view", "desc"), limit(20));
@@ -23,6 +23,22 @@ export const dashboardPopRank = async () => {
   //클라이언트에 반환시킬 전체 결과값
   const results = getData.map((data) => {
     return { worldcupId: data.id, worldcupTitle: data.data()["worldcupTitle"] };
+  });
+
+  return results;
+};
+
+//인기 월드컵 순위 (하단 슬라이드)
+export const dashboardPopWolrdcup = async () => {
+  //view내림차순
+  const worldcupQuery = query(worldcupRef, orderBy("view", "desc"), limit(20));
+  //getDocs후 docs객체 할당
+  const getData = await getDocs(worldcupQuery).then((res) => {
+    return res.docs;
+  });
+  //클라이언트에 반환시킬 전체 결과값
+  const results = getData.map((data) => {
+    return { worldcupId: data.id, worldcupInfo: data.data()};
   });
 
   return results;

@@ -2,13 +2,29 @@ import React from "react";
 import "../../../assets/Home/section.scss";
 import { Link } from "react-router-dom";
 import PCWorldcup from "./PCWorldcup";
+import { useQuery } from "@tanstack/react-query";
+import { DocumentData } from "firebase/firestore";
+import { dashboardPopWolrdcup } from "../../../server/firebaseDashBoard";
 
 function HomeSection() {
   //로컬 스토리지 게임 데이터
   const localGame = localStorage.getItem("game-data");
   const parseGameData = localGame ? JSON.parse(localGame) : null;
 
-
+  //리액트 쿼리
+  const {
+    data: popData,
+    status,
+    error,
+  } = useQuery<
+    {
+      worldcupId: string;
+      worldcupInfo: DocumentData;
+    }[]
+  >({
+    queryKey: ["dash_popWorldcupApi"],
+    queryFn: dashboardPopWolrdcup,
+  });
 
   return (
     <div className="home-section-container">
@@ -28,9 +44,8 @@ function HomeSection() {
           </div>
         </>
       )}
-
-      <h1>인기 월드컵</h1>
-      <PCWorldcup />
+      <h1>인기 월드컵 top20</h1>
+      {status === "success" && !error && popData && <PCWorldcup popData={popData}/>}
     </div>
   );
 }

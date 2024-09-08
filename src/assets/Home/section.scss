@@ -235,28 +235,23 @@
                     justify-content: space-between;
                     align-items: center;
 
-                    .link-wrapper {
+                    a {
+                        font-size: 13px;
+                        color: #fff;
+                        border: 2px solid #fff;
+                        padding: 0.3rem 0.7rem;
                         display: flex;
-                        gap: 0.5rem;
+                        align-items: center;
+                        gap: 5px;
 
-                        a {
-                            font-size: 13px;
-                            color: #fff;
-                            border: 2px solid #fff;
-                            padding: 0.3rem 0.7rem;
-                            display: flex;
-                            align-items: center;
-                            gap: 5px;
+                        svg {
+                            width: 1.4rem;
+                            height: 1.4rem;
+                        }
 
-                            svg {
-                                width: 1.4rem;
-                                height: 1.4rem;
-                            }
-
-                            &:hover {
-                                background-color: #fff;
-                                color: #000;
-                            }
+                        &:hover {
+                            background-color: #fff;
+                            color: #000;
                         }
                     }
 

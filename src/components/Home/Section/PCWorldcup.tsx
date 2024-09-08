@@ -29,16 +29,13 @@ const boxVar = {
 };
 const itemVar = {
   normal: {
-    scale: 1,
+    y: 0
   },
   hover: {
-    zIndex: 10,
-    scale: 1.2,
-    y: -18,
+    y: -5,
     transition: {
-      delay: 0.5,
       duration: 0.3,
-      type: "tween",
+      type: "spring",
     },
   },
 };
@@ -108,7 +105,6 @@ function PCWorldcup(prop: {
                         variants={itemVar}
                         initial="normal"
                         whileHover="hover"
-                        transition={{ type: "tween" }}
                         key={d}
                         className="item"
                         onClick={() => {

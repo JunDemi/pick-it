@@ -8,7 +8,7 @@
     .now-playing-game {
         border: 2px solid #000;
         position: relative;
-        width: 14rem;
+        width: calc(20% - 1rem);
         height: 11rem;
 
         .cover {
@@ -59,29 +59,32 @@
             left: 0;
             width: 100%;
             position: absolute;
-            text-align: center;
-            display: flex;
-            justify-content: space-between;
+            display: grid;
+            place-items: center;
+            grid-template-columns: repeat(5, 1fr);
+
+            //뷰포트 1350이하
+            @media screen and (max-width:1350px) {
+
+                gap: 0.5rem;
+            }
+
+            //뷰포트 1351이상 
+            @media screen and (min-width:1351px) {
+
+                gap: 1.5rem;
+            }
+
+            //뷰포트 1800이상 
+            @media screen and (min-width:1800px) {
+
+
+                gap: 2.5rem;
+            }
 
             .item {
+                width: 100%;
 
-                //뷰포트 1350이하
-                @media screen and (max-width:1350px) {
-
-                    width: 12rem;
-                }
-
-                //뷰포트 1351이상 
-                @media screen and (min-width:1351px) {
-
-                    width: 14rem;
-                }
-
-                //뷰포트 1800이상 
-                @media screen and (min-width:1800px) {
-
-                    width: 16rem;
-                }
 
                 display: flex;
                 flex-direction: column;

@@ -14,25 +14,26 @@ function HomeSection() {
 
   //redux에 저장된 인기 카테고리 배열
   const popCategoryData = useAppSelector(
-    (state) => state.popCategoryReducers.popCategoryReducer,
+    (state) => state.popCategoryReducers.popCategoryReducer
   );
 
+  //카테고리 배열 순위 재정렬 메소드
   const categoryCountArray = categoryCounts(popCategoryData);
 
-  console.log(categoryCountArray)
   //리액트 쿼리
   const {
     data: popData,
     status,
     error,
   } = useQuery<
-    {
-      worldcupId: string;
-      worldcupInfo: DocumentData;
-    }[]
+    | {
+        worldcupId: string;
+        worldcupInfo: DocumentData;
+      }[]
+    | null
   >({
-    queryKey: ["dash_popWorldcupApi"],
-    queryFn: dashboardPopWolrdcup,
+    queryKey: ["dash_popWorldcupApi", categoryCountArray],
+    queryFn: () => dashboardPopWolrdcup(categoryCountArray),
   });
 
   return (
@@ -54,7 +55,9 @@ function HomeSection() {
         </>
       )}
       <h1>인기 카테고리 월드컵 top20</h1>
-      {status === "success" && !error && popData && <PCWorldcup popData={popData}/>}
+      {status === "success" && !error && popData && (
+        <PCWorldcup popData={popData} />
+      )}
     </div>
   );
 }

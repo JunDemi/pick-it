@@ -29,7 +29,7 @@ const boxVar = {
 };
 const itemVar = {
   normal: {
-    y: 0
+    y: 0,
   },
   hover: {
     y: -5,
@@ -45,7 +45,6 @@ function PCWorldcup(prop: {
     worldcupInfo: DocumentData;
   }[];
 }) {
-
   //현재 슬라이드 페이지
   const [currentPage, setCurrentPage] = useState<number>(0);
   //슬라이드가 뒤로 가는지 앞으로 가는지
@@ -133,7 +132,8 @@ function PCWorldcup(prop: {
                           />
                         </div>
                         <div className="item-title">
-                          {data.worldcupInfo.worldcupTitle}
+                          <h1>{d + 1 + i * 5}.</h1>
+                          <h2>{data.worldcupInfo.worldcupTitle}</h2>
                         </div>
                       </motion.div>
                     ))}
@@ -209,9 +209,7 @@ function PCWorldcup(prop: {
               transition={{ type: "tween" }}
               className="modal-container"
             >
-              {modalData && 
-              <ModalInfo data={modalData}/>
-              }
+              {modalData && <ModalInfo data={modalData} />}
             </motion.div>
           </div>
         )}

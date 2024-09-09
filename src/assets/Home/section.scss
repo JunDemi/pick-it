@@ -111,14 +111,22 @@
                     width: 100%;
                     height: 100%;
                     background-color: rgba(0, 0, 0, 0.5);
-                    font-size: 13px;
                     color: #fff;
                     vertical-align: middle;
                     display: flex;
+                    flex-direction: column;
                     justify-content: center;
                     align-items: center;
                     cursor: pointer;
-
+                    gap: 5px;
+                    h1{
+                        font-family: 'p_bold';
+                        font-size: 30px;
+                        margin: 0;
+                    }
+                    h2{
+                        font-size: 13px;
+                    }
                     &:hover {
                         background-color: rgba(0, 0, 0, 0.3);
                     }

@@ -45,6 +45,7 @@ function PCWorldcup(prop: {
     worldcupInfo: DocumentData;
   }[];
 }) {
+
   //현재 슬라이드 페이지
   const [currentPage, setCurrentPage] = useState<number>(0);
   //슬라이드가 뒤로 가는지 앞으로 가는지
@@ -81,7 +82,6 @@ function PCWorldcup(prop: {
     worldcupId: string;
     worldcupInfo: DocumentData;
   } | null>(null);
-  console.log(modalData);
   return (
     <>
       <div className="pop-worldcup-slide-container">

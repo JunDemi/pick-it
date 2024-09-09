@@ -28,22 +28,6 @@ export const dashboardPopRank = async () => {
   return results;
 };
 
-//인기 월드컵 순위 (하단 슬라이드)
-export const dashboardPopWolrdcup = async () => {
-  //view내림차순
-  const worldcupQuery = query(worldcupRef, orderBy("view", "desc"), limit(20));
-  //getDocs후 docs객체 할당
-  const getData = await getDocs(worldcupQuery).then((res) => {
-    return res.docs;
-  });
-  //클라이언트에 반환시킬 전체 결과값
-  const results = getData.map((data) => {
-    return { worldcupId: data.id, worldcupInfo: data.data()};
-  });
-
-  return results;
-};
-
 //인기 검색어 차트
 export const dashboardPopSearch = async () => {
   //단일 문서 내 배열에 검색어를 전부 저장할 거기 때문에 문서 ID값을 직접 입력
@@ -76,4 +60,20 @@ export const dashboardPopCategory = async () => {
 
   //2중첩 배열이기 때문에 flat()메소드로 평탄화
   return results.flat();
+};
+
+//인기 월드컵 순위 (하단 슬라이드)
+export const dashboardPopWolrdcup = async () => {
+  //view내림차순
+  const worldcupQuery = query(worldcupRef, orderBy("view", "desc"), limit(20));
+  //getDocs후 docs객체 할당
+  const getData = await getDocs(worldcupQuery).then((res) => {
+    return res.docs;
+  });
+  //클라이언트에 반환시킬 전체 결과값
+  const results = getData.map((data) => {
+    return { worldcupId: data.id, worldcupInfo: data.data()};
+  });
+
+  return results;
 };

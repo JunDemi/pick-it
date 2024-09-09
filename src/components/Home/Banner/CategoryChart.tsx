@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ReactApexChart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
 import { useQuery } from "@tanstack/react-query";
 import { dashboardPopCategory } from "../../../server/firebaseDashBoard";
 import { ICharts } from "../../../types/Banner";
+import { useAppDispatch } from "../../../hooks/redux";
+import { updateCategory } from "../../../store/worldcup/popCategory";
+import { categoryCounts } from "../../../Utils/categoryCounts";
 
 function CategoryChart() {
+  //redux dispatch 요청 메소드
+  const dispatch = useAppDispatch();
   //리액트 쿼리
   const {
     data: categoryData,
@@ -15,26 +20,17 @@ function CategoryChart() {
     queryKey: ["categoryChartApi"],
     queryFn: dashboardPopCategory,
   });
+  //컴포넌트 렌더링 이후에 전역 상태 업데이트
+  useEffect(() => {
+    if (status === "success" && !error && categoryData) {
+      //인기카테고리 reducer업데이트
+      dispatch(updateCategory(categoryData));
+    }
+  }, [categoryData]);
   //리액트 쿼리 요청이 완료되면 컴포넌트를 리턴
   if (status === "success" && !error && categoryData) {
-    //reduce메소드를 사용하여 배열 순회하여 새로운 배열을 반환
-    const categoryCounts: ICharts[] = categoryData
-      .reduce<ICharts[]>((acc, word) => {
-        // 이미 해당 단어가 존재하는지 확인
-        const existWord = acc.find((item) => item.name === word);
-        //이미 존재하는 데이터 값일 경우 카운트 + 1
-        if (existWord) {
-          existWord.count += 1;
-        } else {
-          // 존재하지 않으면 새 객체를 추가
-          acc.push({ name: word, count: 1 });
-        }
-        return acc;
-      }, [])
-      //카운트 내림차순 정렬 후 7개 데이터만 추출
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 7);
-
+    const categoryCountArray = categoryCounts(categoryData).slice(0, 7);
+    
     //ApexChart옵션 및 시리즈 상수 선언
     const option: ApexOptions = {
       chart: {
@@ -73,7 +69,7 @@ function CategoryChart() {
       },
       xaxis: {
         //카테고리: categoryCounts데이터의 검색어
-        categories: categoryCounts.map((data) => {
+        categories: categoryCountArray.map((data) => {
           return "#" + data.name;
         }),
         labels: {
@@ -112,7 +108,7 @@ function CategoryChart() {
       //차트: categoryCounts데이터의 검색 횟수
       {
         name: "태그 개수",
-        data: categoryCounts.map((data) => {
+        data: categoryCountArray.map((data) => {
           return data.count;
         }),
       },

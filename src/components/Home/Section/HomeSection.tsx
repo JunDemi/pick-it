@@ -1,16 +1,25 @@
-import React from "react";
 import "../../../assets/Home/section.scss";
 import { Link } from "react-router-dom";
 import PCWorldcup from "./PCWorldcup";
 import { useQuery } from "@tanstack/react-query";
 import { DocumentData } from "firebase/firestore";
 import { dashboardPopWolrdcup } from "../../../server/firebaseDashBoard";
+import { useAppSelector } from "../../../hooks/redux";
+import { categoryCounts } from "../../../Utils/categoryCounts";
 
 function HomeSection() {
   //로컬 스토리지 게임 데이터
   const localGame = localStorage.getItem("game-data");
   const parseGameData = localGame ? JSON.parse(localGame) : null;
 
+  //redux에 저장된 인기 카테고리 배열
+  const popCategoryData = useAppSelector(
+    (state) => state.popCategoryReducers.popCategoryReducer,
+  );
+
+  const categoryCountArray = categoryCounts(popCategoryData);
+
+  console.log(categoryCountArray)
   //리액트 쿼리
   const {
     data: popData,

@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { WorldcupImage } from "../../../types/Worldcup";
 import ModalInfo from "./ModalInfo";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 //Framer Motion 슬라이더 Variant
 const boxVar = {
@@ -34,6 +34,8 @@ function PCWorldcup(prop: {
     worldcupInfo: DocumentData;
   }[];
 }) {
+  //현재 쿼리 파라미터 값
+  const { id: gameId } = useParams();
   //네비게이터
   const navigate = useNavigate();
   //현재 슬라이드 페이지
@@ -83,10 +85,15 @@ function PCWorldcup(prop: {
   }
   //현재 경로가 'pop-category' (모달이 생성되었을 떄)
   const isModal = useLocation().pathname.includes("/pop-category");
-  //경로가 /pop-category이지만 모달창이 없는 상태일 경우 '/'로 강제 이동
+  //모달이 켜진 상태에서 새로고침이 되어도 모달 상태가 계속 유지될 수 있게
   useEffect(() => {
-    if(isModal){
-      !itemModal && navigate("/");
+    const findModalData = prop.popData.find(data => data.worldcupId === gameId);
+    if(isModal && gameId && findModalData){
+      setItemModal(true);
+      setModalData({
+        worldcupId: findModalData.worldcupId,
+        worldcupInfo: findModalData.worldcupInfo,
+      })
     }
   }, []);
   return (

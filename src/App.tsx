@@ -19,6 +19,7 @@ import HeaderDisplay from "./components/Header/HeaderDisplay";
 import MyPage from "./pages/MyPage";
 import EditProfile from "./pages/EditProfile";
 import EditWorldcup from "./pages/EditWorldcup";
+import NoticePage from "./pages/NoticePage";
 
 function App() {
   const [userData, setUserData] = useState<PopupUserData>({
@@ -77,6 +78,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/pop-category/:id' element={<Home />} />
+        <Route path='/notice' element={<NoticePage />} />
         <Route path='/contents' element={<Contents />} />
         <Route path='/play-game/:id' element={<PlayGame />} />
         <Route path='/game-review/:id' element={<GameReview />} />

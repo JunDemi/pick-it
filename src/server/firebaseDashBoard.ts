@@ -12,6 +12,7 @@ import { ICharts } from "../types/Banner";
 //파이어베이스 DB연동
 const worldcupRef = collection(db, "worldcup");
 const searchRef = collection(db, "searchWord");
+const noticeRef = collection(db, "notice");
 
 //인기 월드컵 순위 (상단 랭킹)
 export const dashboardPopRank = async () => {
@@ -92,20 +93,42 @@ export const dashboardPopWolrdcup = async (categoryCountArray: ICharts[]) => {
 
       //flat을 한 후 해당 배열의 ID값 중복을 제거
       const uniqueNames = new Set();
-      const filterList = flatResult
-        .filter((item) => {
-          if (uniqueNames.has(item.worldcupId)) {
-            return false; // 중복된 이름이면 제외
-          } else {
-            uniqueNames.add(item.worldcupId); // 고유한 이름은 추가
-            return true;
-          }
-        });
-        //20개까지만 클라이언트에 전송
-        return filterList.slice(0, 20)
+      const filterList = flatResult.filter((item) => {
+        if (uniqueNames.has(item.worldcupId)) {
+          return false; // 중복된 이름이면 제외
+        } else {
+          uniqueNames.add(item.worldcupId); // 고유한 이름은 추가
+          return true;
+        }
+      });
+      //20개까지만 클라이언트에 전송
+      return filterList.slice(0, 20);
     });
-
   } else {
     return null;
   }
+};
+
+//공지사항 불러오기
+export const getNotice = async () => {
+  //단일 문서 내 배열에 검색어를 전부 저장할 거기 때문에 문서 ID값을 직접 입력
+  const noticeQuery = query(noticeRef);
+  const getData = await getDocs(noticeQuery).then((data) => {
+    return data.docs;
+  });
+  const results: {
+    noticeId: string;
+    noticeTitle: string;
+    noticeDescription: string;
+    createAt: number;
+  }[] = getData.map((doc) => {
+    return {
+      noticeId: doc.id,
+      noticeTitle: doc.data()["noticeTitle"],
+      noticeDescription: doc.data()["noticeDescription"],
+      createAt: doc.data()["createAt"],
+    };
+  });
+
+  return results;
 };

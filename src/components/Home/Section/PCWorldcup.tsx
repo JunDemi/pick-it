@@ -85,7 +85,7 @@ function PCWorldcup(prop: {
   }
   //현재 경로가 'pop-category' (모달이 생성되었을 떄)
   const isModal = useLocation().pathname.includes("/pop-category");
-  //경로가 /pop-category이지만 모달창이 없는 상태일 경우 '/'로 강제 이동
+  //모달이 켜진 상태에서 새로고침이 되어도 모달 상태가 계속 유지될 수 있게
   useEffect(() => {
     const findModalData = prop.popData.find(data => data.worldcupId === gameId);
     if(isModal && gameId && findModalData){

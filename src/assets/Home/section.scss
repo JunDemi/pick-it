@@ -121,8 +121,11 @@
                     gap: 5px;
 
                     h1 {
-                        font-family: 'p_bold';
-                        font-size: 30px;
+                        position: absolute;
+                        top: 5px;
+                        left: 15px;
+                        font-family: 'p_normal';
+                        font-size: 45px;
                         margin: 0;
                     }
 

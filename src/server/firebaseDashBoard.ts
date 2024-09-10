@@ -63,7 +63,7 @@ export const dashboardPopCategory = async () => {
   return results.flat();
 };
 
-//인기 월드컵 순위 (하단 슬라이드)
+//인기 카테고리 월드컵 (하단 슬라이드)
 export const dashboardPopWolrdcup = async (categoryCountArray: ICharts[]) => {
   //전역 상태값인 카테고리 배열의 값이 채워지면
   if (categoryCountArray.length > 0) {
@@ -102,7 +102,7 @@ export const dashboardPopWolrdcup = async (categoryCountArray: ICharts[]) => {
           }
         });
         //20개까지만 클라이언트에 전송
-        return filterList.slice(0, 20);
+        return filterList.slice(0, 20)
     });
 
   } else {

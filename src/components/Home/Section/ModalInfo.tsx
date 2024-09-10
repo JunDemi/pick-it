@@ -53,6 +53,8 @@ function ModalInfo(prop: {
           </div>
         </div>
       </div>
+
+      <h1>Hello</h1>
     </>
   );
 }

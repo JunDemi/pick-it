@@ -27,18 +27,6 @@ const boxVar = {
     },
   }),
 };
-const itemVar = {
-  normal: {
-    y: 0,
-  },
-  hover: {
-    y: -5,
-    transition: {
-      duration: 0.3,
-      type: "spring",
-    },
-  },
-};
 function PCWorldcup(prop: {
   popData: {
     worldcupId: string;
@@ -100,10 +88,7 @@ function PCWorldcup(prop: {
                   {prop.popData
                     .slice(currentPage * 5, currentPage * 5 + 5)
                     .map((data, d) => (
-                      <motion.div
-                        variants={itemVar}
-                        initial="normal"
-                        whileHover="hover"
+                      <div
                         key={d}
                         className="item"
                         onClick={() => {
@@ -135,7 +120,7 @@ function PCWorldcup(prop: {
                           <h1>{d + 1 + i * 5}.</h1>
                           <h2>{data.worldcupInfo.worldcupTitle}</h2>
                         </div>
-                      </motion.div>
+                      </div>
                     ))}
                 </motion.div>
               )

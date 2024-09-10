@@ -8,7 +8,7 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "./firebase";
-import { ICharts } from "../types/Banner";
+import { ICharts, INotice } from "../types/Banner";
 //파이어베이스 DB연동
 const worldcupRef = collection(db, "worldcup");
 const searchRef = collection(db, "searchWord");
@@ -116,12 +116,7 @@ export const getNotice = async () => {
   const getData = await getDocs(noticeQuery).then((data) => {
     return data.docs;
   });
-  const results: {
-    noticeId: string;
-    noticeTitle: string;
-    noticeDescription: string;
-    createAt: number;
-  }[] = getData.map((doc) => {
+  const results: INotice[] = getData.map((doc) => {
     return {
       noticeId: doc.id,
       noticeTitle: doc.data()["noticeTitle"],

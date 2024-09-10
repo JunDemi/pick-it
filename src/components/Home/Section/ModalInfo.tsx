@@ -1,6 +1,8 @@
 import { DocumentData } from "firebase/firestore";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { getImageRankList } from "../../../server/firebaseWorldcup";
+import { ImageRankData } from "../../../types/Worldcup";
 
 function ModalInfo(prop: {
   data: {
@@ -9,6 +11,14 @@ function ModalInfo(prop: {
   };
 }) {
   const modalInfo = prop.data.worldcupInfo;
+  //이미지 랭킹 저장 상태
+  const [imageRank, setImageRank] = useState<ImageRankData[] | null>([]);
+  //이미지 랭킹 불러오기
+  useEffect(() => {
+    getImageRankList(prop.data.worldcupId).then((result) => setImageRank(result))
+  }, []);
+
+  console.log(imageRank);
   return (
     <>
       <div className="modal-img-wrapper">

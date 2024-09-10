@@ -141,7 +141,7 @@ function PCWorldcup(prop: {
                           />
                         </div>
                         <div className="item-title">
-                          <h1>{d + 1 + i * 5}.</h1>
+                          <h1>{d + 1 + i * 5}</h1>
                           <h2>{data.worldcupInfo.worldcupTitle}</h2>
                         </div>
                       </div>

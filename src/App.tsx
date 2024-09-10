@@ -76,6 +76,7 @@ function App() {
       ) : null}
       <Routes>
         <Route path='/' element={<Home />} />
+        <Route path='/pop-category/:id' element={<Home />} />
         <Route path='/contents' element={<Contents />} />
         <Route path='/play-game/:id' element={<PlayGame />} />
         <Route path='/game-review/:id' element={<GameReview />} />

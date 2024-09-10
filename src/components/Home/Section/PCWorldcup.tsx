@@ -1,8 +1,9 @@
 import { DocumentData } from "firebase/firestore";
 import { AnimatePresence, motion } from "framer-motion";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { WorldcupImage } from "../../../types/Worldcup";
 import ModalInfo from "./ModalInfo";
+import { useLocation, useNavigate } from "react-router-dom";
 
 //Framer Motion 슬라이더 Variant
 const boxVar = {
@@ -33,6 +34,8 @@ function PCWorldcup(prop: {
     worldcupInfo: DocumentData;
   }[];
 }) {
+  //네비게이터
+  const navigate = useNavigate();
   //현재 슬라이드 페이지
   const [currentPage, setCurrentPage] = useState<number>(0);
   //슬라이드가 뒤로 가는지 앞으로 가는지
@@ -63,12 +66,29 @@ function PCWorldcup(prop: {
       );
     }
   };
-  //슬라이드 아이템 클릭 시 모달 팝업
-  const [itemModal, setItemModal] = useState<string | null>(null);
+  //슬라이드 아이템 클릭 상태
+  const [itemModal, setItemModal] = useState<boolean>(false);
   const [modalData, setModalData] = useState<{
     worldcupId: string;
     worldcupInfo: DocumentData;
   } | null>(null);
+  //모달 생성 함수
+  const getItemModal = (data: {
+    worldcupId: string;
+    worldcupInfo: DocumentData;
+  }) => {
+    navigate(`pop-category/${data.worldcupId}`);
+    setItemModal(true);
+    setModalData(data);
+  }
+  //현재 경로가 'pop-category' (모달이 생성되었을 떄)
+  const isModal = useLocation().pathname.includes("/pop-category");
+  //경로가 /pop-category이지만 모달창이 없는 상태일 경우 '/'로 강제 이동
+  useEffect(() => {
+    if(isModal){
+      !itemModal && navigate("/");
+    }
+  }, []);
   return (
     <>
       <div className="pop-worldcup-slide-container">
@@ -91,10 +111,7 @@ function PCWorldcup(prop: {
                       <div
                         key={d}
                         className="item"
-                        onClick={() => {
-                          setItemModal(data.worldcupId);
-                          setModalData(data);
-                        }}
+                        onClick={() => getItemModal(data)}
                       >
                         <div className="img-wrapper">
                           <img
@@ -175,7 +192,7 @@ function PCWorldcup(prop: {
         </button>
       </div>
       <AnimatePresence>
-        {itemModal !== null && (
+        {itemModal && (
           <div className="item-modal">
             <motion.div
               className="modal-overlay"
@@ -183,8 +200,9 @@ function PCWorldcup(prop: {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => {
-                setItemModal(null);
+                setItemModal(false);
                 setModalData(null);
+                navigate("/");
               }}
             />
             <motion.div

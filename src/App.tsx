@@ -20,6 +20,7 @@ import MyPage from "./pages/MyPage";
 import EditProfile from "./pages/EditProfile";
 import EditWorldcup from "./pages/EditWorldcup";
 import NoticePage from "./pages/NoticePage";
+import Community from "./pages/Community";
 
 function App() {
   const [userData, setUserData] = useState<PopupUserData>({
@@ -83,6 +84,7 @@ function App() {
         <Route path='/play-game/:id' element={<PlayGame />} />
         <Route path='/game-review/:id' element={<GameReview />} />
         <Route path='/create-game' element={<CreateGame />} />
+        <Route path='/community' element={<Community />} />
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
         <Route path='/find-user' element={<FindUser />} />

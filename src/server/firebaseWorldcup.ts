@@ -155,7 +155,7 @@ export const getWorldCupList = async (
           nextPage: null,
         });
       }
-    }, 1000);
+    }, 200);
   });
 };
 

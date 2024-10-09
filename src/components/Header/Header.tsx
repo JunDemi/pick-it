@@ -51,6 +51,13 @@ function Header() {
             >
               <Link to='/create-game'>월드컵 생성</Link>
             </li>
+            <li
+              className={
+                location.pathname === "/community" ? "menu active" : "menu"
+              }
+            >
+              <Link to='/community'>커뮤니티</Link>
+            </li>
           </ul>
 
           <div className='user-menu'>

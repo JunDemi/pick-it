@@ -20,6 +20,7 @@ export const getCreateCommunity = async (
     communitySubTtile: subTitle,
     firstImg: first,
     secondImg: second,
+    heart: [],
     createAt: currentTime,
     updateAt: currentTime,
   });

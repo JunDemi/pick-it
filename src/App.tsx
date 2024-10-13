@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route} from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation} from "react-router-dom";
 import Home from "./pages/Home";
 import "../src/assets/global.scss";
 import "./assets/userPopup/userPopup.scss";
@@ -21,6 +21,7 @@ import EditProfile from "./pages/EditProfile";
 import EditWorldcup from "./pages/EditWorldcup";
 import NoticePage from "./pages/NoticePage";
 import Community from "./pages/Community";
+import ScrollToTop from "./context/ScrollTop";
 
 function App() {
   const [userData, setUserData] = useState<PopupUserData>({
@@ -72,6 +73,7 @@ function App() {
 
   return (
     <BrowserRouter>
+      <ScrollToTop/>
       <HeaderDisplay/>
       {localUser && userPopupToggle ? (
         <UserPopup userData={userData} />

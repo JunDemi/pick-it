@@ -150,3 +150,5 @@ export const userReAuthtication = async (
 
   return isAuthticSuccess;
 };
+
+//userId를 매개변수로 유저의

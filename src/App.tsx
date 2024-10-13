@@ -21,6 +21,7 @@ import EditProfile from "./pages/EditProfile";
 import EditWorldcup from "./pages/EditWorldcup";
 import NoticePage from "./pages/NoticePage";
 import Community from "./pages/Community";
+import ScrollToTop from "./context/ScrollTop";
 
 function App() {
   const [userData, setUserData] = useState<PopupUserData>({
@@ -72,6 +73,7 @@ function App() {
 
   return (
     <BrowserRouter>
+      <ScrollToTop/>
       <HeaderDisplay/>
       {localUser && userPopupToggle ? (
         <UserPopup userData={userData} />

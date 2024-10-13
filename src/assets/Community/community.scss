@@ -1,5 +1,4 @@
 .community-container {
-    margin-top: 2rem;
     padding: 0 7rem;
     display: flex;
     justify-content: flex-end;
@@ -7,7 +6,11 @@
 
     .community-section {
         flex-grow: 1;
-
+        .community-how-to{
+            margin: 2rem 0;
+            font-size: 12px;
+            color: #888;
+        }
         .community-card {
             position: relative;
             margin-bottom: 5rem;

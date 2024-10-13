@@ -31,13 +31,9 @@ export interface WorldcupList {
   worldcupId: string;
   worldcupInfo: SendData;
 }
-//월드컵 이후 1등 데이터 리듀서
-export interface FinishWorldcup {
-  gameId: string;
-  userId: string | null;
-  fileIndex: number;
-  fileName: string;
-  filePath: string;
+export interface ShareCommunity {
+  title: string;
+  subTitle: string;
 }
 export interface ImageRankData {
   fileName: string;

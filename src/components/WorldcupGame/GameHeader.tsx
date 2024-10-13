@@ -1,8 +1,52 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "../../assets/Contents/gameHeader.scss";
+import { AnimatePresence, motion } from "framer-motion";
+import { useForm } from "react-hook-form";
+import { ShareCommunity, WorldcupImage } from "../../types/Worldcup";
+import { getCreateCommunity } from "../../server/firebaseCommunity";
 
-function GameHeader() {
+function GameHeader(prop: { gameId: string; currentMatch: WorldcupImage[] }) {
+  //네비게이터
+  const navigate = useNavigate();
+  //로그인 여부: 로그인 해야 공유하기 가능
+  const localUser: string | null = localStorage.getItem("pickit-user");
+  const userId = localUser ? JSON.parse(localUser).UserId : null;
+  //배열 구조 분해로 각각 매칭 이미지 할당
+  const [first, second] = prop.currentMatch;
+  //공유하기 모달창 팝업 상태
+  const [shareModal, setShareModal] = useState<boolean>(false);
+  //공유하기 모달을 띄우기 전 로그인 여부 확인
+  const checkShareModal = () => {
+    localUser ? setShareModal(true) : alert("로그인 해야 이용할 수 있습니다.");
+  };
+  //공유하기 리액트 훅 폼
+  const { handleSubmit, register, reset } = useForm<ShareCommunity>({
+    mode: "onSubmit",
+  });
+  //로딩 동작 상태
+  const [loading, setLoading] = useState<boolean>(false);
+  //공유하기 핸들러 이벤트
+  const shareValid = async (inputs: ShareCommunity) => {
+    setLoading(true);
+    //커뮤니티 글 추가
+    await getCreateCommunity(
+      prop.gameId,
+      userId,
+      inputs.title,
+      inputs.subTitle,
+      first,
+      second
+    ).then(() => {
+      alert('커뮤니티에 글이 등록되었습니다.');
+      navigate('/community');
+    });
+  };
+
+  //월드컵 매칭이 바뀔 때마다 입력된 formState제거
+  useEffect(() => {
+    reset();
+  }, [prop.currentMatch]);
   return (
     <>
       <div className="game-header-container">
@@ -32,10 +76,28 @@ function GameHeader() {
           돌아가기
         </Link>
         <div className="right-icons">
+          <span className="game-header-icons" onClick={checkShareModal}>
+            <svg
+              width="35"
+              height="35"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
+              />
+            </svg>
+            공유하기
+          </span>
           <span className="game-header-icons">
             <svg
-              width="40"
-              height="40"
+              width="35"
+              height="35"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -52,8 +114,8 @@ function GameHeader() {
           </span>
           <span className="game-header-icons">
             <svg
-              width="40"
-              height="40"
+              width="35"
+              height="35"
               viewBox="0 0 50 50"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -95,6 +157,67 @@ function GameHeader() {
           </span>
         </div>
       </div>
+      <AnimatePresence>
+        {shareModal && (
+          <motion.div
+            className="share-popup"
+            initial={{ opacity: 0 }}
+            animate={shareModal ? { opacity: 1 } : { opacity: 0 }}
+            exit={{ opacity: 0 }}
+          >
+            <div className="share-container">
+              <div className="close-popup-button">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="2"
+                  stroke="currentColor"
+                  onClick={() => setShareModal(false)}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18 18 6M6 6l12 12"
+                  />
+                </svg>
+              </div>
+              <h2>커뮤니티 공유하기</h2>
+              <div className="share-images">
+                <div>
+                  <img src={first.filePath} alt="" />
+                  <p>{first.fileName}</p>
+                </div>
+                <div>
+                  <img src={second.filePath} alt="" />
+                  <p>{second.fileName}</p>
+                </div>
+              </div>
+              <form className="share-form" onSubmit={handleSubmit(shareValid)}>
+                <p>제목</p>
+                <input
+                  type="text"
+                  placeholder="ex) 둘 중 어떤 것을 선택해야 할까요?"
+                  autoComplete="off"
+                  {...register("title", {
+                    required: true,
+                  })}
+                />
+                <p>부제목</p>
+                <input
+                  type="text"
+                  placeholder="ex) 선택하기 힘든 박빙 매치네요..여러분들의 의견은 어떤가요?"
+                  autoComplete="off"
+                  {...register("subTitle", {
+                    required: true,
+                  })}
+                />
+                <button type="submit" disabled={loading}>{loading ? "로딩중..." : "등록하기"}</button>
+              </form>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

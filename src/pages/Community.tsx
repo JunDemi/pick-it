@@ -6,6 +6,10 @@ function Community() {
   return (
     <section className="community-container">
       <div className="community-section">
+
+      <h1 className="community-how-to">
+      &#8251; 월드컵 게임 화면 안에 있는 '공유하기'를 통해 커뮤니티 글을 작성할 수 있습니다. &#8251;
+      </h1>
         {[...Array(5)].map((v, i) => (
           <div key={i} className="community-card">
             <div className="card-head">

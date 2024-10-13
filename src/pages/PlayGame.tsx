@@ -126,7 +126,6 @@ function PlayGame() {
     //오버레이 닫기
     setSelectCard("");
   };
-
   //게임 마무리 후 랭킹보기 페이지 이동
   const goResultPage = async (argData: WorldcupImage) => {
     setEndLoading(true);
@@ -202,7 +201,7 @@ function PlayGame() {
     </>
   ) : (
     <>
-      <GameHeader />
+      <GameHeader currentMatch={[JSON.parse(data).GameImage[0],JSON.parse(data).GameImage[1]]}/>
       <section className="game-container">
         <div className="game-title">
           <h1>

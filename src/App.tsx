@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route, useLocation} from "react-router-dom";
+import { BrowserRouter, Routes, Route} from "react-router-dom";
 import Home from "./pages/Home";
 import "../src/assets/global.scss";
 import "./assets/userPopup/userPopup.scss";

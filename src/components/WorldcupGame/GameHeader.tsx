@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../assets/Contents/gameHeader.scss";
 import { AnimatePresence, motion } from "framer-motion";
 import { useForm } from "react-hook-form";
-import { ShareCommunity } from "../../types/Worldcup";
+import { ShareCommunity, WorldcupImage } from "../../types/Worldcup";
+import { getCreateCommunity } from "../../server/firebaseCommunity";
 
-function GameHeader(prop: {
-  currentMatch: {
-    fileIndex: number;
-    fileName: string;
-    filePath: string;
-  }[];
-}) {
+function GameHeader(prop: { gameId: string; currentMatch: WorldcupImage[] }) {
+  //네비게이터
+  const navigate = useNavigate();
   //로그인 여부: 로그인 해야 공유하기 가능
   const localUser: string | null = localStorage.getItem("pickit-user");
+  const userId = localUser ? JSON.parse(localUser).UserId : null;
   //배열 구조 분해로 각각 매칭 이미지 할당
   const [first, second] = prop.currentMatch;
   //공유하기 모달창 팝업 상태
@@ -26,15 +24,29 @@ function GameHeader(prop: {
   const { handleSubmit, register, reset } = useForm<ShareCommunity>({
     mode: "onSubmit",
   });
+  //로딩 동작 상태
+  const [loading, setLoading] = useState<boolean>(false);
   //공유하기 핸들러 이벤트
-  const shareValid = (inputs: ShareCommunity) => {
-    console.log(inputs);
+  const shareValid = async (inputs: ShareCommunity) => {
+    setLoading(true);
+    //커뮤니티 글 추가
+    await getCreateCommunity(
+      prop.gameId,
+      userId,
+      inputs.title,
+      inputs.subTitle,
+      first,
+      second
+    ).then(() => {
+      alert('커뮤니티에 글이 등록되었습니다.');
+      navigate('/community');
+    });
   };
 
   //월드컵 매칭이 바뀔 때마다 입력된 formState제거
   useEffect(() => {
     reset();
-  }, [prop]);
+  }, [prop.currentMatch]);
   return (
     <>
       <div className="game-header-container">
@@ -200,7 +212,7 @@ function GameHeader(prop: {
                     required: true,
                   })}
                 />
-                <button type="submit">등록하기</button>
+                <button type="submit" disabled={loading}>{loading ? "로딩중..." : "등록하기"}</button>
               </form>
             </div>
           </motion.div>

@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import PopRank from "../components/Home/Banner/PopRank";
 import "../assets/Community/community.scss";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getCommunityList } from "../server/firebaseCommunity";
+import { getUserData } from "../server/firebaseAuth";
 
 function Community() {
   //리액트 쿼리 훅
@@ -19,6 +20,8 @@ function Community() {
     initialPageParam: 0,
     getNextPageParam: (lastPage) => lastPage.nextPage, //fetchNextPage가 작동하면 nextPage로 pageParam값 증가
   });
+
+
   return status === "pending" ? (
     <div>로딩중...</div>
   ) : status === "error" ? (
@@ -35,23 +38,23 @@ function Community() {
         {page.data.map((items) => items && (
           <div key={items.communityId} className="community-card">
             <div className="card-head">
-              <img src="/images/user.png" alt="" />
+              <img src={items.userProfile === "default" ? "/images/user.png" : items.userProfile} alt="" />
               <div>
-                <h2>{items.communityInfo.communityTitle}</h2>
-                <p>민혀기</p>
+                <h2>{items.communityTitle}</h2>
+                <p>{items.userName}</p>
               </div>
             </div>
             <div className="card-question">
-              {items.communityInfo.communitySubTitle}
+              {items.communitySubTitle}
             </div>
             <div className="card-images">
               <div>
-                <img src={items.communityInfo.firstImg.filePath} alt="" />
-                <p>{items.communityInfo.firstImg.fileName}</p>
+                <img src={items.firstImg.filePath} alt="" />
+                <p>{items.firstImg.fileName}</p>
               </div>
               <div>
-              <img src={items.communityInfo.secondImg.filePath} alt="" />
-              <p>{items.communityInfo.secondImg.fileName}</p>
+              <img src={items.secondImg.filePath} alt="" />
+              <p>{items.secondImg.fileName}</p>
               </div>
             </div>
             <div className="card-hearts">
@@ -69,7 +72,7 @@ function Community() {
                     d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
                   />
                 </svg>
-                좋아요 {items.communityInfo.heart.length}개
+                좋아요 {items.heart.length}개
               </div>
               <span>댓글 모두 보기</span>
             </div>

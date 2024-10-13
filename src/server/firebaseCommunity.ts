@@ -1,6 +1,8 @@
 import { addDoc, collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "./firebase";
 import { WorldcupImage } from "../types/Worldcup";
+import { ICommiunity } from "../types/Community";
+import { getUserData } from "./firebaseAuth";
 //파이어베이스 DB연동
 const communityRef = collection(db, "community");
 
@@ -44,14 +46,28 @@ export const getCommunityList = async({pageParam}: {
     return res.docs;
   });
    //클라이언트에 반환시킬 전체 결과값
-   const results = getData.map((data) => {
-    return { communityId: data.id, communityInfo: data.data() };
+   const results = getData.map(async(data) => {
+    const [userProfile, userName] = await getUserData(data.data()["userId"])
+    return { 
+      communityId: data.id, 
+      gameId: data.data()["gameId"],
+      userId: data.data()["userId"],
+      userProfile: userProfile,
+      userName: userName,
+      communityTitle: data.data()["communityTitle"],
+      communitySubTitle: data.data()["communitySubTitle"],
+      firstImg: data.data()["firstImg"],
+      secondImg: data.data()["secondImg"],
+      heart: data.data()["heart"],
+      createAt: data.data()["createAt"],
+      updateAt: data.data()["updateAt"],
+    };
   });
-
+  const setResults: ICommiunity[] = await Promise.all(results);
   return {
-    data: results.slice(pageParam, pageParam + LIMIT),
+    data: setResults.slice(pageParam, pageParam + LIMIT),
     currentPage: pageParam,
     nextPage:
-      pageParam + LIMIT < results.length ? pageParam + LIMIT : null,
+      pageParam + LIMIT < setResults.length ? pageParam + LIMIT : null,
   };
 }

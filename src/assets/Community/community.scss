@@ -1,3 +1,19 @@
+.community-loading{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.infi-scroll-wrapper{
+    display: flex;
+    justify-content: center;
+    height: 5rem;
+}
 .community-container {
     padding: 0 7rem;
     display: flex;

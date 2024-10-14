@@ -14,7 +14,6 @@ function Community() {
     data: communityList,
     fetchNextPage, //다음 페이지 불러오기,
     hasNextPage,
-    refetch,
   } = useInfiniteQuery({
     queryKey: ["community_api"],
     queryFn: ({ pageParam }) => getCommunityList({ pageParam }), //getNextPageParam작성할 경우 pageParam값이 인자값으로 전달,

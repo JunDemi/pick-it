@@ -52,6 +52,7 @@ export const getCommunityList = async ({
   });
   //클라이언트에 반환시킬 전체 결과값
   const results = getData.map(async (data) => {
+    //유저ID값을 인자로 프로필 이미지와 닉네임을 반환하는 비동기 함수 호출
     const [userProfile, userName] = await getUserData(data.data()["userId"]);
     return {
       communityId: data.id,

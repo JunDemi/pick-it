@@ -2,10 +2,13 @@ import React, { useEffect, useState } from "react";
 import PopRank from "../components/Home/Banner/PopRank";
 import "../assets/Community/community.scss";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { getCommunityList } from "../server/firebaseCommunity";
+import { getCommunityList, getHeartClick } from "../server/firebaseCommunity";
 import { useInView } from "react-intersection-observer";
 
 function Community() {
+  //로그인 유저 불러오기
+  const localUser = localStorage.getItem('pickit-user');
+  const userId = localUser ? JSON.parse(localUser).UserId : null;
   //인터섹션 옵저버 훅
   const { ref, inView } = useInView();
   //리액트 쿼리 훅
@@ -14,6 +17,7 @@ function Community() {
     data: communityList,
     fetchNextPage, //다음 페이지 불러오기,
     hasNextPage,
+    refetch,
   } = useInfiniteQuery({
     queryKey: ["community_api"],
     queryFn: ({ pageParam }) => getCommunityList({ pageParam }), //getNextPageParam작성할 경우 pageParam값이 인자값으로 전달,
@@ -36,6 +40,17 @@ function Community() {
     }
   }, [inView, fetchNextPage]);
 
+  //좋아요 하트 클릭 이벤트
+  const heartClick = async(communityId: string, isExist: boolean) => {
+    //비로그인시 경고
+    if(userId){
+      //유저ID와 게시글ID를 전달
+      await getHeartClick(userId, communityId, isExist);
+      refetch();
+    }else{
+      alert('로그인 해야 이용할 수 있습니다.');
+    }
+  }
   return status === "pending" ? (
     <div className="community-loading">
       <h2>게시글을 불러오는 중입니다...</h2>
@@ -89,8 +104,9 @@ function Community() {
                     <div className="card-hearts">
                       <div>
                         <svg
+                          onClick={() => heartClick(items.communityId, items.heart.includes(userId) ? true : false)}
                           xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
+                          fill={items.heart.includes(userId) ? "#ff0000" : "none"}
                           viewBox="0 0 24 24"
                           strokeWidth="1"
                           stroke="#ff0000"

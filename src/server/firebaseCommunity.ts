@@ -1,9 +1,13 @@
 import {
   addDoc,
+  arrayRemove,
+  arrayUnion,
   collection,
+  doc,
   getDocs,
   orderBy,
   query,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "./firebase";
 import { WorldcupImage } from "../types/Worldcup";
@@ -77,3 +81,15 @@ export const getCommunityList = async ({
     nextPage: pageParam + LIMIT < setResults.length ? pageParam + LIMIT : null,
   };
 };
+
+//커뮤니티 좋아요 클릭
+export const getHeartClick = async(userId: string, communityId: string, isExist: boolean) => {
+  //커뮤니티ID로 데이터 찾기
+  const updateHeartRef = doc(db, "community", communityId);
+
+  //arrayUnion으로 중복된 값은 추가되지 않게 배열 업데이트
+  //arrayRemove으로 해당 userId를 배열에 제거
+  await updateDoc(updateHeartRef, {
+    heart: isExist ? arrayRemove(userId) : arrayUnion(userId)
+  });
+}

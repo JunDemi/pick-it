@@ -41,12 +41,15 @@ function Community() {
   }, [inView, fetchNextPage]);
 
   //좋아요 하트 클릭 이벤트
-  const heartClick = async(communityId: string, isExist: boolean) => {
+  const heartClick = async(writerId:string, communityId: string, isExist: boolean) => {
     //비로그인시 경고
     if(userId){
-      //유저ID와 게시글ID를 전달
-      await getHeartClick(userId, communityId, isExist);
-      refetch();
+      //본인의 게시글이 아니면 동작하게
+      if(userId !== writerId){
+        //유저ID와 게시글ID를 전달
+        await getHeartClick(userId, communityId, isExist);
+        refetch();
+      }
     }else{
       alert('로그인 해야 이용할 수 있습니다.');
     }
@@ -104,12 +107,12 @@ function Community() {
                     <div className="card-hearts">
                       <div>
                         <svg
-                          onClick={() => heartClick(items.communityId, items.heart.includes(userId) ? true : false)}
+                          onClick={() => heartClick(items.userId, items.communityId, items.heart.includes(userId) ? true : false)}
                           xmlns="http://www.w3.org/2000/svg"
                           fill={items.heart.includes(userId) ? "#ff0000" : "none"}
                           viewBox="0 0 24 24"
                           strokeWidth="1"
-                          stroke="#ff0000"
+                          stroke={userId === items.userId ? "#777" : "#ff0000"}
                         >
                           <path
                             strokeLinecap="round"

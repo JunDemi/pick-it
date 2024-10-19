@@ -1,8 +1,8 @@
 import { DocumentData } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getImageRankList } from "../../../server/firebaseWorldcup";
 import { ImageRankData, WorldcupImage } from "../../../types/Worldcup";
+import { getImageRankList } from "../../../server/readStore";
 
 function ModalInfo(prop: {
   data: {

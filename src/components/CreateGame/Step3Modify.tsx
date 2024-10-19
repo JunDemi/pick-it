@@ -4,10 +4,10 @@ import { v4 as uuid } from "uuid";
 import { storage } from "../../server/firebase";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { SendData, WorldcupImage } from "../../types/Worldcup";
-import { getCreateWorldCup } from "../../server/firebaseWorldcup";
 import { useNavigate } from "react-router-dom";
 import { getReset } from "../../store/worldcup/createWorldcup";
 import { AnimatePresence, motion } from "framer-motion";
+import { getCreateWorldCup } from "../../server/createStore";
 
 function Step3Modify(props: { imageList: File[] }) {
   //네비게이터

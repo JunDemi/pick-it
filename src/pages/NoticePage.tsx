@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import "../assets/Notice/notice.scss";
 import { useQuery } from "@tanstack/react-query";
-import { getNotice } from "../server/firebaseDashBoard";
 import { getYYYYMMDD } from "../Utils/getYYYYMMDD";
 import { INotice } from "../types/Banner";
 import { AnimatePresence, motion } from "framer-motion";
 import NoticeModal from "../components/Notice/NoticeModal";
+import { getNotice } from "../server/readStore";
 
 function NoticePage() {
   //리액트 쿼리

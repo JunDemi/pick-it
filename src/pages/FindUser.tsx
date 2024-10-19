@@ -4,7 +4,7 @@ import "../assets/Sign/sign.scss";
 import "../assets/Sign/find.scss";
 import { useForm } from "react-hook-form";
 import { UserFind } from "../types/Sign";
-import { findPassword } from "../server/firebaseAuth";
+import { findPassword } from "../server/readStore";
 
 function FindUser() {
   //폼 이벤트 시 로딩 동작

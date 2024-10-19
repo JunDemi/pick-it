@@ -5,9 +5,10 @@ import { RegisterType } from "../../types/Sign";
 import { createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import { auth } from "../../server/firebase";
 import { uploadProfile } from "../../server/uploadStorage";
-import { getAuthenticInfo, nickNameCheck, userIdCheck } from "../../server/firebaseAuth";
 import { AnimatePresence, motion } from "framer-motion";
 import { capitalLetters, englishLetters, specialLetters } from "../../Utils/regExp";
+import { nickNameCheck, userIdCheck } from "../../server/readStore";
+import { getAuthenticInfo } from "../../server/createStore";
 
 function RegisterUser() {
     //네비게이터

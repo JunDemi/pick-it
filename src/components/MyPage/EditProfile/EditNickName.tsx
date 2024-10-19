@@ -1,8 +1,8 @@
 import React, { useRef, useState } from "react";
-import { nickNameCheck } from "../../../server/firebaseAuth";
-import { setMyNickName } from "../../../server/firebaseMyPage";
 import { specialLetters } from "../../../Utils/regExp";
 import { useNavigate } from "react-router-dom";
+import { nickNameCheck } from "../../../server/readStore";
+import { setMyNickName } from "../../../server/updateStore";
 
 function EditNickName(props: { userId: string; userName: string }) {
   //네비게이션

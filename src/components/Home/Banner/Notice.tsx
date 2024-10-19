@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { Link } from "react-router-dom";
-import { getNotice } from "../../../server/firebaseDashBoard";
 import { getYYYYMMDD } from "../../../Utils/getYYYYMMDD";
+import { getNotice } from "../../../server/readStore";
 function Notice() {
   //리액트 쿼리
   const { data: noticeData } = useQuery({

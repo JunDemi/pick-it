@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getUserData } from "../server/firebaseAuth";
 import "../assets/MyPage/editProfile.scss";
 import { uploadProfile } from "../server/uploadStorage";
-import { setMyProfileImage } from "../server/firebaseMyPage";
 import { AnimatePresence, motion } from "framer-motion";
 import { IoClose } from "react-icons/io5";
 import EditNickName from "../components/MyPage/EditProfile/EditNickName";
 import EditPassword from "../components/MyPage/EditProfile/EditPassword";
 import DeleteUser from "../components/MyPage/EditProfile/DeleteUser";
+import { getUserData } from "../server/readStore";
+import { setMyProfileImage } from "../server/updateStore";
 
 function EditProfile() {
   //로컬스토리지에 존재하는 유저 데이터

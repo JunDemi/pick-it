@@ -1,8 +1,4 @@
 import React, { useEffect, useState } from "react";
-import {
-  findSelectWorldcup,
-  getImageRankList,
-} from "../server/firebaseWorldcup";
 import { Link, useParams } from "react-router-dom";
 import { ImageRankData, WorldcupImage } from "../types/Worldcup";
 import { DocumentData } from "firebase/firestore";
@@ -10,6 +6,7 @@ import "../assets/Contents/gameReview.scss";
 import CreatorInfo from "../components/GameReview/CreatorInfo";
 import ImageRankTable from "../components/GameReview/ImageRankTable";
 import Comments from "../components/GameReview/Comment";
+import { findSelectWorldcup, getImageRankList } from "../server/readStore";
 
 function GameReview() {
   //로그인 상태

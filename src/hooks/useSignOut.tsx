@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import { useAppDispatch } from "./redux";
 import { useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";

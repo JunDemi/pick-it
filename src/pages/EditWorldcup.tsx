@@ -1,19 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { findSelectWorldcup } from "../server/firebaseWorldcup";
 import { DocumentData } from "firebase/firestore";
 import "../assets/MyPage/editWorldcup.scss";
-import {
-  checkIsUpdateImage,
-  deleteMyWorldcup,
-  updateImageRank,
-  updateWorldcupImages,
-  uploadWorldcupImages,
-} from "../server/firebaseMyPage";
 import { AnimatePresence, motion } from "framer-motion";
 import { IoClose } from "react-icons/io5";
 import EditGameInfo from "../components/MyPage/EditWorldcup/EditGameInfo";
 import { WorldcupImage } from "../types/Worldcup";
+import { findSelectWorldcup } from "../server/readStore";
+import { checkIsUpdateImage, updateImageRank, updateWorldcupImages, uploadWorldcupImages } from "../server/updateStore";
+import { deleteMyWorldcup } from "../server/deleteStore";
 
 function EditWorldcup() {
   // 동적 라우팅으로 전송받은 월드컵 아이디 값 조회

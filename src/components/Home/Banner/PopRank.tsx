@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
-import { dashboardPopRank } from "../../../server/firebaseDashBoard";
 import { Link } from "react-router-dom";
+import { dashboardPopRank } from "../../../server/readStore";
 
 function PopRank() {
   //참이면 1~10위, 거짓이면 11~20위를 표시

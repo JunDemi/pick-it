@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import PCWorldcup from "./PCWorldcup";
 import { useQuery } from "@tanstack/react-query";
 import { DocumentData } from "firebase/firestore";
-import { dashboardPopWolrdcup } from "../../../server/firebaseDashBoard";
 import { useAppSelector } from "../../../hooks/redux";
 import { categoryCounts } from "../../../Utils/categoryCounts";
+import { dashboardPopWolrdcup } from "../../../server/readStore";
 
 function HomeSection() {
   //로컬 스토리지 게임 데이터

@@ -2,8 +2,8 @@ import React from "react";
 import ReactApexChart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
 import { useQuery } from "@tanstack/react-query";
-import { dashboardPopSearch } from "../../../server/firebaseDashBoard";
 import { ICharts } from "../../../types/Banner";
+import { dashboardPopSearch } from "../../../server/readStore";
 
 function SearchChart() {
   //리액트 쿼리

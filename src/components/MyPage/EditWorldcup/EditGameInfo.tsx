@@ -4,8 +4,8 @@ import React, { useRef, useState } from "react";
 import { WorldcupImage } from "../../../types/Worldcup";
 import { IoClose } from "react-icons/io5";
 import { useForm } from "react-hook-form";
-import { editWorldcupInformation } from "../../../server/firebaseMyPage";
 import { useNavigate } from "react-router-dom";
+import { editWorldcupInformation } from "../../../server/updateStore";
 
 function EditGameInfo(prop: {
   gameData: {

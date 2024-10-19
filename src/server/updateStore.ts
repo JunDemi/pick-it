@@ -12,12 +12,12 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "./firebase";
-import { getFindUserDocs } from "./readStore";
+import { getFindUserDocs, getUserDocumentId } from "./readStore";
 import { deleteProfileImg, deleteRemainImg } from "./deleteStorage";
 import { getAuth, updatePassword } from "firebase/auth";
-import { getUserDocumentId, userReAuthtication } from "./firebaseAuth";
 import { UpdateWorldcupImages, WorldcupImage } from "../types/Worldcup";
 import { uploadNewWorldcupImages } from "./uploadStorage";
+import { userReAuthtication } from "./authentication";
 //auth 세션불러오기
 const auth = getAuth();
 //파이어베이스 DB연동

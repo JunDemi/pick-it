@@ -1,11 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-  addWorldcupComment,
-  deleteWorldcupComment,
-  getCommentUser,
-  getWorldcupCommentList,
-} from "../../server/firebaseComment";
 import { compareTime } from "../../Utils/compareTime";
+import { getCommentUser, getWorldcupCommentList } from "../../server/readStore";
+import { addWorldcupComment } from "../../server/createStore";
+import { deleteWorldcupComment } from "../../server/deleteStore";
 
 function Comments(props: { gameId: string; userId: string }) {
   //useEffect 트리거

@@ -1,8 +1,9 @@
 import React, { useRef, useState } from "react";
-import { deleteWorldcup, setMyPassword } from "../../../server/firebaseMyPage";
-import { deleteMyProfile } from "../../../server/firebaseAuth";
 import { AnimatePresence, motion } from "framer-motion";
 import useSignOut from "../../../hooks/useSignOut";
+import { setMyPassword } from "../../../server/updateStore";
+import { deleteWorldcup } from "../../../server/deleteStore";
+import { deleteMyProfile } from "../../../server/authentication";
 
 function DeleteUser(props: { userId: string }) {
   //로그아웃 커스텀 훅

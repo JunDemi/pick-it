@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import "../assets/MyPage/myPage.scss";
 import { Link, useNavigate } from "react-router-dom";
-import { getUserData } from "../server/firebaseAuth";
+import MyWorldcup from "../components/MyPage/MyWorldcup";
+import PlayedWorldcup from "../components/MyPage/PlayedWorldcup";
+import { MyPageDataType, MyWorldcupCommentType } from "../types/MyPage";
+import MyComment from "../components/MyPage/MyComment";
 import {
   getMyPlayAmount,
   getMyWorldcupComment,
   getMyWorldcupCommentWorldcup,
   getPlayedWorldcup,
+  getUserData,
   getUserWorldcupHistory,
-} from "../server/firebaseMyPage";
-import MyWorldcup from "../components/MyPage/MyWorldcup";
-import PlayedWorldcup from "../components/MyPage/PlayedWorldcup";
-import { MyPageDataType, MyWorldcupCommentType } from "../types/MyPage";
-import MyComment from "../components/MyPage/MyComment";
+} from "../server/readStore";
 
 function MyPage() {
   //로컬스토리지에 존재하는 게임 데이터(중간에 나온 게임일 경우 남음)

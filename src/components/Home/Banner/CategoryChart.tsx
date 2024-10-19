@@ -2,11 +2,11 @@ import React, { useEffect } from "react";
 import ReactApexChart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
 import { useQuery } from "@tanstack/react-query";
-import { dashboardPopCategory } from "../../../server/firebaseDashBoard";
 import { ICharts } from "../../../types/Banner";
 import { useAppDispatch } from "../../../hooks/redux";
 import { updateCategory } from "../../../store/worldcup/popCategory";
 import { categoryCounts } from "../../../Utils/categoryCounts";
+import { dashboardPopCategory } from "../../../server/readStore";
 
 function CategoryChart() {
   //redux dispatch 요청 메소드

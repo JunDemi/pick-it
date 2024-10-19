@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { setMyPassword } from "../../../server/firebaseMyPage";
 import { AnimatePresence, motion } from "framer-motion";
 import useSignOut from "../../../hooks/useSignOut";
+import { setMyPassword } from "../../../server/updateStore";
 
 function EditPassword(props: { userId: string; loginToken: string }) {
   //로그아웃 커스텀 훅

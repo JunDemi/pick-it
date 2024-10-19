@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { MyPageDataType, MyWorldcupCommentType } from "../../types/MyPage";
 import { compareTime } from "../../Utils/compareTime";
 import { WorldcupImage } from "../../types/Worldcup";

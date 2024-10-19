@@ -3,8 +3,8 @@ import "../assets/Sign/sign.scss";
 import { useForm } from "react-hook-form";
 import InputField from "../components/Sign/InputField";
 import { Link, useNavigate } from "react-router-dom";
-import { LoginType } from "../types/Sign";
-import { signInPickit } from "../server/firebaseAuth";
+import { LoginType } from "../types/Sign";import { signInPickit } from "../server/authentication";
+;
 
 function Login() {
   //네비게이터

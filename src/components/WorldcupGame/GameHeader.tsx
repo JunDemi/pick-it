@@ -4,7 +4,7 @@ import "../../assets/Contents/gameHeader.scss";
 import { AnimatePresence, motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { ShareCommunity, WorldcupImage } from "../../types/Worldcup";
-import { getCreateCommunity } from "../../server/firebaseCommunity";
+import { getCreateCommunity } from "../../server/createStore";
 
 function GameHeader(prop: { gameId: string; currentMatch: WorldcupImage[] }) {
   //네비게이터

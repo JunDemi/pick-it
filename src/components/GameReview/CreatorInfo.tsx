@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ImageRankData } from "../../types/Worldcup";
-import { getUserData } from "../../server/firebaseAuth";
+import { getUserData } from "../../server/readStore";
 
 function CreatorInfo(props: {
   creatorId: string;

@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import PopRank from "../components/Home/Banner/PopRank";
 import "../assets/Community/community.scss";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { getCommunityList, getHeartClick } from "../server/firebaseCommunity";
 import { useInView } from "react-intersection-observer";
+import { getCommunityList } from "../server/readStore";
+import { getHeartClick } from "../server/updateStore";
 
 function Community() {
   //로그인 유저 불러오기

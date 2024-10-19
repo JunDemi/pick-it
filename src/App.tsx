@@ -11,7 +11,6 @@ import Contents from "./pages/Contents";
 import UserPopup from "./components/UserPopup/UserPopup";
 import { PopupContext } from "./context/PopupContext";
 import { LocalUserData, PopupUserData } from "./types/Sign";
-import { getUserData } from "./server/firebaseAuth";
 import FindUser from "./pages/FindUser";
 import PlayGame from "./pages/PlayGame";
 import GameReview from "./pages/GameReview";
@@ -22,6 +21,7 @@ import EditWorldcup from "./pages/EditWorldcup";
 import NoticePage from "./pages/NoticePage";
 import Community from "./pages/Community";
 import ScrollToTop from "./context/ScrollTop";
+import { getUserData } from "./server/readStore";
 
 function App() {
   const [userData, setUserData] = useState<PopupUserData>({

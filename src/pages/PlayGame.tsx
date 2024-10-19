@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  findSelectWorldcup,
-  getCreateRankAndUpdateView,
-} from "../server/firebaseWorldcup";
 import "../assets/Contents/playGame.scss";
 import { AnimatePresence, motion } from "framer-motion";
 import Confetti from "react-confetti-boom";
 import GameHeader from "../components/WorldcupGame/GameHeader";
 import { WorldcupImage } from "../types/Worldcup";
+import { findSelectWorldcup } from "../server/readStore";
+import { getCreateRankAndUpdateView } from "../server/updateStore";
 
 function PlayGame() {
   //네비게이터

@@ -37,7 +37,7 @@ const getFindUserDocs = async (userId: string) => {
   return Promise.all(findIdDocs);
 };
 
-//내 월드컵, 참여 월드컵, (댓글) 불러오기
+//내 월드컵, 참여 월드컵 불러오기
 export const getMyPlayAmount = async (userId: string) => {
   //내 월드컵 불러오는 쿼리
   const findWorldcupQuery = query(
@@ -155,7 +155,7 @@ export const setMyNickName = async (userId: string, nickName: string) => {
   }
 };
 
-//비밀번호 확인 메소드
+//비밀번호 변경
 export const setMyPassword = async (
   argData: {
     currentPw: string;
@@ -243,7 +243,7 @@ export const deleteWorldcup = async (userId: string) => {
 };
 
 //월드컵의 모든 이미지 랭킹 데이터 삭제
-const deleteImageRank = async (gamdId: string) => {
+export const deleteImageRank = async (gamdId: string) => {
   //해당 월드컵의 이미지 랭킹 조회 쿼리
   const findImgRankQuery = query(
     collection(db, "imageRank"),
@@ -420,7 +420,7 @@ export const updateWorldcupImages = async (
     thumbnail: [0, 1],
   });
 };
-//월드컵 정보 수정 팝업
+//월드컵 기본 정보 수정
 export const editWorldcupInformation = async (argData: {
   gameId: string;
   title: string;

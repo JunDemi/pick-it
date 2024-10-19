@@ -60,7 +60,6 @@ function Community() {
       alert("로그인 해야 이용할 수 있습니다.");
     }
   };
-  console.log(myDropdown);
   return status === "pending" ? (
     <div className="community-loading">
       <h2>게시글을 불러오는 중입니다...</h2>

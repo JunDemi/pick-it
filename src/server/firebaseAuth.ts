@@ -68,7 +68,7 @@ export const getUserData = async (userid: string) => {
     return profileImgUrl;
   }
 };
-// 월드컵 참여 기록을 위한 users 문서ID 조회
+// users 문서ID 조회
 export const getUserDocumentId = async (userId: string) => {
   const findRef = query(authRef, where("userId", "==", userId));
   const findIdDocs = await getDocs(findRef).then((docRes) => {
@@ -150,5 +150,3 @@ export const userReAuthtication = async (
 
   return isAuthticSuccess;
 };
-
-//userId를 매개변수로 유저의

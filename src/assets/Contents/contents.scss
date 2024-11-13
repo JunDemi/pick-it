@@ -126,8 +126,12 @@
                 width: 18rem;
             }
              //뷰포트 1800이상 
-             @media screen and (min-width:1800px) {
+             @media screen and (max-width:1801px) {
                 width: 21rem;
+            }
+             //뷰포트 1800이상 
+             @media screen and (min-width:2000px) {
+                width: 26rem;
             }
 
             margin: 0 auto;
@@ -157,8 +161,12 @@
                     height: 11rem;
                 }
                  //뷰포트 1800이상 
-                 @media screen and (min-width:1800px) {
+                 @media screen and (max-width:1801px) {
                     height: 14rem;
+                }
+                //뷰포트 2000이상 
+                @media screen and (min-width:2000px) {
+                    height: 20rem;
                 }
                 display: flex;
                 overflow: hidden;
